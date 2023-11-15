@@ -1,0 +1,14 @@
+MOBILITY BEHAVIOR MONITORING
+- Application => raw inputs:
+  (1) *smartShoeSensors => UUID, pressureTimeSeries
+  (2) calendar => UUID, activity(shopping, sport, cooking, gaming);
+  (3) environment => UUID, environment(slippery, plain, slope, house, track);
+- Output:
+  (4) labels => UUID, anomalous(regular, anomalous)
+- Features (net input)
+  (a) Maximum pressureTimeSeries
+  (b) Minimum pressureTimeSeries
+  (c) Median pressureTimeSeries
+  (d) Mean Absolute Deviation pressureTimeSeries
+  (e) activity + small scatter
+  (f) environment + small scatter
