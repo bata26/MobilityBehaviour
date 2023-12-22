@@ -1,0 +1,58 @@
+FASE DI STORE:
+    IL DB SI RIEMPIE DI PREPARED SESSIONS FINO A QUANDO VIENE RAGGIUNTO IL MAX_SESSION_NUMBER
+
+SUCCESSIVAMENTE SI PASSA ALLA FASE DI BALANCING:
+    SE SONO BILANCIATE:
+        PASSO ALLA FASE DI COVERAGE
+    ALTRIMENTI:
+        DEVO FARE UNA RICHIESTA DI PREPARED SESSIONS SPECIFICHE AL FINE DI BILANCIARE LE CLASSI
+        ? COME GESTIAMO QUESTA COSA ?
+
+SUCCESSIVAMENTE SI PASSA ALLA FASE DI COVERAGE:
+    SE IL COVERAGE E' BUONO:
+        PASSO ALLA FASE LEARNING
+    ALTRIMENTI:
+        SVUOTO L'INTERO DB E SI RITORNA ALLA FASE DI STORE
+
+FASE DI LEARNING:
+    VENGONO GENERATI I LEARNING SETS E MANDATI AL DEVELOPMENT SYSTEM
+    SVUOTO L'INTERO DB E SI TORNA ALLA FASE DI STORE
+
+--------------------------------------------------------------------------------------------------
+
+CREATE TABLE info(
+  	_id TEXT PRIMARY KEY,
+  	calendar TEXT,
+  	environment TEXT
+);
+
+CREATE TABLE features(
+  	_id TEXT PRIMARY KEY,
+  	maximum_pressure_ts FLOAT,
+    minimum_pressure_ts FLOAT,
+    median_pressure_ts FLOAT,
+    mean_absolute_deviation_pressure_ts FLOAT,
+    activity_and_small_scatter FLOAT,
+    environment_and_small_scatter FLOAT,
+    label TEXT
+  );
+
+--------------------------------------------------------------------------------------------------
+STRUTTURA PREPARED SESSION
+
+{
+    _id : "wrwewr-ewrewr-werwrew-werrwe",
+    calendar : "shopping",
+    environment : "slippery",
+    features : [
+        {
+            "maximum_pressure_ts" : 0.0,
+            "minimum_pressure_ts" : 0.0,
+            "median_pressure_ts" : 0.0,
+            "mean_absolute_deviation_pressure_ts" : 0.0,
+            "activity_and_small_scatter" : 0.0,
+            "environment_and_small_scatter" : 0.0,
+            "label" : "Regular",
+        }
+    ]
+}

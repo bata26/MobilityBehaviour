@@ -1,0 +1,141 @@
+import os
+import json
+import plotly.graph_objects as go
+from jsonschema import validate, ValidationError
+
+class CoverageReportGenerator:
+
+    def __init__(self):
+        pass
+
+    def generate_chart(self, dataset):
+
+        # Get data from the prepared sessions
+        maximum_pressure_ts = []
+        minimum_pressure_ts = []
+        median_pressure_ts = []
+        mean_absolute_deviation_pressure_ts = []
+        activity_and_small_scatter = []
+        environment_and_small_scatter = []
+
+        # prepare data to build the chart
+        for prepared_session in dataset:
+            for features_info in prepared_session['features']:
+                if features_info == 'maximum_pressure_ts':
+                    maximum_pressure_ts.append(features_info['maximum_pressure_ts'])
+                elif features_info == 'minimum_pressure_ts':
+                    minimum_pressure_ts.append(features_info['minimum_pressure_ts'])
+                elif features_info == 'median_pressure_ts':
+                    median_pressure_ts.append(features_info['median_pressure_ts'])
+                elif features_info == 'mean_absolute_deviation_pressure_ts':
+                    mean_absolute_deviation_pressure_ts.append(
+                        features_info['mean_absolute_deviation_pressure_ts'])
+                elif features_info == 'activity_and_small_scatter':
+                    activity_and_small_scatter.append(
+                        features_info['activity_and_small_scatter'])
+                elif features_info == 'environment_and_small_scatter':
+                    environment_and_small_scatter.append(
+                        features_info['environment_and_small_scatter'])
+
+        # Generate radar chart
+        categories = ['maximum_pressure_ts','minimum_pressure_ts','median_pressure_ts',
+                    'mean_absolute_deviation_pressure_ts', 'activity_and_small_scatter',
+                    'environment_and_small_scatter']
+
+        fig = go.Figure()
+
+        # maximum_pressure_ts is used because every list has the same numbers
+        # of elements
+        for i in maximum_pressure_ts:
+            fig.add_trace(go.Scatterpolar(
+            r=[maximum_pressure_ts[i], minimum_pressure_ts[i], median_pressure_ts[i],
+               mean_absolute_deviation_pressure_ts[i], activity_and_small_scatter[i],
+               environment_and_small_scatter[i]],
+            theta=categories,
+            fill='toself',
+            ))
+
+        fig.update_layout(
+            polar=dict(
+                radialaxis=dict(
+                visible=True,
+                range=[0, 5]
+                )),
+            showlegend=False
+            )
+        
+        chart_path = os.path.join(os.path.abspath('.'), 'data', 'coverage', 'coverage_chart.png')
+        fig.write_image(chart_path)
+
+        # Get the info for the report
+        info = dict()
+        info['maximum_pressure_ts'] = maximum_pressure_ts
+        info['minimum_pressure_ts'] = minimum_pressure_ts
+        info['median_pressure_ts'] = median_pressure_ts
+        info['mean_absolute_deviation_pressure_ts'] = mean_absolute_deviation_pressure_ts
+        info['activity_and_small_scatter'] = activity_and_small_scatter
+        info['environment_and_small_scatter'] = environment_and_small_scatter
+
+        return info
+
+    def generate_report(self, info):
+
+        # Handle human interaction
+        print("Analize 'coverage_chart.png'")
+        print("Answer only 'ok' or 'not ok")
+        evaluation = input('> ')
+        if evaluation == 'ok':
+            info['evaluation'] = 'ok'
+        else:
+            info['evaluation'] = 'not ok'
+
+
+        # save a report with the evaluation that a human will make
+        report_path = os.path.join(os.path.abspath('..'), 'data', 'coverage'
+                                   'coverage_report.json')
+        try:
+            with open(report_path, "w", encoding='UTF-8') as file:
+                json.dump(info, file, indent=4)
+        except Exception as e:
+            print(e)
+            print("Failure to save coverage_report.json")
+            return False
+        return True
+
+    def evaluate_report(self):
+
+        report_path = os.path.join(os.path.abspath('..'), 'data', 'coverage'
+                                   'coverage_report.json')
+        schema_path = os.path.join(os.path.abspath('..'), 'schemas', 'coverage_report_schema.json')
+
+        # open the report file and validate it
+        try:
+            with open(report_path, encoding='UTF-8') as file:
+                report = json.load(file)
+
+            with open(schema_path, encoding='UTF-8') as file:
+                report_schema = json.load(file)
+
+            validate(report, report_schema)
+
+        except FileNotFoundError:
+            print('Failure to open coverage_report.json')
+            return -2
+
+        except ValidationError:
+            print('Coverage Report has invalid schema')
+            return -2
+
+        # Read human evaluation
+        evaluation = report['evaluation']
+
+        if evaluation == 'ok':
+            print("Coverage evaluation: ok")
+            return 0
+        elif evaluation == 'not ok':
+            print("Coverage evaluation: not ok")
+            return -1
+        else:
+            print("[!] Coverage evaluation non done")
+            return -2
+        

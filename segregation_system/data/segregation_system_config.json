@@ -1,0 +1,12 @@
+{
+    "stage": "store",
+    "segregation_system_ip": "",
+    "segregation_system_port": "",
+    "development_system_ip": "",
+    "development_system_port": "",
+    "db_name": "segregation.db",
+    "max_sessions": 0,
+    "train_set_size": 0.0,
+    "validation_set_size": 0.0,
+    "test_set_size": 0.0
+}
