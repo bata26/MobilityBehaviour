@@ -1,0 +1,16 @@
+{
+    "type": "object",
+    "properties": {
+      "maximum_pressure_ts": {"type": "float"},
+      "minimum_pressure_ts": {"type": "float"},
+      "median_pressure_ts": {"type": "float"},
+      "mean_absolute_deviation_pressure_ts": {"type": "float"},
+      "activity_and_small_scatter": {"type": "float"},
+      "environment_and_small_scatter": {"type": "float"},
+      "evaluation": {
+        "type": "string",
+        "enum": ["ok", "not ok", ""]
+      }
+    },
+    "required": ["maximum_pressure_ts", "minimum_pressure_ts", "median_pressure_ts", "mean_absolute_deviation_pressure_ts", "activity_and_small_scatter", "environment_and_small_scatter", "evaluation"]
+  }
