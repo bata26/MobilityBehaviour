@@ -8,9 +8,12 @@ class LearningSetsGenerator:
 
     def generate_learning_sets(self, dataset):
         # Extract features from the prepared sessions in the dataset
-        data = dict()
+        data = []
         for prepared_session in dataset:
-            data['features'] = prepared_session['features']
+            ps = prepared_session['features']
+            data.append(ps)
+        print(data)
+        
 
         # train_test_split function can split the dataset only in two part,
         # so it's needed to execute it again to obtain three sets
@@ -21,7 +24,7 @@ class LearningSetsGenerator:
         test_size = math.floor((test_size / (1 - train_size)) * 100) / 100
         validation_size = (100 - test_size * 100) / 100
 
-        train, res = train_test_split(data['features'], train_size=train_size)
+        train, res = train_test_split(data, train_size=train_size)
 
         if test_size > validation_size:
             test, validation = train_test_split(res, train_size=test_size)

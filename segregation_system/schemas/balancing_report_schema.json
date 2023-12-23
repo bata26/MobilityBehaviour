@@ -1,15 +1,15 @@
 {
     "type": "object",
     "properties": {
-      "shopping_items_number" : {"type": "int"},
-      "shopping_average" : {"type": "float"},
-      "sport_items_number" : {"type": "int"},
-      "sport_average" : {"type": "float"},
-      "cooking_items_number" : {"type": "int"}, 
-      "cooking_average" : {"type": "float"},
-      "gaming_items_number" : {"type": "int"},
-      "gaming_average" : {"type": "float"}, 
-      "threshold" : {"type": "float"},
+      "shopping_items_number" : {"type": "number"},
+      "sport_items_number" : {"type": "number"},
+      "cooking_items_number" : {"type": "number"}, 
+      "gaming_items_number" : {"type": "number"},
+      "shopping_average" : {"type": "number"},
+      "sport_average" : {"type": "number"},
+      "cooking_average" : {"type": "number"},
+      "gaming_average" : {"type": "number"}, 
+      "threshold" : {"type": "number"},
       "evaluation": {
         "type": "string",
         "enum": ["balanced", "not balanced", ""]

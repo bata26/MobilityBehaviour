@@ -1,12 +1,12 @@
 {
-    "shopping_items_number" : 0,
-    "shopping_average" : 0.0,
-    "sport_items_number" : 0,
-    "sport_average" : 0.0,
-    "cooking_items_number" : 0, 
-    "cooking_average" : 0.0,
-    "gaming_items_number" : 0,
-    "gaming_average" : 0.0, 
-    "threshold" : 0.0,
-    "evaluation" : ""
+    "shopping_items_number": 10,
+    "sport_items_number": 10,
+    "cooking_items_number": 10,
+    "gaming_items_number": 10,
+    "shopping_average": 0.25,
+    "sport_average": 0.25,
+    "cooking_average": 0.25,
+    "gaming_average": 0.25,
+    "threshold": 50.0,
+    "evaluation": "balanced"
 }

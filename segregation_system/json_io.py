@@ -1,6 +1,6 @@
+import queue
 from flask import Flask, request
 from requests import post, exceptions
-import queue
 
 class JsonIO:
 
@@ -35,10 +35,10 @@ class JsonIO:
         self._received_json_queue.put(received_json)
 
     def send(self, ip, port, data):
-        connection_string = f'http://{ip}:{port}/json'
+        url = f'http://{ip}:{port}/senddata'
         response = None
         try:
-            response = post(connection_string, json=data, timeout=10.0)
+            response = post(url, json=data, timeout=10.0)
         except exceptions.RequestException:
             print("Endpoint system unreachable")
             return False

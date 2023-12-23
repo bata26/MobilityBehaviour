@@ -1,1 +1,11 @@
-{}
+{
+    "type": "object",
+    "properties": {
+      "_id": {"type": "string"},
+      "calendar": {"type": "string"},
+      "environment": {"type": "string"},
+      "label": {"type": "string"},
+      "feature": {"type": "array"}
+    },
+    "required": ["_id", "calendar", "environment", "label", "feature"]
+  }

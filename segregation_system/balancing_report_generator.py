@@ -1,6 +1,6 @@
 import os
 import json
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 from jsonschema import validate, ValidationError
 
 class BalancingReportGenerator:
@@ -10,8 +10,7 @@ class BalancingReportGenerator:
 
     def generate_chart(self, dataset):
 
-        items = ['shopping_items_number', 'sport_items_number', 'cooking_items_number',
-                 'gaming_items_number']
+        items = ['Shopping', 'Sport', 'Cooking', 'Gaming']
         values = [0,0,0,0]
 
         # prepare data to build the chart
@@ -32,16 +31,14 @@ class BalancingReportGenerator:
         total_activities = sum(values)
         threshold = 50.0
 
-        plt.grid(True)
-        # Plot the items number bar
-        plt.bar(items[0:3], values[0:3], width=0.4, align='center')
-        # Plot the average bar on top of the items number
-        plt.bar(items[4:7], values[4:7], width=0.4, align='center')
-        # Plot the threshold line
-        plt.axline((0.0, threshold),(0.0, threshold))
-        plt.xlabel('Activities')
-        plt.ylabel('Number of Occurrences')
-        plt.title('Histogram of Activities')
+        fig = go.Figure()
+
+        fig.add_trace(
+            go.Bar(
+                x=items,
+                y=values
+            ))
+        fig.add_hline(y=threshold)
 
         # save data just calculated in a dict
         info = dict()
@@ -56,9 +53,9 @@ class BalancingReportGenerator:
         info['threshold'] = threshold
 
         # save bar chart in a png image
-        chart_path = os.path.join(os.path.abspath('..'), 'data', 'balancing', 'balancing_chart.png')
+        chart_path = os.path.join(os.path.abspath('.'), 'data', 'balancing', 'balancing_chart.png')
         try:
-            plt.savefig(chart_path)
+            fig.write_image(chart_path)
         except Exception as e:
             print(e)
             print('Failed to save the balance chart')
@@ -71,7 +68,7 @@ class BalancingReportGenerator:
 
         # Handle human interaction
         print("Analize 'balancing_chart.png'")
-        print("Answer only 'balanced' or 'not balanced")
+        print("Answer only 'balanced' or 'not balanced'")
         evaluation = input('> ')
         if evaluation == 'balanced':
             info['evaluation'] = 'balanced'
@@ -79,10 +76,10 @@ class BalancingReportGenerator:
             info['evaluation'] = 'not balanced'
 
         # Save the report in a json file
-        report_path = os.path.join(os.path.abspath('..'), 'data', 'balancing',
+        report_path = os.path.join(os.path.abspath('.'), 'data', 'balancing',
                                    'balancing_report.json')
         try:
-            with open(report_path, "w", encoding='UTF-8') as file:
+            with open(report_path, "w") as file:
                 json.dump(info, file, indent=4)
         except Exception as e:
             print(e)
@@ -94,16 +91,16 @@ class BalancingReportGenerator:
 
     def evaluate_report(self):
 
-        report_path = os.path.join(os.path.abspath('..'), 'data', 'balancing',
+        report_path = os.path.join(os.path.abspath('.'), 'data', 'balancing',
                                    'balancing_report.json')
-        schema_path = os.path.join(os.path.abspath('..'), 'schemas', 'balancing_report_schema.json')
+        schema_path = os.path.join(os.path.abspath('.'), 'schemas', 'balancing_report_schema.json')
 
         # open chart and validate it
         try:
-            with open(report_path, encoding='UTF-8') as file:
+            with open(report_path) as file:
                 report = json.load(file)
 
-            with open(schema_path, encoding='UTF-8') as file:
+            with open(schema_path) as file:
                 report_schema = json.load(file)
 
             validate(report, report_schema)
