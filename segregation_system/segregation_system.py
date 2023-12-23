@@ -16,15 +16,15 @@ class SegregationSystem:
         self.segregation_system_config = None
 
     def import_config(self):
-        config_path = os.path.join(os.path.abspath('..'), 'data', 'segregation_system_config.json')
-        schema_path = os.path.join(os.path.abspath('..'), 'schemas',
+        config_path = os.path.join(os.path.abspath('.'), 'data', 'segregation_system_config.json')
+        schema_path = os.path.join(os.path.abspath('.'), 'schemas',
                                    'segregation_system_config_schema.json')
 
         try:
-            with open(config_path, encoding="UTF-8") as file:
+            with open(config_path) as file:
                 segregation_system_config = json.load(file)
 
-            with open(schema_path, encoding="UTF-8") as file:
+            with open(schema_path) as file:
                 segregation_system_config_schema = json.load(file)
 
             validate(segregation_system_config, segregation_system_config_schema)
@@ -42,9 +42,9 @@ class SegregationSystem:
         self.segregation_system_config = segregation_system_config
 
     def save_config(self):
-        config_path = os.path.join(os.path.abspath('..'), 'data', 'segregation_system_config.json')
+        config_path = os.path.join(os.path.abspath('.'), 'data', 'segregation_system_config.json')
         try:
-            with open(config_path, "w", encoding="UTF-8") as file:
+            with open(config_path, "w") as file:
                 json.dump(self.segregation_system_config, file, indent=4)
         except Exception as e:
             print(e)
@@ -54,19 +54,19 @@ class SegregationSystem:
 
     def run(self):
 
-        # start the listening server that will receive json messages
-        listener = Thread(target=JsonIO.get_instance().listener, args=("0.0.0.0", "5000"))
-        listener.setDaemon(True)
-        listener.start()
-
-        # import the configuration and initialize the PreparedSessionCollector
+        # import the configuration and initialize the prepared_session_collector
         self.import_config()
         collector = PreparedSessionStorage(self.segregation_system_config)
         collector.segregation_system_config = self.segregation_system_config
 
-        # set the testing mode
-        testing_mode = self.segregation_system_config['testing_mode']
-        print(f"Testing mode: {testing_mode}")
+        # Start the listening server that will receive json messages
+        # On MacOS port 5000 is used by AirPlay Receiver
+        segregation_system_ip = self.segregation_system_config['segregation_system_ip']
+        segregation_system_port = self.segregation_system_config['segregation_system_port']
+        listener = Thread(target=JsonIO.get_instance().listener,
+                          args=(segregation_system_ip, segregation_system_port))
+        listener.setDaemon(True)
+        listener.start()
 
         while True:
             stage = self.segregation_system_config['stage']
@@ -117,12 +117,34 @@ class SegregationSystem:
                     continue
 
                 elif response == -1:
-                    # Dataset not balanced, a new configuration is sent with the missing samples
-                    # Human interaction needed in this part
-                    continue
+                    sh = int(input("Enter how many shopping items are missing: "))
+                    sp = int(input("Enter how many sport items are missing: "))
+                    co = int(input("Enter how many cooking items are missing: "))
+                    ga = int(input("Enter how many gaming items are missing: "))
+                    request = dict(shopping=sh, sport=sp, cooking=co, gaming=ga)
+                    ip = self.segregation_system_config['preparation_system_ip']
+                    port = self.segregation_system_config['preparation_system_port']
+
+                    # Send the request for missing samples
+                    if JsonIO.get_instance().send(ip, port, request):
+                        print("Request successfully sent")
+
+                        # Back to store phase to receive missing samples
+                        self.segregation_system_config['stage'] = 'store'
+                        self.save_config()
+
+                    else:
+                        print("Failed to send the request")
+                        # If the request fails the balancing stage the system is
+                        # set back to the store stage and the system is turned off
+                        # for maintenance
+                        self.segregation_system_config['stage'] = 'store'
+                        self.save_config()
+                        print("Shutdown")
+                        sys.exit(0)
                 else:
                     # Handle return -2
-                    print("Some error occured, shutting down")
+                    print("Shutdown")
                     sys.exit(0)
 
             # ---------------- COVERAGE STAGE -----------------------
@@ -155,7 +177,7 @@ class SegregationSystem:
                     continue
                 else:
                     # Handle return -2
-                    print("Some error occured, shutting down")
+                    print("Shutdown")
                     sys.exit(0)
 
             # ---------------- LEARNING SETS STAGE -----------------------
@@ -165,10 +187,11 @@ class SegregationSystem:
                 dataset = collector.load_dataset()
                 learning_sets = learning.generate_learning_sets(dataset)
 
-                ip = self.segregation_system_config['development_system_ip']
-                port = self.segregation_system_config['development_system_port']
+                development_system_ip = self.segregation_system_config['development_system_ip']
+                development_system_port = self.segregation_system_config['development_system_port']
 
-                if JsonIO.get_instance().send(ip, port, learning_sets):
+                if JsonIO.get_instance().send(
+                    development_system_ip, development_system_port, learning_sets):
                     print("Learning sets successfully sent")
 
                     # The db is emptied in order to handle a new dataset

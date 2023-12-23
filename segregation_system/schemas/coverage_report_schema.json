@@ -1,12 +1,12 @@
 {
     "type": "object",
     "properties": {
-      "maximum_pressure_ts": {"type": "float"},
-      "minimum_pressure_ts": {"type": "float"},
-      "median_pressure_ts": {"type": "float"},
-      "mean_absolute_deviation_pressure_ts": {"type": "float"},
-      "activity_and_small_scatter": {"type": "float"},
-      "environment_and_small_scatter": {"type": "float"},
+      "maximum_pressure_ts": {"type": "array"},
+      "minimum_pressure_ts": {"type": "array"},
+      "median_pressure_ts": {"type": "array"},
+      "mean_absolute_deviation_pressure_ts": {"type": "array"},
+      "activity_and_small_scatter": {"type": "array"},
+      "environment_and_small_scatter": {"type": "array"},
       "evaluation": {
         "type": "string",
         "enum": ["ok", "not ok", ""]

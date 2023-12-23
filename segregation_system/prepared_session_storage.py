@@ -11,7 +11,7 @@ class PreparedSessionStorage:
         self.prepared_session_counter = 0
 
         db_name = config['db_name']
-        db_path = os.path.join(os.path.abspath('..'), 'data', db_name)
+        db_path = os.path.join(os.path.abspath('.'), 'data', db_name)
         if not os.path.exists(db_path):
             print("Sqlite db doesn't exist")
             sys.exit(1)
@@ -35,10 +35,10 @@ class PreparedSessionStorage:
             return False
 
     def validate_prepared_session(self, prepared_session):
-        schema_path = os.path.join(os.path.abspath('..'), 'schemas', 'prepared_session_schema.json')
+        schema_path = os.path.join(os.path.abspath('.'), 'schemas', 'prepared_session_schema.json')
         try:
 
-            with open(schema_path, encoding="UTF-8") as file:
+            with open(schema_path) as file:
                 prepared_session_schema = json.load(file)
 
             validate(prepared_session, prepared_session_schema)
@@ -69,13 +69,24 @@ class PreparedSessionStorage:
             return None
 
         # save the dataset as a list of prepared sessions
-        features = []
         dataset = []
 
         for prepared_session in response:
-            features.append(json.loads(prepared_session[3:9]))
-            dataset.append(json.loads(prepared_session[0:2]))
-            dataset.append(json.loads(features))
+            prepared_list = list(prepared_session)
+            session = {}
+            session['_id'] = prepared_list[0]
+            session['calendar'] = prepared_list[1]
+            session['environment'] = prepared_list[2]
+            session['label'] = prepared_list[9]
+            session['features'] = {
+                'maximum_pressure_ts' : prepared_list[3],
+                'minimum_pressure_ts' : prepared_list[4],
+                'median_pressure_ts' : prepared_list[5],
+                'mean_absolute_deviation_pressure_ts' : prepared_list[6],
+                'activity_and_small_scatter' : prepared_list[7],
+                'environment_and_small_scatter' : prepared_list[8]
+            }
+            dataset.append(session)
         return dataset
 
     def store_prepared_session(self, prepared_session):
@@ -99,8 +110,7 @@ class PreparedSessionStorage:
         try:
             cursor.execute(info, (prepared_session['_id'], 
                                    prepared_session['calendar'],
-                                   prepared_session['environment'],
-                                   prepared_session['features']['label']))
+                                   prepared_session['environment']))
 
             cursor.execute(features, prepared_session['_id'],
                            prepared_session['features']['maximum_pressure_ts'],

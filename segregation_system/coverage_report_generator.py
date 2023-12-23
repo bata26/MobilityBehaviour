@@ -20,22 +20,15 @@ class CoverageReportGenerator:
 
         # prepare data to build the chart
         for prepared_session in dataset:
-            for features_info in prepared_session['features']:
-                if features_info == 'maximum_pressure_ts':
-                    maximum_pressure_ts.append(features_info['maximum_pressure_ts'])
-                elif features_info == 'minimum_pressure_ts':
-                    minimum_pressure_ts.append(features_info['minimum_pressure_ts'])
-                elif features_info == 'median_pressure_ts':
-                    median_pressure_ts.append(features_info['median_pressure_ts'])
-                elif features_info == 'mean_absolute_deviation_pressure_ts':
-                    mean_absolute_deviation_pressure_ts.append(
-                        features_info['mean_absolute_deviation_pressure_ts'])
-                elif features_info == 'activity_and_small_scatter':
-                    activity_and_small_scatter.append(
-                        features_info['activity_and_small_scatter'])
-                elif features_info == 'environment_and_small_scatter':
-                    environment_and_small_scatter.append(
-                        features_info['environment_and_small_scatter'])
+            maximum_pressure_ts.append(prepared_session['feature']['maximum_pressure_ts'])
+            minimum_pressure_ts.append(prepared_session['feature']['minimum_pressure_ts'])
+            median_pressure_ts.append(prepared_session['feature']['median_pressure_ts'])
+            mean_absolute_deviation_pressure_ts.append(
+                prepared_session['feature']['mean_absolute_deviation_pressure_ts'])
+            activity_and_small_scatter.append(
+                prepared_session['feature']['activity_and_small_scatter'])
+            environment_and_small_scatter.append(
+                prepared_session['feature']['environment_and_small_scatter'])
 
         # Generate radar chart
         categories = ['maximum_pressure_ts','minimum_pressure_ts','median_pressure_ts',
@@ -46,7 +39,7 @@ class CoverageReportGenerator:
 
         # maximum_pressure_ts is used because every list has the same numbers
         # of elements
-        for i in maximum_pressure_ts:
+        for i in range(len(maximum_pressure_ts)):
             fig.add_trace(go.Scatterpolar(
             r=[maximum_pressure_ts[i], minimum_pressure_ts[i], median_pressure_ts[i],
                mean_absolute_deviation_pressure_ts[i], activity_and_small_scatter[i],
@@ -65,7 +58,15 @@ class CoverageReportGenerator:
             )
         
         chart_path = os.path.join(os.path.abspath('.'), 'data', 'coverage', 'coverage_chart.png')
-        fig.write_image(chart_path)
+        # save bar chart in a png image
+        try:
+            fig.write_image(chart_path)
+        except Exception as e:
+            print(e)
+            print('Failed to save the coverage chart')
+            return None
+
+        print('Coverage chart generated')
 
         # Get the info for the report
         info = dict()
@@ -91,10 +92,10 @@ class CoverageReportGenerator:
 
 
         # save a report with the evaluation that a human will make
-        report_path = os.path.join(os.path.abspath('..'), 'data', 'coverage'
+        report_path = os.path.join(os.path.abspath('.'), 'data', 'coverage',
                                    'coverage_report.json')
         try:
-            with open(report_path, "w", encoding='UTF-8') as file:
+            with open(report_path, "w") as file:
                 json.dump(info, file, indent=4)
         except Exception as e:
             print(e)
@@ -104,16 +105,16 @@ class CoverageReportGenerator:
 
     def evaluate_report(self):
 
-        report_path = os.path.join(os.path.abspath('..'), 'data', 'coverage'
+        report_path = os.path.join(os.path.abspath('.'), 'data', 'coverage',
                                    'coverage_report.json')
-        schema_path = os.path.join(os.path.abspath('..'), 'schemas', 'coverage_report_schema.json')
+        schema_path = os.path.join(os.path.abspath('.'), 'schemas', 'coverage_report_schema.json')
 
         # open the report file and validate it
         try:
-            with open(report_path, encoding='UTF-8') as file:
+            with open(report_path) as file:
                 report = json.load(file)
 
-            with open(schema_path, encoding='UTF-8') as file:
+            with open(schema_path) as file:
                 report_schema = json.load(file)
 
             validate(report, report_schema)
