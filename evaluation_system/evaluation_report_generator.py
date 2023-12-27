@@ -1,6 +1,5 @@
 import os
 import json
-from jsonschema import validate, ValidationError
 
 class EvaluationReportGenerator:
 
@@ -49,48 +48,3 @@ class EvaluationReportGenerator:
 
         print('Evaluation report generated')
         return info
-
-    def evaluate_report(self, info, max_errors_tolerated, max_consecutive_errors_tollerated):
-
-        report_path = os.path.join(os.path.abspath('.'), 'data',
-                                   'evaluation_report.json')
-        schema_path = os.path.join(os.path.abspath('.'), 'schemas', 'evaluation_report_schema.json')
-
-        # open json and validate it
-        try:
-            with open(report_path) as file:
-                report = json.load(file)
-
-            with open(schema_path) as file:
-                report_schema = json.load(file)
-
-            validate(report, report_schema)
-
-        except FileNotFoundError:
-            print('Failure to open evaluation_report.json')
-            return -2
-
-        except ValidationError:
-            print('Evaluation Report has invalid schema')
-            return -2
-
-        # Check if the configuration limit is exceeded
-
-        if info['total_errors'] < max_errors_tolerated and info['max_consecutive_errors'] < max_consecutive_errors_tollerated:
-            info['evaluation'] = 'approve'
-        else:
-            info['evaluation'] = 'disapprove'
-
-        # Read human evaluation
-        evaluation = report['evaluation']
-
-        if evaluation == 'approve':
-            print("Classifier approved")
-            return 0
-        elif evaluation == 'disapprove':
-            print("Classifier disapproved")
-            return -1
-
-        else:
-            print("Evaluation not done")
-            return -2
