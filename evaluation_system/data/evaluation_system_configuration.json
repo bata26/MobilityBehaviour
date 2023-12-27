@@ -1,0 +1,13 @@
+{
+    "stage": "",
+    "evaluation_system_ip": "0.0.0.0",
+    "evaluation_system_port": "6000",
+    "ingestion_system_ip": "",
+    "ingestion_system_port": "",
+    "production_system_ip": "",
+    "production_system_port": "",
+    "db_name": "evaluation.db",
+    "threshold": 20,
+    "max_number_of_tollerated_errors": 10,
+    "max_number_of_consecutive_tollerated_errors": 4
+}

@@ -1,0 +1,13 @@
+{
+    "type": "object",
+    "properties": {
+      "total_errors" : {"type": "number"},
+      "max_consecutive_errors" : {"type": "number"},
+      "accuracy" : {"type": "number"},
+      "evaluation": {
+        "type": "string",
+        "enum": ["approve", "disapprove", ""]
+      }
+    },
+    "required": ["total_errors", "max_consecutive_errors", "evaluation"]
+  }
