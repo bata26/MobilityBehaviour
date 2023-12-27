@@ -34,8 +34,8 @@ class JsonIO:
         # save received message into queue
         self._received_json_queue.put(received_json)
 
-    def send(self, ip, port, data):
-        url = f'http://{ip}:{port}/senddata'
+    def send(self, ip, port, endpoint, data):
+        url = f'http://{ip}:{port}/' + endpoint
         response = None
         try:
             response = post(url, json=data, timeout=10.0)

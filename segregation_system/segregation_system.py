@@ -125,8 +125,11 @@ class SegregationSystem:
                     ip = self.segregation_system_config['preparation_system_ip']
                     port = self.segregation_system_config['preparation_system_port']
 
+                    # ENDPOINT MANCANTE
+                    endpoint = 'prepared_session_endpoint'
+
                     # Send the request for missing samples
-                    if JsonIO.get_instance().send(ip, port, request):
+                    if JsonIO.get_instance().send(ip, port, endpoint, request):
                         print("Request successfully sent")
 
                         # Back to store phase to receive missing samples
@@ -189,9 +192,10 @@ class SegregationSystem:
 
                 development_system_ip = self.segregation_system_config['development_system_ip']
                 development_system_port = self.segregation_system_config['development_system_port']
+                endpoint = 'senddata'
 
                 if JsonIO.get_instance().send(
-                    development_system_ip, development_system_port, learning_sets):
+                    development_system_ip, development_system_port, endpoint, learning_sets):
                     print("Learning sets successfully sent")
 
                     # The db is emptied in order to handle a new dataset

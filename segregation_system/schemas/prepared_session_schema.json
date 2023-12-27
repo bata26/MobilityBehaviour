@@ -5,7 +5,7 @@
       "calendar": {"type": "string"},
       "environment": {"type": "string"},
       "label": {"type": "string"},
-      "feature": {"type": "array"}
+      "features": {"type": "array"}
     },
-    "required": ["_id", "calendar", "environment", "label", "feature"]
+    "required": ["_id", "calendar", "environment", "label", "features"]
   }

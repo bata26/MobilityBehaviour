@@ -20,15 +20,15 @@ class CoverageReportGenerator:
 
         # prepare data to build the chart
         for prepared_session in dataset:
-            maximum_pressure_ts.append(prepared_session['feature']['maximum_pressure_ts'])
-            minimum_pressure_ts.append(prepared_session['feature']['minimum_pressure_ts'])
-            median_pressure_ts.append(prepared_session['feature']['median_pressure_ts'])
+            maximum_pressure_ts.append(prepared_session['features']['maximum_pressure_ts'])
+            minimum_pressure_ts.append(prepared_session['features']['minimum_pressure_ts'])
+            median_pressure_ts.append(prepared_session['features']['median_pressure_ts'])
             mean_absolute_deviation_pressure_ts.append(
-                prepared_session['feature']['mean_absolute_deviation_pressure_ts'])
+                prepared_session['features']['mean_absolute_deviation_pressure_ts'])
             activity_and_small_scatter.append(
-                prepared_session['feature']['activity_and_small_scatter'])
+                prepared_session['features']['activity_and_small_scatter'])
             environment_and_small_scatter.append(
-                prepared_session['feature']['environment_and_small_scatter'])
+                prepared_session['features']['environment_and_small_scatter'])
 
         # Generate radar chart
         categories = ['maximum_pressure_ts','minimum_pressure_ts','median_pressure_ts',
