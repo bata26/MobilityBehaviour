@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "label": {
+      "type": "string",
+      "enum": ["anomalous", "regular"]
+    },
+    "uuid": {
+      "type": "string"
+    }
+  },
+  "required": ["label", "uuid"]
+}

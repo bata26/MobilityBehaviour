@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "environment": {
+      "type": "string",
+      "enum": ["slippery", "plain", "slope", "house", "track"]
+    },
+    "uuid": {
+      "type": "string"
+    }
+  },
+  "required": ["environment", "uuid"]
+}

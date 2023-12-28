@@ -1,4 +1,4 @@
-# MOBILITY BEHAVIOUR MONITORING
+# MOBILITY BEHAVIOUR evaluation
 Github repo for the Software Systems Engineering at Computer Engineering course at Unipi. Accademic year 23/24.
 
 ### Dependencies installation

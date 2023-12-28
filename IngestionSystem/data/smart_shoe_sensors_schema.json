@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "time_series": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "uuid": {
+      "type": "string"
+    }
+  },
+  "required": ["time_series", "uuid"]
+}
