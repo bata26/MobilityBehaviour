@@ -1,0 +1,11 @@
+{
+    "starting-mode": "waiting",
+    "default-iterations-number": 30,
+    "validation-threshold" : 0.6,
+    "test-threshold" : 0.7,
+    "hidden-neurons": 5,
+    "ongoing-validation": false,
+    "flow" : {
+        "learning-plot-result" : true
+    }
+}
