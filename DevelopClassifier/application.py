@@ -1,11 +1,10 @@
-from pandas import read_csv
-from flask import Flask, request, send_file, Response
-from flask_restful import Resource, Api
+from controller.development_system import DevelopmentSystem
+from dotenv import load_dotenv
 
-app = Flask(__name__)
-api = Api(app)
-
-
+#app = Flask(__name__)
+#api = Api(app)
+load_dotenv()
+"""
 class HelloWorld(Resource):
     def get(self):
         return Response()
@@ -28,6 +27,9 @@ def test():
 
 api.add_resource(HelloWorld, '/')
 api.add_resource(Multi, '/multi/<int:num>')
-
+"""
 if __name__ == '__main__':
-    app.run(debug=True)
+    print("CIAO SONO NEL MAIL")
+    DevelopmentSystem().run()
+    print("run done")
+    #app.run(host="0.0.0.0" ,port=6000, debug=True)

@@ -1,0 +1,62 @@
+[
+    {
+        "uuid": "NN0",
+        "train_error": 1.0,
+        "validation_error": 1.0,
+        "layers": 1,
+        "neurons": 128,
+        "hidden_layers_structure": [
+            128
+        ],
+        "error_difference": 0.0,
+        "overfitting_threshold": 0.25
+    },
+    {
+        "uuid": "NN1",
+        "train_error": 1.0,
+        "validation_error": 1.0,
+        "layers": 1,
+        "neurons": 64,
+        "hidden_layers_structure": [
+            64
+        ],
+        "error_difference": 0.0,
+        "overfitting_threshold": 0.25
+    },
+    {
+        "uuid": "NN2",
+        "train_error": 1.0,
+        "validation_error": 1.0,
+        "layers": 1,
+        "neurons": 32,
+        "hidden_layers_structure": [
+            32
+        ],
+        "error_difference": 0.0,
+        "overfitting_threshold": 0.25
+    },
+    {
+        "uuid": "NN3",
+        "train_error": 1.0,
+        "validation_error": 1.0,
+        "layers": 1,
+        "neurons": 16,
+        "hidden_layers_structure": [
+            16
+        ],
+        "error_difference": 0.0,
+        "overfitting_threshold": 0.25
+    },
+    {
+        "uuid": "NN4",
+        "train_error": 1.0,
+        "validation_error": 1.0,
+        "layers": 1,
+        "neurons": 8,
+        "hidden_layers_structure": [
+            8
+        ],
+        "error_difference": 0.0,
+        "overfitting_threshold": 0.25
+    }
+]

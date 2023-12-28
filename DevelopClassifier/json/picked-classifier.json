@@ -1,0 +1,12 @@
+{
+    "uuid": "NN0",
+    "train_error": 1.0,
+    "validation_error": 1.0,
+    "layers": 1,
+    "neurons": 128,
+    "hidden_layers_structure": [
+        128
+    ],
+    "error_difference": 0.0,
+    "overfitting_threshold": 0.25
+}

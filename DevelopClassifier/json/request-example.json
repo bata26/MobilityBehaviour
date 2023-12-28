@@ -1,0 +1,377 @@
+{
+  "train": {
+    "number_of_samples": 28,
+    "features": [
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      }
+    ]
+  },
+  "validation": {
+    "number_of_samples": 8,
+    "features": [
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      }
+    ]
+  },
+  "test": {
+    "number_of_samples": 4,
+    "features": [
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      },
+      {
+        "maximum_pressure_ts": 0.0,
+        "minimum_pressure_ts": 0.0,
+        "median_pressure_ts": 0.0,
+        "mean_absolute_deviation_pressure_ts": 0.0,
+        "activity_and_small_scatter": 0.0,
+        "environment_and_small_scatter": 0.0,
+        "label": 0.0
+      }
+    ]
+  }
+}
