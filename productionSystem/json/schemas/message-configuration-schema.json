@@ -1,0 +1,56 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "src": {
+            "type" : "object",
+            "properties": {
+                "ip" : {
+                    "type" : "string"
+                },
+                "port" : {
+                    "type" : "integer"
+                }
+            },
+            "required": ["port" , "ip"]
+        },
+        "evaluation-system": {
+            "type" : "object",
+            "properties": {
+                "ip" : {
+                    "type" : "string"
+                },
+                "port" : {
+                    "type" : "integer"
+                }
+            },
+            "required": ["port" , "ip"]
+        },
+        "client-system": {
+            "type" : "object",
+            "properties": {
+                "ip" : {
+                    "type" : "string"
+                },
+                "port" : {
+                    "type" : "integer"
+                }
+            },
+            "required": ["port" , "ip"]
+        },
+        "messaging-system": {
+            "type" : "object",
+            "properties": {
+                "ip" : {
+                    "type" : "string"
+                },
+                "port" : {
+                    "type" : "integer"
+                }
+            },
+            "required": ["port" , "ip"]        
+        }
+    },
+    "required" : ["src" , "evaluation-system" , "client-system" , "messaging-system"]
+
+}
