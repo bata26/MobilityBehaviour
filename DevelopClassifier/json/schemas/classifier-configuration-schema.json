@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "iterations-number": {
+      "type": "integer"
+    },
+    "variation-step": {
+      "type": "integer"
+    },
+    "overfitting-threshold": {
+      "type": "number"
+    },
+    "validation-tolerance": {
+      "type": "number"
+    },
+    "hidden-layer-size-range": {
+      "type": "array",
+      "items": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "hidden-neuron-per-layer-range": {
+        "type": "array",
+        "items": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "integer"
+          }
+        ]
+      }
+  },
+  "required": ["iterations-number","variation-step","overfitting-threshold","validation-tolerance","hidden-layer-size-range","hidden-neuron-per-layer-range"]
+}

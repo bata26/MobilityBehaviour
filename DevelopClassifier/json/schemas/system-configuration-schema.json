@@ -1,0 +1,17 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "starting-mode" : {
+            "type" : "string"
+        },
+        "ongoing-validation" : {
+            "type" : "boolean"
+        },
+        "stage" : {
+            "type" : "string"
+        }
+    },
+    "required" : [ "starting-mode","ongoing-validation","stage"]
+
+}
