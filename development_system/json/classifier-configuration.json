@@ -1,0 +1,14 @@
+{
+    "iterations-number": 5,
+    "hidden-layer-size-range": [
+        1,
+        6
+    ],
+    "hidden-neuron-per-layer-range": [
+        4,
+        128
+    ],
+    "variation-step": 1,
+    "overfitting-threshold": 0.25,
+    "validation-tolerance": 0.3
+}

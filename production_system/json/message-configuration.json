@@ -1,0 +1,18 @@
+{
+    "src" : {
+        "ip" : "0.0.0.0",
+        "port" : 6001
+    },
+    "evaluation-system":{
+        "ip" : "172.23.0.0",
+        "port" : 6000
+    },
+    "client-system":{
+        "ip" : "172.23.0.0",
+        "port" : 6000
+    },
+    "messaging-system":{
+        "ip" : "172.23.0.0",
+        "port" : 6000
+    }
+}
