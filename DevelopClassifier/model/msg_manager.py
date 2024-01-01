@@ -1,3 +1,4 @@
+import os
 import queue
 import logging
 from dotenv import load_dotenv
@@ -5,7 +6,8 @@ from threading import Thread
 
 from model.msg_configuration import MessageConfiguration
 from flask import Flask, request
-from requests import post, exceptions
+import requests
+
 
 
 log = logging.getLogger('werkzeug')
@@ -42,6 +44,22 @@ class MessageManager:
     def send_to_main(self , dataset):
         self._queue.put(dataset, block=True)
         print('New Dataset received')
+
+    def send_classifier(self , uuid):
+        url = f"http://{self._configuration.host_dest_ip}:{self._configuration.host_dest_port}/deploy"
+        file_path = os.getenv("CLASSIFIER_DIRECTORY_PATH") + uuid + ".joblib"
+        file = {'file': open(file_path,'rb')}
+
+        try:
+            r = requests.post(url, files=file , timeout=3)
+            if r.status_code == 200:
+                print("[INFO] Correctly deployed classifier")
+            else:
+                print("[ERROR] Impossible to deploy classifier")
+                raise Exception("Impossible to deploy classifier")
+        except TimeoutError:
+            print("[ERROR] Timeout")
+            raise TimeoutError
 
 app = MessageManager.get_instance().get_app()
 
