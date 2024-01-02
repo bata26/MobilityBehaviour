@@ -1,7 +1,4 @@
-import plotly.express as px
 import plotly.graph_objects as go
-import pandas as pd
-
 class LearningReport:
 
     def __init__(self, losses):

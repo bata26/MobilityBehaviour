@@ -10,4 +10,3 @@ def test_validate_schemas_with_exception():
     print("[TEST] Validate json files with wrong json file")
     with pytest.raises(ValidationError):
         JsonValidator.validate_schemas()
-

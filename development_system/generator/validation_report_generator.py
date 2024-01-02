@@ -1,7 +1,5 @@
 import os
-
-from model.report import Report
-from utils.json_reader import JsonReader
+from development_system.model.report import Report
 
 class ValidationReportGenerator:
 

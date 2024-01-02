@@ -1,15 +1,11 @@
 import os
-import math 
+import math
+from development_system.model.classifier import Classifier
+from development_system.model.classifier_configuration import ClassifierConfiguration
+from development_system.model.dataset import Dataset
+from development_system.utils.json_reader import JsonReader
+from development_system.generator.learning_report_generator import LearningReportGenerator
 
-from model.classifier import Classifier
-from model.classifier_configuration import ClassifierConfiguration
-from model.dataset import Dataset
-from utils.json_reader import JsonReader
-
-"""
-Class which manages all the training effective operations, in order:
-- calculate average hyperparameters
-"""
 class TrainingManager:
 
     def __init__(self):
@@ -46,3 +42,6 @@ class TrainingManager:
         )
     def get_classifier_losses(self):
         return self._classifier.get_losses()
+
+    def generate_learning_report(self):
+        LearningReportGenerator(self.get_classifier_losses())

@@ -1,7 +1,8 @@
-import pandas as pd
-
 class Dataset:
-    _instance = None
+    _instance = {}
+
+    def __init__(self):
+        pass
 
     @staticmethod
     def set_data(data):

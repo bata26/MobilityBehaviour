@@ -5,13 +5,14 @@ import joblib
 
 from sklearn.neural_network import MLPClassifier
 from sklearn.exceptions import ConvergenceWarning, DataConversionWarning
-from utils.json_reader import JsonReader
+from development_system.utils.json_reader import JsonReader
+from development_system.model.classifier_configuration import ClassifierConfiguration
 
 class Classifier:
 
     def __init__(self):
         self._classifier = MLPClassifier()
-        self._configuration = None
+        self._configuration = ClassifierConfiguration()
 
         # remove the training warnings
         warnings.filterwarnings("ignore", category=ConvergenceWarning)

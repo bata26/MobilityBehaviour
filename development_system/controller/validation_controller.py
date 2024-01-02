@@ -1,6 +1,6 @@
-from model.validation_manager import ValidationManager
+from development_system.model.validation_manager import ValidationManager
 class ValidationController:
-    
+
     def __init__(self):
         print("[INFO] Set Hyperparameters")
         self._manager = ValidationManager()

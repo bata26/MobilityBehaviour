@@ -1,5 +1,4 @@
-from model.training_manager import TrainingManager
-from controller.generator.learning_report_generator import LearningReportGenerator
+from development_system.model.training_manager import TrainingManager
 
 class TrainingController:
     def __init__(self):
@@ -15,4 +14,4 @@ class TrainingController:
         print("[INFO] Ended training")
 
     def generate_learning_report(self):
-        LearningReportGenerator(self._manager.get_classifier_losses())
+        self._manager.generate_learning_report()

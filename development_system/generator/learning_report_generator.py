@@ -1,4 +1,4 @@
-from model.learning_report import LearningReport
+from development_system.model.learning_report import LearningReport
 class LearningReportGenerator():
 
     def __init__(self, losses):

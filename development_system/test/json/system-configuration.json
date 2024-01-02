@@ -1,5 +1,5 @@
 {
     "starting-mode": "waiting",
     "ongoing-validation": false,
-    "stagesss": "waiting"
+    "stages": "set_avg_hyp"
 }

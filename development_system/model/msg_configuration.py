@@ -3,7 +3,7 @@ import os
 from utils.json_reader import JsonReader
 
 class MessageConfiguration:
-    
+
     def __init__(self):
         print("STO PER LEGGERE IL FILE : " , os.getenv("MESSAGE_CONFIG_FILE_PATH"))
         read_result, file_content = JsonReader.read_json_file(os.getenv("MESSAGE_CONFIG_FILE_PATH"))

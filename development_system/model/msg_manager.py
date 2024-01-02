@@ -1,14 +1,12 @@
 import os
 import queue
 import logging
-from dotenv import load_dotenv
 from threading import Thread
-
-from model.msg_configuration import MessageConfiguration
+from dotenv import load_dotenv
 from flask import Flask, request
 import requests
 
-
+from model.msg_configuration import MessageConfiguration
 
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)

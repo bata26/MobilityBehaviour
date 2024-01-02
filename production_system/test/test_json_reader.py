@@ -4,7 +4,7 @@ import os
 import tempfile
 import json
 from dotenv import load_dotenv
-sys.path.insert(0, r'../../development_system')
+sys.path.insert(0, r'../../production_system')
 from utils.json_reader import JsonReader
 load_dotenv()
 

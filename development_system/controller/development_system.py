@@ -1,18 +1,15 @@
 from threading import Thread
-import os
 import sys
 from jsonschema import ValidationError
+from .test_controller import TestController
+from development_system.model.json_validator import JsonValidator
+from development_system.model.msg_manager import MessageManager
+from development_system.model.system_configuration import SystemConfiguration
+from development_system.controller.training_controller import TrainingController
+from development_system.controller.validation_controller import ValidationController
+from development_system.model.dataset import Dataset
 
-from model.msg_manager import MessageManager
-from model.system_configuration import SystemConfiguration
-from model.classifier import Classifier
-from controller.training_controller import TrainingController
-from controller.validation_controller import ValidationController
-from model.dataset import Dataset
-from model.json_validator import JsonValidator
-from controller.test_controller import TestController
-
-STAGES = ["waiting" , "set_avg_hyp" , "set_nr_iter", "train" , "set_hyp" ,"gen_lrng_rep" , "gen_vld_rep" , "gen_tst_rep" , "cnfg_sent" , "clsfr_sent", "ask_cnfg", "snd_clsfr"]
+STAGES = ["waiting" , "set_avg_hyp" , "set_nr_iter", "train", "set_hyp" ,"gen_lrng_rep" , "gen_vld_rep" , "gen_tst_rep" , "cnfg_sent" , "clsfr_sent", "ask_cnfg", "snd_clsfr"]
 
 class DevelopmentSystem:
     def __init__(self):
@@ -116,5 +113,5 @@ class DevelopmentSystem:
                     MessageManager.get_instance().send_classifier(uuid)
                     self._update_stage("waiting")
                 except Exception as e:
-                    print("[ERROR] Error : " , str(e))
+                    print("[ERROR] Error : ", str(e))
                     sys.exit(1)

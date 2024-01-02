@@ -1,11 +1,8 @@
-import os
-
 from utils.json_reader import JsonReader
 import pandas as pd
 class Report:
 
     def __init__(self, data):
-        print("[DEBUG] DATA : " , data)
         self._data = data
 
     def generate_csv(self, file_path):

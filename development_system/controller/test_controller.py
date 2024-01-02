@@ -1,5 +1,4 @@
-from model.classifier import Classifier
-from model.test_manager import TestManager
+from development_system.model.test_manager import TestManager
 
 class TestController:
 

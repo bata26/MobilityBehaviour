@@ -1,6 +1,3 @@
-import os
-from utils.json_reader import JsonReader
-
 class ClassifierConfiguration:
 
     def __init__(self, iterations = 0, hidden_layer_sizes=[]):

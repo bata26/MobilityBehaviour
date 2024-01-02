@@ -3,11 +3,11 @@ import math
 from itertools import product
 from operator import itemgetter
 
-from model.classifier import Classifier
-from model.classifier_configuration import ClassifierConfiguration
-from model.dataset import Dataset
-from utils.json_reader import JsonReader
-from controller.generator.validation_report_generator import ValidationReportGenerator
+from development_system.model.classifier import Classifier
+from development_system.model.classifier_configuration import ClassifierConfiguration
+from development_system.utils.json_reader import JsonReader
+from development_system.model.dataset import Dataset
+from development_system.generator.validation_report_generator import ValidationReportGenerator
 
 class ValidationManager:
 
@@ -89,7 +89,6 @@ class ValidationManager:
                 self._best_classifiers.pop(5)
         print("[DEBUG] BEST 5 CLASS : " , self._best_classifiers)
 
-    #def start_validation(self):
     def evaluate_validation_result(self):
         report_generator = ValidationReportGenerator(self._best_classifiers)
         report_generator.generate_report()
@@ -101,7 +100,7 @@ class ValidationManager:
                 os.remove(os.getenv("CLASSIFIER_DIRECTORY_PATH") + classifier)
 
     def pick_classifier(self, uuid):
-        read_result , file_content = JsonReader.read_json_file(os.getenv("BEST_CLASSIFIER_FILE_PATH"))
+        read_result, file_content = JsonReader.read_json_file(os.getenv("BEST_CLASSIFIER_FILE_PATH"))
         if not read_result:
             return
 
