@@ -7,5 +7,5 @@
   "production_window": 20,
   "evaluation_window": 20,
   "missing_samples_threshold": 1,
-  "database_path":"mobility.db"
+  "db_name":"mobility.db"
 }

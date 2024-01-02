@@ -3,8 +3,10 @@
   "properties": {
     "time_series": {
       "type": "array",
+      "minItems": 0,
+      "maxItems": 1236,
       "items": {
-        "type": "number"
+      "type": "number"
       }
     },
     "uuid": {

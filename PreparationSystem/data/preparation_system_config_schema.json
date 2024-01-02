@@ -17,97 +17,43 @@
     "production_system_port": {
       "type": "integer"
     },
-    "max_eeg": {
+    "max_value": {
       "type": "integer"
     },
-    "min_eeg": {
+    "min_value": {
       "type": "integer"
     },
     "features": {
       "type": "object",
       "properties": {
-        "delta_wave": {
-          "type": "object",
-          "properties": {
-            "start_frequency": {
-              "type": "number"
-            },
-            "end_frequency": {
-              "type": "integer"
-            }
-          },
-          "required": [
-            "start_frequency",
-            "end_frequency"
-          ]
+        "maximum_pressure_ts": {
+          "type": "number"
         },
-        "theta_wave": {
-          "type": "object",
-          "properties": {
-            "start_frequency": {
-              "type": "integer"
-            },
-            "end_frequency": {
-              "type": "integer"
-            }
-          },
-          "required": [
-            "start_frequency",
-            "end_frequency"
-          ]
+        "minimum_pressure_ts": {
+          "type": "number"
         },
-        "alpha_wave": {
-          "type": "object",
-          "properties": {
-            "start_frequency": {
-              "type": "integer"
-            },
-            "end_frequency": {
-              "type": "integer"
-            }
-          },
-          "required": [
-            "start_frequency",
-            "end_frequency"
-          ]
+        "median_pressure_ts": {
+          "type": "number"
         },
-        "beta_wave": {
-          "type": "object",
-          "properties": {
-            "start_frequency": {
-              "type": "integer"
-            },
-            "end_frequency": {
-              "type": "integer"
-            }
-          },
-          "required": [
-            "start_frequency",
-            "end_frequency"
-          ]
+        "mean_absolute_deviation_pressure_ts": {
+          "type": "number"
         },
-        "environment": {
-          "type": "object",
-          "properties": {
-            "indoor": {
-              "type": "integer"
-            },
-            "outdoor": {
-              "type": "integer"
-            }
-          },
-          "required": [
-            "indoor",
-            "outdoor"
-          ]
+        "activity_and_small_scatter": {
+          "type": "number"
+        },
+        "environment_and_small_scatter": {
+          "type": "number"
         }
       },
       "required": [
-        "delta_wave",
-        "theta_wave",
-        "alpha_wave",
-        "beta_wave",
-        "environment"
+        "maximum_pressure_ts",
+        "minimum_pressure_ts",
+        "median_pressure_ts",
+        "mean_absolute_deviation_pressure_ts",
+        "activity_and_small_scatter",
+        "environment_and_small_scatter",
+        "max_value",
+        "min_value"
       ]
     }
   },
@@ -117,8 +63,6 @@
     "segregation_system_port",
     "production_system_ip",
     "production_system_port",
-    "max_eeg",
-    "min_eeg",
     "features"
   ]
 }

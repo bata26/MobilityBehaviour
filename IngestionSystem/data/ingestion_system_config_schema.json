@@ -26,7 +26,7 @@
     "missing_samples_threshold": {
       "type": "integer"
     },
-    "database_path": {
+    "db_name": {
       "type": "string"
     }
   },
@@ -39,5 +39,5 @@
     "production_window",
     "evaluation_window",
     "missing_samples_threshold",
-    "database_path"]
+    "db_name"]
 }

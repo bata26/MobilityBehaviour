@@ -9,5 +9,5 @@
       "type": "string"
     }
   },
-  "required": ["activity", "uuid"]
+  "required": ["calendar", "uuid"]
 }

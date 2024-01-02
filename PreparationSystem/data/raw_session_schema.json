@@ -1,5 +1,4 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
     "uuid": {
@@ -7,29 +6,24 @@
     },
     "calendar": {
       "type": "string",
-      "enum": ["sport", "shopping", "home", "working"]
+      "enum": ["sport", "shopping", "cooking", "gaming"]
     },
-    "command_thought": {
+    "pressure_detected": {
       "type": "string",
-      "enum": ["move", "stop", "left", "right", "None"]
+      "enum": ["regular", "anomalous"]
     },
     "environment": {
       "type": "string",
-      "enum": ["indoor", "outdoor"]
+      "enum": ["slippery", "plain", "slope", "house", "track"]
     },
-    "headset": {
+    "time_series": {
       "type": "array",
-      "minItems": 22,
-      "maxItems": 22,
+      "minItems": 0,
+      "maxItems": 1236,
       "items": {
-        "type": "array",
-        "minItems": 0,
-        "maxItems": 1375,
-        "items": {
-          "type": "number"
-        }
+      "type": "number"
       }
     }
   },
-  "required": ["uuid", "calendar", "environment", "headset", "command_thought"]
+  "required": ["uuid", "calendar", "environment", "time_series", "pressure_detected"]
 }

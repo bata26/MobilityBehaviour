@@ -18,8 +18,7 @@ class IngestionSystemConfiguration:
         :param json_schema_path:  path to the json schema of the configuration file
         """
         # Open the configuration file
-        with open(os.path.join(utility.data_folder, json_configuration_path),
-                  "r", encoding="UTF-8") as file:
+        with open(json_configuration_path, "r", encoding="UTF-8") as file:
             # Load JSON configuration
             json_conf = json.load(file)
             # Validate configuration

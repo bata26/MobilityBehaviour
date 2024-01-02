@@ -11,6 +11,6 @@ class Environment:
 
 
 class Calendar:
-    def __init__(self, uuid: str, activity: str):
+    def __init__(self, uuid: str, calendar: str):
         self.uuid = uuid
-        self.activity = activity
+        self.calendar = calendar

@@ -1,25 +1,19 @@
-import typing
-from models.pressure_detected import PressureDetected
-from models.record_data import ShoeSensor, Calendar, Environment
 from src.raw_sessions_store import RawSessionsStore
-from jsonschema import validate, ValidationError
-from threading import Thread
 from src.json_io import JsonIO
 import logging
 from src.raw_session_integrity import RawSessionIntegrity
-from IngestionSystem.utility.json_handler import load_json, validate_json_file_file
 from models.ingestion_system_configuration import IngestionSystemConfiguration
 
 class RawSession:
     def __init__(self, uuid: str,
-                 label: typing.Optional[PressureDetected],
-                 time_series: typing.List[ShoeSensor],
-                 activity: Calendar,
-                 environment: Environment):
+                 label: str,
+                 time_series: list,
+                 calendar: str,
+                 environment: str):
         self.uuid = uuid
-        self.pressure_detected_label = label
+        self.pressure_detected = label
         self.time_series = time_series
-        self.activity = activity
+        self.calendar = calendar
         self.environment = environment
 
     def receive_session(self) -> None:
@@ -92,15 +86,15 @@ class RawSession:
                                 logging.info(f'Raw Session {uuid} sent to the Preparation System', 0)
 
                             if evaluation:
-                                # Send Raw Session to the Preparation System
+                                # Send Raw Session to the Evaluation System
                                 evaluation_system_ip = config['evaluation_system_ip']
                                 evaluation_system_port = config['evaluation_system_port']
-                                label = {'uuid': raw_session['uuid'], 'label': raw_session['pressure_detected_label']}
+                                label = {'uuid': raw_session['uuid'], 'label': raw_session['pressure_detected']}
                                 sent_to_evaluation = JsonIO.get_instance().send(endpoint_ip=evaluation_system_ip,
                                                                                 endpoint_port=evaluation_system_port,
                                                                                 data=label)
                                 if sent_to_evaluation:
-                                    logging.info(f'Label "{raw_session["pressure_detected_label"]}" sent to the evaluation System', 1)
+                                    logging.info(f'Label "{raw_session["pressure_detected"]}" sent to the evaluation System', 1)
                                     sessions_to_evaluation += 1
                                     logging.trace(f'Labels to sent to the evaluation System: {sessions_to_evaluation}')
 
