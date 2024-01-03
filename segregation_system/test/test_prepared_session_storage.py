@@ -1,6 +1,4 @@
-import os
 import sys
-import json
 import pytest
 sys.path.insert(0, r'../../segregation_system')
 from src.prepared_session_storage import PreparedSessionStorage
