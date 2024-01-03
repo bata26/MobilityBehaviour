@@ -23,49 +23,74 @@ def test_session():
         }
     }
 
-def test_increment_session_counter():
-    config_path = os.path.join(os.path.abspath('.'), 'data', 'test_segregation_system_config.json')
-    collector = PreparedSessionStorage(config_path)
-    counter = collector.increment_session_counter()
-    assert counter == counter + 1
+@pytest.fixture
+def test_config():
+    return{
+        "stage": "store",
+        "segregation_system_ip": "0.0.0.0",
+        "segregation_system_port": "6000",
+        "development_system_ip": "10.8.0.2",
+        "development_system_port": "6000",
+        "preparation_system_ip": "10.8.0.6",
+        "preparation_system_port": "5000",
+        "db_name": "test_segregation.db",
+        "max_sessions": 350,
+        "train_set_size": 0.7,
+        "validation_set_size": 0.2,
+        "test_set_size": 0.1
+    }
 
-def test_check_max_sessions():
-    config_path = os.path.join(os.path.abspath('.'), 'data', 'test_segregation_system_config.json')
-    with open(config_path) as f:
-        config = json.load(f)
-    collector = PreparedSessionStorage(config_path)
+@pytest.fixture
+def test_schema():
+    return {
+    "type": "object",
+    "properties": {
+      "_id": {"type": "string"},
+      "calendar": {"type": "string"},
+      "environment": {"type": "string"},
+      "label": {"type": "string"},
+      "features": 
+      {
+        "type": "object",
+        "properties" : {
+          "maximum_pressure_ts": {"type": "number"},
+          "minimum_pressure_ts": {"type": "number"},
+          "median_pressure_ts": {"type": "number"},
+          "mean_absolute_deviation_pressure_ts": {"type": "number"},
+          "activity_and_small_scatter": {"type": "number"},
+          "environment_and_small_scatter": {"type": "number"}
+        }
+      }
+    },
+    "required": ["_id", "calendar", "environment", "label", "features"]
+  }
+
+def test_increment_session_counter(test_config):
+    collector = PreparedSessionStorage(test_config)
+    collector.increment_session_counter()
+    assert collector.prepared_session_counter == 1
+
+def test_check_max_sessions(test_config):
+    collector = PreparedSessionStorage(test_config)
     max_sessions = collector.segregation_system_config['max_sessions']
-    assert max_sessions == config['max_sessions']
+    assert max_sessions == test_config['max_sessions']
 
-def test_validate_prepared_session():
-    config_path = os.path.join(os.path.abspath('.'), 'data', 'test_segregation_system_config.json')
-    schema_path = os.path.join(os.path.abspath('..'), 'schemas', 'prepared_session_schema.json')
-    with open(schema_path) as f1:
-        schema = json.load(f1)
-    collector = PreparedSessionStorage(config_path)
-    result = collector.validate_prepared_session(test_session, schema)
+def test_validate_prepared_session(test_config, test_session):
+    collector = PreparedSessionStorage(test_config)
+    result = collector.validate_prepared_session(test_session)
     assert result == True
 
-def test_load_dataset():
-    config_path = os.path.join(os.path.abspath('.'), 'data', 'test_segregation_system_config.json')
-    with open(config_path) as f1:
-        config = json.load(f1)
-    collector = PreparedSessionStorage(config)
+def test_load_dataset(test_config):
+    collector = PreparedSessionStorage(test_config)
     result = collector.load_dataset()
-    assert len(result) == 40
+    assert len(result) == 0
 
-def test_store_prepared_session(test_session):
-    config_path = os.path.join(os.path.abspath('.'), 'data', 'test_segregation_system_config.json')
-    with open(config_path) as f1:
-        config = json.load(f1)
-    collector = PreparedSessionStorage(config)
+def test_store_prepared_session(test_session, test_config):
+    collector = PreparedSessionStorage(test_config)
     result = collector.store_prepared_session(test_session)
     assert result is True
 
-def test_empty_db():
-    config_path = os.path.join(os.path.abspath('.'), 'data', 'test_segregation_system_config.json')
-    with open(config_path) as f1:
-        config = json.load(f1)
-    collector = PreparedSessionStorage(config)
+def test_empty_db(test_config):
+    collector = PreparedSessionStorage(test_config)
     result = collector.empty_db()
     assert result is True

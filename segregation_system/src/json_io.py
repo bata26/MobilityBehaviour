@@ -2,6 +2,7 @@ import queue
 from flask import Flask, request
 from requests import post, exceptions
 
+
 class JsonIO:
 
     _instance = None

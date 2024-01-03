@@ -52,11 +52,11 @@ class CoverageReportGenerator:
             polar=dict(
                 radialaxis=dict(
                 visible=True,
-                range=[0, 3]
+                range=[0, 6]
                 )),
             showlegend=False
             )
-        
+
         chart_path = os.path.join(os.path.abspath('.'), 'data', 'coverage', 'coverage_chart.png')
         # save bar chart in a png image
         try:

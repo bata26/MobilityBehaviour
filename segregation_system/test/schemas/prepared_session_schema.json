@@ -1,0 +1,22 @@
+{
+    "type": "object",
+    "properties": {
+      "_id": {"type": "string"},
+      "calendar": {"type": "string"},
+      "environment": {"type": "string"},
+      "label": {"type": "string"},
+      "features": 
+      {
+        "type": "object",
+        "properties" : {
+          "maximum_pressure_ts": {"type": "number"},
+          "minimum_pressure_ts": {"type": "number"},
+          "median_pressure_ts": {"type": "number"},
+          "mean_absolute_deviation_pressure_ts": {"type": "number"},
+          "activity_and_small_scatter": {"type": "number"},
+          "environment_and_small_scatter": {"type": "number"}
+        }
+      }
+    },
+    "required": ["_id", "calendar", "environment", "label", "features"]
+  }
