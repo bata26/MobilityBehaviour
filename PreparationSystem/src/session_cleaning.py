@@ -66,7 +66,6 @@ class SessionCleaning:
         :return: True if the raw session is valid, False if it is not valid.
         """
         try:
-            print(raw_session)
             with open(os.path.join('data', 'raw_session_schema.json')) as f:
                 schema = json.load(f)
 

@@ -15,9 +15,7 @@ if __name__ == '__main__':
             "uuid":item[0],
             "time_series":item[1:]
         }
-        result.append(json)
-
-    print(result[2])   
+        result.append(json) 
     
     connection_string = f'http://127.0.0.1:4000/record'
     try:

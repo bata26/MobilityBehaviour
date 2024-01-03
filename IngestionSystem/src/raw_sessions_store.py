@@ -311,7 +311,6 @@ class RawSessionsStore:
                     ts_json = json.loads(ts)
                     #ts_data = list(ts_json.values())
                     raw_session['time_series'].append(ts_json)
-            print(raw_session)
             return raw_session
         
         except sqlite3.Error as e:

@@ -56,14 +56,12 @@ class IngestionSystem:
                 if self.last_uuid_received is not None:
                     if self.last_uuid_received == received_record['uuid']:
                         # Check on the current session
-                        print("DEBUG0")
                         session_complete = raw_sessions_store.is_session_complete(uuid=received_record['uuid'],
                                                                                   operative_mode=operative_mode,
                                                                                   last_missing_sample=False,
                                                                                   evaluation=self.evaluation)
                         uuid = received_record['uuid']
                     else:
-                        print("DEBUG1")
                         # Check on the previous session because of a missing sample
                         logging.warning(f'Raw Session {self.last_uuid_received} missing sample detected')
                         session_complete = raw_sessions_store.is_session_complete(uuid=self.last_uuid_received,

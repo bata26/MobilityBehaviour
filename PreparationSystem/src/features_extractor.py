@@ -19,7 +19,6 @@ class FeaturesExtractor:
         """
         max_pressure, min_pressure, median_pressure, mean_absolute_deviation = self.extract_shoes_sensors_features(raw_session['time_series'])
         self.prepare_session_development(raw_session, prepared_session, max_pressure, min_pressure, median_pressure, mean_absolute_deviation)
-        print (prepared_session)
 
     def extract_shoes_sensors_features(self, time_series: list):
         """
@@ -37,11 +36,6 @@ class FeaturesExtractor:
 
         mean_value = np.mean(time_series)
         mean_absolute_deviation = np.mean(np.abs(np.array(time_series) - mean_value))
-
-        print(max_pressure)
-        print(min_pressure)
-        print(median_pressure)
-        print(mean_absolute_deviation)
         
         return max_pressure, min_pressure, median_pressure, mean_absolute_deviation
 
