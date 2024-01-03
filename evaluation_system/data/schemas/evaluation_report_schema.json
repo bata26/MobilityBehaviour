@@ -1,0 +1,10 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+      "total_errors" : {"type": "number"},
+      "max_consecutive_errors" : {"type": "number"},
+      "accuracy" : {"type": "number"}
+    },
+    "required": ["total_errors", "max_consecutive_errors","accuracy" ]
+  }
