@@ -12,6 +12,6 @@ class ClassifyController:
 
     def classify(self):
         classify_raw_result = self._classifier.predict_label(self._prepared_session.to_dataset())
-        human_label = self.labels_int_to_human[str(classify_raw_result[0])]
-        self._prepared_session.add_human_output(human_label)
+        #human_label = self.labels_int_to_human[str(classify_raw_result[0])]
+        self._prepared_session.add_human_output(classify_raw_result[0])
         return self._prepared_session.to_json()

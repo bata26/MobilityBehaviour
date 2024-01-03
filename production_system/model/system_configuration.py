@@ -9,3 +9,7 @@ class SystemConfiguration:
         if not read_result:
             return
         self.evaluation_phase = file_content["evaluation-phase"]
+        self.classifier_deployed = file_content["classifier-deployed"]
+    
+    def update_classifier(self , value):
+        self.classifier_deployed = value

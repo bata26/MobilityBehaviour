@@ -1,3 +1,4 @@
 {
-    "evaluation-phase" : true
+    "evaluation-phase" : true,
+    "classifier-deployed": false
 }
