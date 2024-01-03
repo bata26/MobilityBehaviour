@@ -46,7 +46,6 @@ class PreparationSystem:
             # Get received raw session
             self.raw_session = JsonIO.get_instance().get_received_json()
             print('[+] Raw session received')
-            print(self.raw_session)
             # Check raw session validity
             if SessionCleaning.validate_raw_session(self.raw_session):
                 print('[+] Raw session is valid')
@@ -84,5 +83,5 @@ class PreparationSystem:
                                               self.configuration.production_system_port,
                                               self.prepared_session):
                     print(f'[+] Prepared session sent at {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
-                    exit(0)
+        exit(0)
 

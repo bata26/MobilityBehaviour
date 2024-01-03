@@ -16,7 +16,7 @@ if __name__ == "__main__":
     for uuid in id_list:
         # extract the uuid from the tuple result
         selected_uuid = uuid[0]
-        time.sleep(1)
+        time.sleep(6)
         for table in TABLES:
             request_body = {"uuid": selected_uuid}
             cursor.execute(f"SELECT * from {table} WHERE uuid = '{selected_uuid}'")

@@ -73,7 +73,10 @@ class JsonIO:
         """
 
         try:
-            connection_string = f'http://{endpoint_ip}:{endpoint_port}/json'
+            if dest_system == "preparation":
+                connection_string = f'http://{endpoint_ip}:{endpoint_port}/json'
+            elif dest_system == "evaluation":
+                connection_string = f'http://{endpoint_ip}:{endpoint_port}/expertLabels'
             response = post(url=connection_string, json=data)
         except exceptions.RequestException:
             logging.error(f'{connection_string} unreachable')
