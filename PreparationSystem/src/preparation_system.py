@@ -24,7 +24,7 @@ class PreparationSystem:
         try:
             self.configuration = PreparationSystemConfiguration(CONFIG_PATH, CONFIG_SCHEMA_PATH)
         except ValidationError:
-            logging.error('Error during the Ingestion System initialization phase')
+            logging.error('Error during the Preparation System initialization phase')
             exit(-1)
         
         print(f'[+] The configuration is valid, {self.configuration.operative_mode} mode')
@@ -69,7 +69,7 @@ class PreparationSystem:
             # Extract features and prepare session
             self.prepared_session = {}
             FeaturesExtractor().extract_features \
-                (self.raw_session, self.prepared_session, self.configuration.operative_mode)
+                (self.raw_session, self.prepared_session, self.configuration.features)
             print('[+] Features extracted and session prepared')
 
             # Send prepared session to the endpoint corresponding to the current operating mode

@@ -33,3 +33,4 @@ class PreparationSystemConfiguration:
             self.operative_mode = json_conf['operative_mode']
             self.max_value = int(json_conf['max_value'])
             self.min_value = int(json_conf['min_value'])
+            self.features = json_conf['features']

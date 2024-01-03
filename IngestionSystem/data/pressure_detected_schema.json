@@ -3,7 +3,7 @@
   "properties": {
     "pressure_detected": {
       "type": "string",
-      "enum": ["anomalous", "regular"]
+      "enum": ["Anomalous", "Regular"]
     },
     "uuid": {
       "type": "string"

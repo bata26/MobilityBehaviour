@@ -22,15 +22,71 @@
     },
     "min_value": {
       "type": "integer"
+    },
+    "features": {
+      "type": "object",
+      "properties": {
+        "environment": {
+          "type": "object",
+          "properties": {
+            "slippery": {
+              "type": "integer"
+            },
+            "plain": {
+              "type": "integer"
+            },
+            "slope": {
+              "type": "integer"
+            },
+            "house": {
+              "type": "integer"
+            },
+            "track": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "slippery",
+            "plain",
+            "slope",
+            "house",
+            "track"
+          ]
+        },
+        "calendar": {
+          "type": "object",
+          "properties": {
+            "shopping": {
+              "type": "integer"
+            },
+            "sport": {
+              "type": "integer"
+            },
+            "cooking": {
+              "type": "integer"
+            },
+            "gaming": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "shopping",
+            "sport",
+            "cooking",
+            "gaming"
+          ]
+        }        
+      }
     }
   },
   "required": [
-    "operative_mode",
-    "segregation_system_ip",
-    "segregation_system_port",
-    "production_system_ip",
-    "production_system_port",
-    "min_value",
-    "max_value"
+  "operative_mode",
+  "segregation_system_ip",
+  "segregation_system_port",
+  "production_system_ip",
+  "production_system_port",
+  "min_value",
+  "max_value",
+  "features"
   ]
 }
