@@ -1,0 +1,12 @@
+{
+    "shopping_items_number": 10,
+    "sport_items_number": 0,
+    "cooking_items_number": 0,
+    "gaming_items_number": 0,
+    "shopping_average": 1.0,
+    "sport_average": 0.0,
+    "cooking_average": 0.0,
+    "gaming_average": 0.0,
+    "threshold": 50.0,
+    "evaluation": "balanced"
+}
