@@ -1,9 +1,0 @@
-
-{
-    "type": "object",
-    "properties": {
-      "_id": {"type": "string"},
-      "label": {"type": "string"},
-    "required": ["_id",  "label"]
-  }
-}

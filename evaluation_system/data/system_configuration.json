@@ -1,0 +1,6 @@
+{
+    "db_name": "evaluation.db",
+    "sufficient_labels": 20,
+    "max_number_of_tolerated_errors": 10,
+    "max_number_of_consecutive_tolerated_errors": 4
+}

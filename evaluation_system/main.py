@@ -1,6 +1,8 @@
 import sys
-from evaluation_system import EvaluationSystem
+from controller.evaluatation_system import EvaluationSystem
+from dotenv import load_dotenv
 
+load_dotenv()
 if __name__ == '__main__':
 
     evaluation_system = EvaluationSystem()

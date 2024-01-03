@@ -1,0 +1,11 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "db_name": {"type": "string"},
+        "sufficient_labels": {"type": "number"},
+        "max_number_of_tolerated_errors": {"type": "number"},
+        "max_number_of_consecutive_tolerated_errors": {"type": "number"}
+    },
+    "required": ["db_name", "sufficient_labels", "max_number_of_tolerated_errors", "max_number_of_consecutive_tolerated_errors"]
+}
