@@ -57,7 +57,7 @@ class JsonIO:
 app = JsonIO.get_instance().get_app()
 
 
-@app.post('/json')
+@app.post('/preparedsession')
 def post_json():
     if request.json is None:
         return {'error': 'No JSON received'}, 500

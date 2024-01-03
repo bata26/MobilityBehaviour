@@ -116,7 +116,14 @@ class SegregationSystem:
                     self.save_config()
                     continue
 
+                # The system need a new reconfiguration
                 elif response == -1:
+                    self.segregation_system_config['stage'] = 'store'
+                    self.save_config()
+                    print("Reconfiguration needed")
+                    print("Shutdown")
+                    sys.exit(0)
+                    '''
                     sh = int(input("Enter how many shopping items are missing: "))
                     sp = int(input("Enter how many sport items are missing: "))
                     co = int(input("Enter how many cooking items are missing: "))
@@ -145,6 +152,7 @@ class SegregationSystem:
                         self.save_config()
                         print("Shutdown")
                         sys.exit(0)
+                    '''
                 else:
                     # Handle return -2
                     print("Shutdown")
@@ -171,7 +179,15 @@ class SegregationSystem:
                     self.segregation_system_config['stage'] = 'learning'
                     self.save_config()
                     continue
+
+                # The system need a new reconfiguration
                 elif response == -1:
+                    self.segregation_system_config['stage'] = 'store'
+                    self.save_config()
+                    print("Reconfiguration needed")
+                    print("Shutdown")
+                    sys.exit(0)
+                    '''
                     # When the endpoint is triggered i need a new dataset
                     # no request needed
                     request = None
@@ -201,6 +217,7 @@ class SegregationSystem:
                         self.save_config()
                         print("Shutdown")
                         sys.exit(0)
+                    '''
                 else:
                     # Handle return -2
                     print("Shutdown")
@@ -230,7 +247,6 @@ class SegregationSystem:
                 # and build a new dataset
                 self.segregation_system_config['stage'] = 'store'
                 self.save_config()
-
                 continue
 
             else:

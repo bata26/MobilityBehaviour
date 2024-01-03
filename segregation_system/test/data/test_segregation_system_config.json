@@ -6,8 +6,8 @@
     "development_system_port": "6000",
     "preparation_system_ip": "10.8.0.6",
     "preparation_system_port": "5000",
-    "db_name": "segregation.db",
-    "max_sessions": 400,
+    "db_name": "test_segregation.db",
+    "max_sessions": 350,
     "train_set_size": 0.7,
     "validation_set_size": 0.2,
     "test_set_size": 0.1

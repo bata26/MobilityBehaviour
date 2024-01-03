@@ -108,18 +108,18 @@ class PreparedSessionStorage:
         cursor = self._conn.cursor()
 
         try:
-            cursor.execute(info, (prepared_session['_id'], 
+            cursor.execute(info, (prepared_session['_id'],
                                    prepared_session['calendar'],
                                    prepared_session['environment']))
 
-            cursor.execute(features, prepared_session['_id'],
+            cursor.execute(features, (prepared_session['_id'],
                            prepared_session['features']['maximum_pressure_ts'],
                            prepared_session['features']['minimum_pressure_ts'],
                            prepared_session['features']['median_pressure_ts'],
                            prepared_session['features']['mean_absolute_deviation_pressure_ts'],
                            prepared_session['features']['activity_and_small_scatter'],
                            prepared_session['features']['environment_and_small_scatter'],
-                           prepared_session['features']['label'])
+                           prepared_session['label']))
 
             self._conn.commit()
         except sqlite3.Error as e:
@@ -131,11 +131,13 @@ class PreparedSessionStorage:
 
     def empty_db(self):
 
-        query = "DELETE FROM info AND DELETE FROM features"
+        info = "DELETE FROM info"
+        features = "DELETE FROM features"
         cursor = self._conn.cursor()
 
         try:
-            cursor.execute(query)
+            cursor.execute(info)
+            cursor.execute(features)
             self._conn.commit()
         except sqlite3.Error as e:
             print(f"[-] Sqlite Execution Error [{e}]")
