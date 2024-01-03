@@ -239,7 +239,7 @@ class SegregationSystem:
                     print("Learning sets successfully sent")
 
                     # The db is emptied in order to handle a new dataset
-                    #collector.empty_db()
+                    collector.empty_db()
                 else:
                     print("Failed to send learning sets")
 
