@@ -1,5 +1,5 @@
 import sys
-from segregation_system import SegregationSystem
+from src.segregation_system import SegregationSystem
 
 if __name__ == '__main__':
 
