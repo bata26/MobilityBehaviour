@@ -6,7 +6,7 @@ class LearningReport:
         self.y = losses
 
     def show_plot(self):
-        fig = go.Figure()
+        fig = go.Figure(layout_title_text="Accuracy error MSE")
         fig.add_trace(
             go.Scatter(
                 y=self.y,
