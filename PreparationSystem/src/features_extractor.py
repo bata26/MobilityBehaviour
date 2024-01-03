@@ -8,7 +8,7 @@ class FeaturesExtractor:
     Class that extracts features and prepares the session to be sent.
     """
 
-    def extract_features(self, features: dict, raw_session: dict, prepared_session: dict, operative_mode: str):
+    def extract_features(self, raw_session: dict, prepared_session: dict, operative_mode: str):
         """
         Extracts the relevant features from the session data.
         :param features: Dictionary of features to extract from pressure time series session data.
@@ -17,11 +17,9 @@ class FeaturesExtractor:
         :param operative_mode: Production or development mode.
         :return: None
         """
-        max_pressure, min_pressure, median_pressure, mean_absolute_deviation = self.extract_shoes_sensors_features(raw_session['time_series'], features)
-        if operative_mode == 'development':
-            self.prepare_session_development(raw_session, prepared_session, max_pressure, min_pressure, median_pressure, mean_absolute_deviation)
-        elif operative_mode == 'production':
-            self.prepare_session_production(raw_session, prepared_session, max_pressure, min_pressure, median_pressure, mean_absolute_deviation)
+        max_pressure, min_pressure, median_pressure, mean_absolute_deviation = self.extract_shoes_sensors_features(raw_session['time_series'])
+        self.prepare_session_development(raw_session, prepared_session, max_pressure, min_pressure, median_pressure, mean_absolute_deviation)
+        print (prepared_session)
 
     def extract_shoes_sensors_features(self, time_series: list):
         """
@@ -30,8 +28,7 @@ class FeaturesExtractor:
         :param features: Dictionary of features to extract from the pressure time series.
         :return: Lists of extracted features.
         """
-        max_pressure, min_pressure, median_pressure, mean_absolute_deviation  = None
-        
+
         max_pressure = max(time_series)
 
         min_pressure = min(time_series)
@@ -40,6 +37,11 @@ class FeaturesExtractor:
 
         mean_value = np.mean(time_series)
         mean_absolute_deviation = np.mean(np.abs(np.array(time_series) - mean_value))
+
+        print(max_pressure)
+        print(min_pressure)
+        print(median_pressure)
+        print(mean_absolute_deviation)
         
         return max_pressure, min_pressure, median_pressure, mean_absolute_deviation
 
@@ -57,15 +59,18 @@ class FeaturesExtractor:
         :param mean_absolute_deviation: MAD of the detected time series.
         :return: None
         """
-        prepared_session['uuid'] = raw_session['uuid']
+        prepared_session['_id'] = raw_session['uuid']
+        prepared_session['calendar'] = raw_session['calendar']
+        prepared_session['environment'] = raw_session['environment']
+        prepared_session['label'] = raw_session['pressure_detected']
         prepared_session['features'] = {}
         prepared_session['features']['maximum_pressure_ts'] = max_pressure
         prepared_session['features']['minimum_pressure_ts'] = min_pressure
         prepared_session['features']['median_pressure_ts'] = median_pressure
         prepared_session['features']['mean_absolute_deviation_pressure_ts'] = mean_absolute_deviation
-        prepared_session['features']['environment_and_small_scatter'] = raw_session['environment']
-        prepared_session['features']['activity_and_small_scatter'] = raw_session['calendar']
-        prepared_session['pressure_detected'] = raw_session['pressure_detected']
+        prepared_session['features']['environment_and_small_scatter'] = 1.5
+        prepared_session['features']['activity_and_small_scatter'] = 1.5
+        
 
     @staticmethod
     def prepare_session_production(raw_session: dict, prepared_session: dict, max_pressure: int, min_pressure: int,

@@ -1,6 +1,6 @@
 {
   "operative_mode" : "development",
-  "preparation_system_ip" : "172.16.0.14",
+  "preparation_system_ip" : "127.0.0.1",
   "preparation_system_port" : 5000,
   "evaluation_system_ip": "172.16.0.15",
   "evaluation_system_port": 5000,

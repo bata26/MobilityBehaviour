@@ -1,7 +1,7 @@
 {
   "type": "object",
   "properties": {
-    "activity": {
+    "calendar": {
       "type": "string",
       "enum": ["sport", "shopping", "cooking", "gaming"]
     },

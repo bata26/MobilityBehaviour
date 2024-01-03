@@ -3,10 +3,12 @@ import sqlite3
 import json
 from jsonschema import validate, ValidationError
 import logging
-from models.ingestion_system_configuration import IngestionSystemConfiguration
+from src.ingestion_system_configuration import IngestionSystemConfiguration
 
 RECORD_TYPE = ['calendar', 'pressure_detected', 'environment', 'time_series']
 NUM_COLUMNS = 1236
+CONFIG_PATH = './data/ingestion_system_config.json'
+CONFIG_SCHEMA_PATH = './data/ingestion_system_config_schema.json'
 
 class RawSessionsStore:
     """
@@ -18,9 +20,9 @@ class RawSessionsStore:
         Initializes the Raw Sessions Store
         """
         self._conn = None
-        self.config = IngestionSystemConfiguration()
+        self.config = IngestionSystemConfiguration(CONFIG_PATH, CONFIG_SCHEMA_PATH)
 
-        db_path = os.path.join(os.path.abspath('..'), 'data', self.config['db_name'])
+        db_path = os.path.join(os.path.abspath('..'), self.config.db_name)
         if os.path.exists(db_path):
             # print('[+] sqlite3 previous database deleted')
             os.remove(db_path)
@@ -38,7 +40,7 @@ class RawSessionsStore:
         :return: True if the connection is successful. False if the connection fails.
         """
         try:
-            self._conn = sqlite3.connect(os.path.join(os.path.abspath('..'), 'data', self.config['db_name']))
+            self._conn = sqlite3.connect(os.path.join(os.path.abspath('..'), self.config.db_name))
             return True
         except sqlite3.Error as e:
             logging.error(f'sqlite3 open connection error [{e}]')
@@ -102,10 +104,7 @@ class RawSessionsStore:
 
         for record_type in RECORD_TYPE:
             if record_type in keys:
-                if record_type == "activity":
-                    return "calendar"
-                else:
-                    return record_type
+                return record_type
         return 'None'
 
     def validate_schema_record(self, record: dict, record_type: str) -> bool:
@@ -116,7 +115,7 @@ class RawSessionsStore:
         :return: True if the validation is successful. False if the validation fails.
         """
         try:
-            record_schema_path = os.path.join(os.path.abspath('..'), 'data', record_type + '_schema.json')
+            record_schema_path = os.path.join('data', record_type + '_schema.json')
             with open(record_schema_path) as f:
                 loaded_schema = json.load(f)
                 validate(record, loaded_schema)
@@ -172,10 +171,7 @@ class RawSessionsStore:
         # Check if the record received belongs to a session whose synchronization/join is taking place
         if self.raw_session_exists(record['uuid']):
             # Update the Raw Session row
-            if record_type == 'time_series':
-                column_name = record_type + '_' + str(record['time_series'])
-            else:
-                column_name = record_type
+            column_name = record_type
             query_result = self.update_raw_session(record=record, column_to_set=column_name)
         else:
             # Insert a new Raw Session row with only one column containing the record received
@@ -196,15 +192,9 @@ class RawSessionsStore:
             'time_series': [None] * NUM_COLUMNS
         }
 
-        if record_type == 'time_series':
-            time_serie = record['time_series'] - 1
-            parameters['time_series'][time_serie] = json.dumps(record)
-        else:
-            parameters[record_type] = json.dumps(record)
-
+        parameters[record_type] = record[record_type]
         values = list(parameters.values())
         query_parameters = values[0:-1] + values[-1]
-
         return tuple(query_parameters)
 
     def insert_raw_session(self, parameters: tuple) -> bool:
@@ -221,7 +211,7 @@ class RawSessionsStore:
                     series_columns += ")"
                 else:
                     series_columns += ','
-            series_columns += 'VALUES ('
+            series_columns += 'VALUES (?,?,?,?,'
             for i in range(1, NUM_COLUMNS + 1):
                 series_columns += '?' 
                 if i == NUM_COLUMNS:
@@ -249,10 +239,18 @@ class RawSessionsStore:
         :return: True if the update is successful. False otherwise.
         """
         try:
-            query = 'UPDATE raw_session SET ' + column_to_set + ' = ? WHERE uuid = ?'
-            cursor = self._conn.cursor()
-            cursor.execute(query, (json.dumps(record), record['uuid']))
-            self._conn.commit()
+            if column_to_set == 'time_series':
+                for i in range(1, NUM_COLUMNS + 1):
+                    column_name = column_to_set + '_' + str(i)
+                    query = 'UPDATE raw_session SET ' + column_name + ' = ? WHERE uuid = ?'
+                    cursor = self._conn.cursor()
+                    cursor.execute(query, (record[column_to_set][i-1], record['uuid']))
+                    self._conn.commit()
+            else:
+                query = 'UPDATE raw_session SET ' + column_to_set + ' = ? WHERE uuid = ?'
+                cursor = self._conn.cursor()
+                cursor.execute(query, (record[column_to_set], record['uuid']))
+                self._conn.commit()        
         except sqlite3.Error as e:
             logging.error(f'sqlite3 "update_raw_session" error [{e}]')
             return False
@@ -299,26 +297,23 @@ class RawSessionsStore:
             # Building the loaded Raw Session as a dictionary
             raw_session = {
                 'uuid': result[0],
-                'calendar': json.loads(result[1])['calendar'],
+                'calendar': result[1],
                 'pressure_detected': 'None',
-                'environment': json.loads(result[3])['environment'],
-                'time_series': list()
+                'environment': result[3],
+                'time_series': []
             }
 
             # Handling missing label
             if result[2] is not None:
-                raw_session['pressure_detected'] = json.loads(result[2])['pressure_detected']
-
-            # Handling missing time_series
-            for time_series in result[4:]:
-                if time_series is not None:
-                    time_series_json = json.loads(time_series)
-                    time_series_data = list(time_series_json.values())
-                    raw_session['time_series'].append(time_series_data)
-                else:
-                    raw_session['time_series'].append([])
-
+                raw_session['pressure_detected'] = result[2]
+            for ts in result[4:]:
+                if ts is not None:
+                    ts_json = json.loads(ts)
+                    #ts_data = list(ts_json.values())
+                    raw_session['time_series'].append(ts_json)
+            print(raw_session)
             return raw_session
+        
         except sqlite3.Error as e:
             logging.error(f'sqlite3 "load_raw_session" error [{e}]')
             return {}
@@ -342,18 +337,18 @@ class RawSessionsStore:
                 # Here the only important thing is to check if the required fields are not missing
                 query = 'SELECT COUNT(1) FROM raw_session WHERE uuid = ? ' \
                         + 'AND calendar IS NOT NULL AND environment IS NOT NULL ' \
-                        + ('AND pressure_detected IS NOT NULL' if (operative_mode == 'development' or evaluation) else '')
+                        + 'AND pressure_detected IS NOT NULL' 
             else:
                 # The session is still in the synchronization/building phase,
                 # So it is necessary to check all the possible fields (except for the labels during the production mode)
                 # If all the records are not null, the session can be labeled as 'fully complete'
                 series_columns = str()
-                for i in range(1, NUM_COLUMNS + 1):
+                for i in range(1, 100):
                     series_columns += 'AND ' + RECORD_TYPE[3] + '_' + str(i) + ' IS NOT NULL '
 
                 query = 'SELECT COUNT(1) FROM raw_session WHERE uuid = ? ' \
                         + 'AND calendar IS NOT NULL AND environment IS NOT NULL ' \
-                        + ('AND pressure_detected IS NOT NULL ' if (operative_mode == 'development' or evaluation) else ' ') \
+                        + 'AND pressure_detected IS NOT NULL ' \
                         + series_columns
 
             cursor = self._conn.cursor()

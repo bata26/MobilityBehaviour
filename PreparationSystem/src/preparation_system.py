@@ -3,13 +3,12 @@ from threading import Thread
 from src.json_io import JsonIO
 from src.session_cleaning import SessionCleaning
 from src.features_extractor import FeaturesExtractor
-from utility.json_handler import validate_json_file_file
-from models.preparation_system_configuration import PreparationSystemConfiguration
+from src.preparation_system_configuration import PreparationSystemConfiguration
 import logging
 from jsonschema import ValidationError
 
-CONFIG_PATH = './../data/preparation_system_config.json'
-CONFIG_SCHEMA_PATH = './../data/preparation_system_config_schema.json'
+CONFIG_PATH = './data/preparation_system_config.json'
+CONFIG_SCHEMA_PATH = './data/preparation_system_config_schema.json'
 
 class PreparationSystem:
     """
@@ -28,7 +27,7 @@ class PreparationSystem:
             logging.error('Error during the Ingestion System initialization phase')
             exit(-1)
         
-        print(f'[+] The configuration is valid, {self.configuration["operative_mode"]} mode')
+        print(f'[+] The configuration is valid, {self.configuration.operative_mode} mode')
         self.raw_session = None
         self.prepared_session = None
 
@@ -47,7 +46,7 @@ class PreparationSystem:
             # Get received raw session
             self.raw_session = JsonIO.get_instance().get_received_json()
             print('[+] Raw session received')
-
+            print(self.raw_session)
             # Check raw session validity
             if SessionCleaning.validate_raw_session(self.raw_session):
                 print('[+] Raw session is valid')
@@ -61,37 +60,29 @@ class PreparationSystem:
             else:
                 print('[-] Missing samples are unrecoverable, raw session discarded')
                 continue
-
+            
             # Correct outliers
             SessionCleaning.correct_outliers(self.raw_session['time_series'],
-                                             self.configuration['min_value'],
-                                             self.configuration['max_value'])
+                                             self.configuration.min_value,
+                                             self.configuration.max_value)
 
             # Extract features and prepare session
             self.prepared_session = {}
             FeaturesExtractor().extract_features \
-                (self.configuration['features'], self.raw_session, self.prepared_session,
-                 self.configuration['operative_mode'])
+                (self.raw_session, self.prepared_session, self.configuration.operative_mode)
             print('[+] Features extracted and session prepared')
 
             # Send prepared session to the endpoint corresponding to the current operating mode
-            if self.configuration['operative_mode'] == 'development':
-                if JsonIO.get_instance().send(self.configuration['segregation_system_ip'],
-                                              self.configuration['segregation_system_port'],
+            if self.configuration.operative_mode == 'development':
+                if JsonIO.get_instance().send(self.configuration.segregation_system_ip,
+                                              self.configuration.segregation_system_port,
                                               self.prepared_session):
                     print(f'[+] Prepared session sent at {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
 
-            elif self.configuration['operative_mode'] == 'production':
-                if JsonIO.get_instance().send(self.configuration['production_system_ip'],
-                                              self.configuration['production_system_port'],
+            elif self.configuration.operative_mode == 'production':
+                if JsonIO.get_instance().send(self.configuration.production_system_ip,
+                                              self.configuration.production_system_port,
                                               self.prepared_session):
                     print(f'[+] Prepared session sent at {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
-        exit(0)
+                    exit(0)
 
-
-if __name__ == '__main__':
-    try:
-        PreparationSystem().run()
-    except KeyboardInterrupt:
-        print('Preparation System terminated')
-        exit(0)

@@ -22,39 +22,6 @@
     },
     "min_value": {
       "type": "integer"
-    },
-    "features": {
-      "type": "object",
-      "properties": {
-        "maximum_pressure_ts": {
-          "type": "number"
-        },
-        "minimum_pressure_ts": {
-          "type": "number"
-        },
-        "median_pressure_ts": {
-          "type": "number"
-        },
-        "mean_absolute_deviation_pressure_ts": {
-          "type": "number"
-        },
-        "activity_and_small_scatter": {
-          "type": "number"
-        },
-        "environment_and_small_scatter": {
-          "type": "number"
-        }
-      },
-      "required": [
-        "maximum_pressure_ts",
-        "minimum_pressure_ts",
-        "median_pressure_ts",
-        "mean_absolute_deviation_pressure_ts",
-        "activity_and_small_scatter",
-        "environment_and_small_scatter",
-        "max_value",
-        "min_value"
-      ]
     }
   },
   "required": [
@@ -63,6 +30,7 @@
     "segregation_system_port",
     "production_system_ip",
     "production_system_port",
-    "features"
+    "min_value",
+    "max_value"
   ]
 }

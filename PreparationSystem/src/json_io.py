@@ -1,6 +1,5 @@
 import queue
 from threading import Thread
-
 from flask import Flask, request
 from requests import post, exceptions
 
@@ -18,7 +17,7 @@ class JsonIO:
         received JSON payloads.
         """
         self.app = Flask(__name__)
-        self._received_json_queue = queue.Queue()
+        self.received_json_queue = queue.Queue()
 
     def listener(self, ip, port):
         """
@@ -34,7 +33,7 @@ class JsonIO:
         Retrieves a raw session from the received JSON queue.
         :return: Raw session
         """
-        return self._received_json_queue.get(block=True)
+        return self.received_json_queue.get(block=True)
 
     # -------- SERVER HANDLER --------
 
@@ -46,7 +45,7 @@ class JsonIO:
         """
         # If the queue is full the thread is blocked
         try:
-            self._received_json_queue.put(received_json, timeout=5)
+            self.received_json_queue.put(received_json, timeout=5)
         except queue.Full:
             print("Full queue exception")
 
@@ -58,10 +57,13 @@ class JsonIO:
         :param endpoint_ip: The IP address of the endpoint.
         :param endpoint_port: The port of the endpoint.
         :param json_to_send: The JSON payload to send.
+        :dest_system: destination system
         :return: True if the payload is sent successfully, False otherwise.
         """
         try:
-            response = post(f'http://{endpoint_ip}:{endpoint_port}/json', json=json_to_send, timeout=5)
+            connection_string = f'http://{endpoint_ip}:{endpoint_port}/preparedsession'
+            response = post(connection_string, json=json_to_send, timeout=5)
+
             if response.status_code != 200:
                 error_message = response.json()['error']
                 print(f'[-] Error: {error_message}')

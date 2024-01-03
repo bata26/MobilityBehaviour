@@ -39,7 +39,7 @@ class JsonIO:
     def get_received_record(self, received_record: dict) -> bool:
         """
         Receives a record and enqueues it in a thread-safe queue
-        :param received_record: record sent from a data source (calendar, labels, settings, headset_eeg_data)
+        :param received_record: record sent from a data source (calendar, labels, settings, pressure time series)
         :return: True if the record is entered correctly. False if the insertion fails.
         """
         try:
@@ -62,17 +62,18 @@ class JsonIO:
 
         return self.received_records_queue.get(block=True)
 
-    def send(self, endpoint_ip: str, endpoint_port: int, data: dict) -> bool:
+    def send(self, endpoint_ip: str, endpoint_port: int, data: dict, dest_system: str) -> bool:
         """
         Sends data to the Preparation System
         :param endpoint_ip: IP of the Preparation System
         :param endpoint_port: Port of the Preparation System
         :param data: dictionary containing the data to send
+        :dest_system: destination system
         :return: True if the 'send' is successful. False otherwise.
         """
-        connection_string = f'http://{endpoint_ip}:{endpoint_port}/json'
 
         try:
+            connection_string = f'http://{endpoint_ip}:{endpoint_port}/json'
             response = post(url=connection_string, json=data)
         except exceptions.RequestException:
             logging.error(f'{connection_string} unreachable')
