@@ -1,16 +1,16 @@
 import os
 import math
-from development_system.model.classifier import Classifier
-from development_system.model.classifier_configuration import ClassifierConfiguration
-from development_system.model.dataset import Dataset
-from development_system.utils.json_reader import JsonReader
-from development_system.generator.learning_report_generator import LearningReportGenerator
+from model.classifier import Classifier
+from model.classifier_configuration import ClassifierConfiguration
+from model.dataset import Dataset
+from utils.json_reader import JsonReader
+from generator.learning_report_generator import LearningReportGenerator
 
 class TrainingManager:
 
     def __init__(self):
         self._classifier = Classifier()
-        self._train_data = Dataset.get_data("train")
+        self._train_data = None
         self._iterations_number = 0
         self._hidden_layer_sizes = []
 
@@ -36,6 +36,7 @@ class TrainingManager:
         self._classifier.update_configuration(ClassifierConfiguration(self._iterations_number , self._hidden_layer_sizes))
 
     def train_classifier(self):
+        self._train_data = Dataset.get_data("train")
         self._classifier.train_classifier(
                     self._train_data["data"],
                     self._train_data["labels"],

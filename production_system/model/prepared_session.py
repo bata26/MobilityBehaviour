@@ -26,6 +26,6 @@ class PreparedSession:
 
     def to_json(self):
         return {
-            "id" : self.id,
+            "uuid" : self.id,
             "label" : self.human_output
         }

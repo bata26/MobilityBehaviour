@@ -1,4 +1,4 @@
-from development_system.model.training_manager import TrainingManager
+from model.training_manager import TrainingManager
 
 class TrainingController:
     def __init__(self):

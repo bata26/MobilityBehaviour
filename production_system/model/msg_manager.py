@@ -51,7 +51,7 @@ class MessageManager:
 
     def send_post_request(self , dest, data):
         if dest == "EVALUATION":
-            uri = "http://" + self._configuration.evaluation_system_ip + ":" + str(self._configuration.evaluation_system_port) + "/"
+            uri = "http://" + self._configuration.evaluation_system_ip + ":" + str(self._configuration.evaluation_system_port) + "/classifierLabels"
         elif dest == "CLIENT":
             uri = "http://" + self._configuration.client_system_ip + ":" + str(self._configuration.client_system_port) + "/"
             print(f"[INFO] Send result to client at url : {uri}")

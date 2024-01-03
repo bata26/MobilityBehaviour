@@ -1,5 +1,5 @@
 import os
-from development_system.utils.json_reader import JsonReader
+from utils.json_reader import JsonReader
 
 class SystemConfiguration:
 

@@ -44,5 +44,5 @@ def test_to_json(sample_session):
     prepared_session = PreparedSession(sample_session)
     prepared_session.add_human_output("Test output")
     json_data = prepared_session.to_json()
-    assert json_data["id"] == sample_session["_id"]
+    assert json_data["uuid"] == sample_session["_id"]
     assert json_data["label"] == prepared_session.human_output

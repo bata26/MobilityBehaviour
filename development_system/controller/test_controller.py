@@ -1,4 +1,4 @@
-from development_system.model.test_manager import TestManager
+from model.test_manager import TestManager
 
 class TestController:
 

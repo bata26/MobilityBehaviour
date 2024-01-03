@@ -5,8 +5,8 @@ import joblib
 
 from sklearn.neural_network import MLPClassifier
 from sklearn.exceptions import ConvergenceWarning, DataConversionWarning
-from development_system.utils.json_reader import JsonReader
-from development_system.model.classifier_configuration import ClassifierConfiguration
+from utils.json_reader import JsonReader
+from model.classifier_configuration import ClassifierConfiguration
 
 class Classifier:
 

@@ -1,5 +1,5 @@
 import os
-from development_system.model.report import Report
+from model.report import Report
 
 class TestReportGenerator:
 

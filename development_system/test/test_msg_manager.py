@@ -86,7 +86,7 @@ def json_body():
 def test_send_request(message_manager, json_body):
     res = message_manager.get_app().test_client().post("/senddata" , json = json_body)
     assert res.status_code == 200
-    
+
 
 def test_get_instance(message_manager):
     assert message_manager is not None

@@ -1,9 +1,9 @@
 import os
 
-from development_system.model.classifier import Classifier
-from development_system.utils.json_reader import JsonReader
-from development_system.generator.test_report_generator import TestReportGenerator
-from development_system.model.dataset import Dataset
+from model.classifier import Classifier
+from utils.json_reader import JsonReader
+from generator.test_report_generator import TestReportGenerator
+from model.dataset import Dataset
 
 
 class TestManager:

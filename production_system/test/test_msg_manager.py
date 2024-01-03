@@ -16,4 +16,3 @@ def test_get_instance(message_manager):
     assert message_manager is not None
     assert isinstance(message_manager, MessageManager)
     assert MessageManager.get_instance().get_app() == message_manager.get_app()
-

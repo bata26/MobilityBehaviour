@@ -3,11 +3,11 @@ import math
 from itertools import product
 from operator import itemgetter
 
-from development_system.model.classifier import Classifier
-from development_system.model.classifier_configuration import ClassifierConfiguration
-from development_system.utils.json_reader import JsonReader
-from development_system.model.dataset import Dataset
-from development_system.generator.validation_report_generator import ValidationReportGenerator
+from model.classifier import Classifier
+from model.classifier_configuration import ClassifierConfiguration
+from utils.json_reader import JsonReader
+from model.dataset import Dataset
+from generator.validation_report_generator import ValidationReportGenerator
 
 class ValidationManager:
 
