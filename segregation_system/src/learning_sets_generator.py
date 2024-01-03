@@ -11,9 +11,10 @@ class LearningSetsGenerator:
         data = []
         for prepared_session in dataset:
             ps = prepared_session['features']
+            ps['label'] = prepared_session['label']
             data.append(ps)
-        print(data)
-        
+        #print(data)
+
 
         # train_test_split function can split the dataset only in two part,
         # so it's needed to execute it again to obtain three sets

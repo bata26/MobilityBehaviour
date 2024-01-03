@@ -3,11 +3,11 @@ import sys
 import json
 from threading import Thread
 from jsonschema import validate, ValidationError
-from json_io import JsonIO
-from prepared_session_storage import PreparedSessionStorage
-from balancing_report_generator import BalancingReportGenerator
-from coverage_report_generator import CoverageReportGenerator
-from learning_sets_generator import LearningSetsGenerator
+from src.json_io import JsonIO
+from src.prepared_session_storage import PreparedSessionStorage
+from src.balancing_report_generator import BalancingReportGenerator
+from src.coverage_report_generator import CoverageReportGenerator
+from src.learning_sets_generator import LearningSetsGenerator
 
 
 class SegregationSystem:
@@ -172,12 +172,35 @@ class SegregationSystem:
                     self.save_config()
                     continue
                 elif response == -1:
-                    # The coverage is not ok, clean the db and restart
-                    # the prepared sessions collection
-                    collector.empty_db()
-                    self.segregation_system_config['stage'] = 'store'
-                    self.save_config()
-                    continue
+                    # When the endpoint is triggered i need a new dataset
+                    # no request needed
+                    request = None
+                    ip = self.segregation_system_config['preparation_system_ip']
+                    port = self.segregation_system_config['preparation_system_port']
+
+                    # ENDPOINT MANCANTE
+                    endpoint = 'prepared_session_endpoint'
+
+                    # Send the request a new dataset
+                    if JsonIO.get_instance().send(ip, port, endpoint, request):
+                        print("Request successfully sent")
+
+                        # Back to store phase to receive a new dataset
+                        self.segregation_system_config['stage'] = 'store'
+                        self.save_config()
+                        
+                        # The db is emptied in order to handle a new dataset
+                        #collector.empty_db()
+
+                    else:
+                        print("Failed to send the request")
+                        # If the request fails the coverage stage the system is
+                        # set back to the store stage and the system is turned off
+                        # for maintenance
+                        self.segregation_system_config['stage'] = 'store'
+                        self.save_config()
+                        print("Shutdown")
+                        sys.exit(0)
                 else:
                     # Handle return -2
                     print("Shutdown")
@@ -199,7 +222,7 @@ class SegregationSystem:
                     print("Learning sets successfully sent")
 
                     # The db is emptied in order to handle a new dataset
-                    collector.empty_db()
+                    #collector.empty_db()
                 else:
                     print("Failed to send learning sets")
 
