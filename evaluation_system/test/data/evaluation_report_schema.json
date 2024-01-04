@@ -1,0 +1,19 @@
+{
+        "type": "object",
+        "properties": {
+            "compared_labels": {"type": "integer"},
+            "conflicting_labels": {"type": "integer"},
+            "max_consecutive_conflicting_labels": {"type": "integer"},
+            "accuracy": {"type": "number"},
+            "max_number_of_tolerated_errors": {"type": "integer"},
+            "max_number_of_consecutive_tolerated_errors": {"type": "integer"}
+        },
+        "required": [
+            "compared_labels",
+            "conflicting_labels",
+            "max_consecutive_conflicting_labels",
+            "accuracy",
+            "max_number_of_tolerated_errors",
+            "max_number_of_consecutive_tolerated_errors"
+        ]
+    }

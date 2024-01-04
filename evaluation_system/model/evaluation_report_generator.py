@@ -12,7 +12,7 @@ class EvaluationReportGenerator:
         report_dict = self.report.to_dict()
         with open(os.path.join(os.path.abspath('.'), 'data', 'report.json'), 'w+', encoding="UTF-8") as file:
             json.dump(report_dict, file, indent=4)
-        print("Generated monitoring report json")
+        print("[INFO] Generated monitoring report json, waiting for expert check")
 
     def count_conflicting_labels(self):
         count_conflicting_labels = 0
@@ -24,7 +24,7 @@ class EvaluationReportGenerator:
             if expert_label != classifier_label:
                 count_conflicting_labels += 1
         self.report.conflicting_labels = count_conflicting_labels
-        self.report.accuracy = (tot_labels - count_conflicting_labels) / tot_labels
+        self.report.accuracy = (tot_labels - count_conflicting_labels) / tot_labels if tot_labels != 0 else 0
         self.report.compared_labels = tot_labels
 
     def count_max_consecutive_conflicting_labels(self):
@@ -55,3 +55,4 @@ class EvaluationReportGenerator:
             self.count_conflicting_labels()
             self.count_max_consecutive_conflicting_labels()
         self.generate_report_json()
+

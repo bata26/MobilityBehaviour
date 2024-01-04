@@ -20,11 +20,11 @@ def validate_label(label):
         validate(label, label_schema)
 
     except FileNotFoundError:
-        print('Failure to open label schema')
+        print('[ERROR] Failure to open label schema')
         return False
 
     except ValidationError:
-        print('Label schema validation failed')
+        print('[ERROR] Label schema validation failed')
         return False
 
     return True
@@ -63,7 +63,7 @@ class LabelStorage:
             return None
 
     def create_tables(self):
-        print("Create tables (if not exists) for label storage")
+        print("[DEBUG] Create tables (if not exists) for label storage")
         query = "CREATE TABLE if not exists expertLabel" \
                 "(uuid TEXT PRIMARY KEY UNIQUE, label TEXT)"
         self.run_query(query)
@@ -74,7 +74,7 @@ class LabelStorage:
     def store_label(self, label):
 
         if not validate_label(label):
-            print("Invalid label data format")
+            print("[ERROR] Invalid label data format")
             return False
 
         with self.semaphore:
@@ -89,7 +89,7 @@ class LabelStorage:
                     label_dataframe.to_sql('classifierLabel', self._conn, if_exists="append", index=False)
                     self.tot_labels_received += 1
                 except Exception as e:
-                    print("Error occured while inserting label")
+                    print("[ERROR] inserting label in DB failed")
 
             else:
                 try:
@@ -97,7 +97,7 @@ class LabelStorage:
                     self.tot_labels_received += 1
 
                 except Exception as e:
-                    print("Error occured while inserting label")
+                    print("[ERROR] inserting label in DB failed")
                 print(self.tot_labels_received)
 
             if self.tot_labels_received >= self.config.sufficient_labels:
@@ -113,17 +113,14 @@ class LabelStorage:
 
                 labels = self.read_sql(query)
 
-                uuid_list = labels["uuid"].to_list()
-
-                if uuid_list:
-                    self.empty_db(uuid_list)
+                self.empty_db()
 
                 thread = threading.Thread(target=self.report.generate_report, args=[labels])
                 thread.start()
 
-    def empty_db(self, uuid_list):
+    def empty_db(self):
 
         self.run_query(f"DELETE FROM expertLabel")
         self.run_query(f"DELETE FROM classifierLabel")
-        print("Label tables cleaned")
+        print("[INFO] Label tables cleaned")
         return True
