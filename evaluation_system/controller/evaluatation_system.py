@@ -16,7 +16,7 @@ class EvaluationSystem:
             print("[ERROR] Couldn't read system configuration")
             return
         JsonValidator.validate_schema(file_content, "system_configuration")
-        self.config = SystemConfiguration()
+        self.config = SystemConfiguration(None)
         self.label_storage = LabelStorage(self.config)
         print("[INFO] CONFIGURATION DONE")
 

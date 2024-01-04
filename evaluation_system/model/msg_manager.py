@@ -48,7 +48,7 @@ app = MessageManager.get_instance().get_app()
 def receive_expert_labels():
     if request.json is None:
         return {'error': 'No Payload Received'}, 500
-
+    print(request.json)
     received_json = request.json
     received_json['source'] = 'expert'  # Add 'source' attribute with the value 'expert'
 
@@ -62,7 +62,7 @@ def receive_expert_labels():
 def receive_classifier_labels():
     if request.json is None:
         return {'error': 'No Payload Received'}, 500
-
+    print(request.json)
     received_json = request.json
     received_json['source'] = 'classifier'  # Add 'source' attribute with the value 'classifier'
 
