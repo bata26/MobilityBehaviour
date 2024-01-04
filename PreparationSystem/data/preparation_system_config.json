@@ -1,5 +1,5 @@
 {
-  "operative_mode": "production",
+  "operative_mode": "development",
   "segregation_system_ip": "10.8.0.3",
   "segregation_system_port": 6000,
   "production_system_ip": "10.8.0.2",

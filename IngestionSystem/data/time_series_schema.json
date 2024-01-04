@@ -6,7 +6,10 @@
       "minItems": 0,
       "maxItems": 1236,
       "items": {
-      "type": "number"
+        "anyOf": [
+          {"type": "number"},
+          {"type": "null"}
+        ]
       }
     },
     "uuid": {

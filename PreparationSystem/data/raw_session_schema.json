@@ -10,7 +10,7 @@
     },
     "pressure_detected": {
       "type": "string",
-      "enum": ["Regular", "Anomalous"]
+      "enum": ["Regular", "Anomalous", "None"]
     },
     "environment": {
       "type": "string",

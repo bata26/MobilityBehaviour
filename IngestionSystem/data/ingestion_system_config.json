@@ -1,5 +1,5 @@
 {
-  "operative_mode" : "production",
+  "operative_mode" : "development",
   "preparation_system_ip" : "127.0.0.1",
   "preparation_system_port" : 5000,
   "evaluation_system_ip": "10.8.0.7",

@@ -100,7 +100,7 @@ class RawSessionsStore:
         :param record: record to identify
         :return: type of the record
         """
-        keys = list(record.keys())[0:3]
+        keys = list(record.keys())[0:2]
 
         for record_type in RECORD_TYPE:
             if record_type in keys:
