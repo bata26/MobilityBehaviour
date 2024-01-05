@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "properties": {
+    "time_series": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 1236,
+      "items": {
+        "anyOf": [
+          {"type": "number"},
+          {"type": "null"}
+        ]
+      }
+    },
+    "uuid": {
+      "type": "string"
+    }
+  },
+  "required": ["time_series", "uuid"]
+}

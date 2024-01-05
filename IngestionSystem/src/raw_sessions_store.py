@@ -19,7 +19,7 @@ class RawSessionsStore:
         """
         Initializes the Raw Sessions Store
         """
-        self._conn = None
+        self.conn = None
         self.config = IngestionSystemConfiguration(CONFIG_PATH, CONFIG_SCHEMA_PATH)
 
         db_path = os.path.join(os.path.abspath('..'), self.config.db_name)
@@ -40,7 +40,7 @@ class RawSessionsStore:
         :return: True if the connection is successful. False if the connection fails.
         """
         try:
-            self._conn = sqlite3.connect(os.path.join(os.path.abspath('..'), self.config.db_name))
+            self.conn = sqlite3.connect(os.path.join(os.path.abspath('..'), self.config.db_name))
             return True
         except sqlite3.Error as e:
             logging.error(f'sqlite3 open connection error [{e}]')
@@ -53,7 +53,7 @@ class RawSessionsStore:
         :return: True if the disconnection is successful. False otherwise.
         """
         try:
-            self._conn.close()
+            self.conn.close()
         except sqlite3.Error as e:
             logging.error(f'sqlite3 close connection error [{e}]')
             exit(-1)
@@ -63,7 +63,7 @@ class RawSessionsStore:
         Checks if the connection with the database is established.
         It terminates the system if the connection is not set.
         """
-        if self._conn is None:
+        if self.conn is None:
             logging.error(f'sqlite3 connection not established')
             exit(-1)
 
@@ -86,8 +86,8 @@ class RawSessionsStore:
                 ' + RECORD_TYPE[2] + ' TEXT, \
                 ' + series_columns + \
                     'UNIQUE(uuid), PRIMARY KEY (uuid))'
-            self._conn.cursor().execute(query)
-            self._conn.commit()
+            self.conn.cursor().execute(query)
+            self.conn.commit()
         except sqlite3.Error as e:
             logging.error(f'sqlite3 "create_tables" error [{e}]')
             return False
@@ -137,9 +137,9 @@ class RawSessionsStore:
         :return: True if the Raw Session exists. False otherwise
         """
         try:
-            cursor = self._conn.cursor()
+            cursor = self.conn.cursor()
             cursor.execute('SELECT COUNT(1) FROM raw_session WHERE uuid = ?', (uuid, ))
-            self._conn.commit()
+            self.conn.commit()
 
             result = cursor.fetchone()
             if result[0] == 0:
@@ -222,9 +222,9 @@ class RawSessionsStore:
             query = 'INSERT INTO raw_session (uuid, calendar, pressure_detected, environment, ' \
                     + series_columns 
 
-            cursor = self._conn.cursor()
+            cursor = self.conn.cursor()
             cursor.execute(query, parameters)
-            self._conn.commit()
+            self.conn.commit()
         except sqlite3.Error as e:
             logging.error(f'sqlite3 "insert_raw_session" error [{e}]')
             return False
@@ -243,14 +243,14 @@ class RawSessionsStore:
                 for i in range(1, NUM_COLUMNS + 1):
                     column_name = column_to_set + '_' + str(i)
                     query = 'UPDATE raw_session SET ' + column_name + ' = ? WHERE uuid = ?'
-                    cursor = self._conn.cursor()
+                    cursor = self.conn.cursor()
                     cursor.execute(query, (record[column_to_set][i-1], record['uuid']))
-                    self._conn.commit()
+                    self.conn.commit()
             else:
                 query = 'UPDATE raw_session SET ' + column_to_set + ' = ? WHERE uuid = ?'
-                cursor = self._conn.cursor()
+                cursor = self.conn.cursor()
                 cursor.execute(query, (record[column_to_set], record['uuid']))
-                self._conn.commit()        
+                self.conn.commit()        
         except sqlite3.Error as e:
             logging.error(f'sqlite3 "update_raw_session" error [{e}]')
             return False
@@ -267,9 +267,9 @@ class RawSessionsStore:
 
         try:
             query = 'DELETE FROM raw_session WHERE uuid = ?'
-            cursor = self._conn.cursor()
+            cursor = self.conn.cursor()
             cursor.execute(query, (uuid, ))
-            self._conn.commit()
+            self.conn.commit()
         except sqlite3.Error as e:
             logging.error(f'sqlite3 "delete_raw_session" error [{e}]')
             return False
@@ -286,9 +286,9 @@ class RawSessionsStore:
 
         try:
             query = 'SELECT * FROM raw_session WHERE uuid = ?'
-            cursor = self._conn.cursor()
+            cursor = self.conn.cursor()
             cursor.execute(query, (uuid, ))
-            self._conn.commit()
+            self.conn.commit()
 
             result = cursor.fetchone()
             if result is None:
@@ -336,7 +336,8 @@ class RawSessionsStore:
                 # Here the only important thing is to check if the required fields are not missing
                 query = 'SELECT COUNT(1) FROM raw_session WHERE uuid = ? ' \
                         + 'AND calendar IS NOT NULL AND environment IS NOT NULL ' \
-                        + 'AND pressure_detected IS NOT NULL' 
+                        + ('AND pressure_detected IS NOT NULL' if (operative_mode == 'development' or evaluation) else '')
+                        
             else:
                 # The session is still in the synchronization/building phase,
                 # So it is necessary to check all the possible fields (except for the labels during the production mode)
@@ -347,12 +348,12 @@ class RawSessionsStore:
 
                 query = 'SELECT COUNT(1) FROM raw_session WHERE uuid = ? ' \
                         + 'AND calendar IS NOT NULL AND environment IS NOT NULL ' \
-                        + 'AND pressure_detected IS NOT NULL ' \
+                        + ('AND pressure_detected IS NOT NULL ' if (operative_mode == 'development' or evaluation) else ' ') \
                         + series_columns
 
-            cursor = self._conn.cursor()
+            cursor = self.conn.cursor()
             cursor.execute(query, (uuid, ))
-            self._conn.commit()
+            self.conn.commit()
 
             result = cursor.fetchone()
             if result[0] == 0:

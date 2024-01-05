@@ -1,6 +1,6 @@
 import json
 import logging
-from utility.json_handler import validate_json_data_file
+from utility.json_handler import JsonHandler
 
 
 class PreparationSystemConfiguration:
@@ -15,13 +15,15 @@ class PreparationSystemConfiguration:
         :param json_configuration_path: path to the configuration file
         :param json_schema_path:  path to the json schema of the configuration file
         """
+        json_handler = JsonHandler()
+
         # Open the configuration file
         with open(json_configuration_path, "r", encoding="UTF-8") as file:
             # Load JSON configuration
             json_conf = json.load(file)
             # Validate configuration
-            if not validate_json_data_file(json_conf, json_schema_path):
-                logging.error("Impossible to load the ingestion system "
+            if not json_handler.validate_json_data_file(json_conf, json_schema_path):
+                logging.error("Impossible to load the preparation system "
                               "configuration: JSON file is not valid")
                 raise ValueError("Preparation System configuration failed")
             

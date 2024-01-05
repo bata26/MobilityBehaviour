@@ -1,7 +1,8 @@
 
 class RawSessionIntegrity:
-
-    def mark_missing_samples(self, time_series: list, threshold: int) -> bool:
+    
+    @staticmethod
+    def mark_missing_samples(time_series: list, threshold: int) -> bool:
         """
         Detects and marks the missing pressure time series in a Raw Session.
         :param time_series: list of pressure time series (represented as list of integers)

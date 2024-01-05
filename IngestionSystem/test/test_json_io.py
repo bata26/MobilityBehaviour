@@ -1,99 +1,58 @@
 import sys
 import pytest
-from dotenv import load_dotenv
-sys.path.insert(0, r'../../development_system')
-from model.msg_manager import MessageManager
-load_dotenv()
+sys.path.insert(0, r'..')
+from src.json_io import JsonIO
 
 @pytest.fixture
-def message_manager():
-    return MessageManager.get_instance()
-# JSON BODY
+def json_io():
+    return JsonIO.get_instance()
+
 @pytest.fixture
-def json_body():
+def test_label_session():
     return {
-        "train": {
-            "number_of_samples": 2,
-            "features": [
-            {
-                "maximum_pressure_ts": 0.0,
-                "minimum_pressure_ts": 0.0,
-                "median_pressure_ts": 0.0,
-                "mean_absolute_deviation_pressure_ts": 0.0,
-                "activity_and_small_scatter": 0.0,
-                "environment_and_small_scatter": 0.0,
-                "label": 0.0
-            },
-            {
-                "maximum_pressure_ts": 0.0,
-                "minimum_pressure_ts": 0.0,
-                "median_pressure_ts": 0.0,
-                "mean_absolute_deviation_pressure_ts": 0.0,
-                "activity_and_small_scatter": 0.0,
-                "environment_and_small_scatter": 0.0,
-                "label": 0.0
+            "uuid" : "wrwewr-ewrewr-werwrew-werrwe",
+            "pressure_detected" : "Regular",
             }
-            ]
-        },
-        "validation": {
-            "number_of_samples": 2,
-            "features": [
-            {
-                "maximum_pressure_ts": 0.0,
-                "minimum_pressure_ts": 0.0,
-                "median_pressure_ts": 0.0,
-                "mean_absolute_deviation_pressure_ts": 0.0,
-                "activity_and_small_scatter": 0.0,
-                "environment_and_small_scatter": 0.0,
-                "label": 0.0
-            },
-            {
-                "maximum_pressure_ts": 0.0,
-                "minimum_pressure_ts": 0.0,
-                "median_pressure_ts": 0.0,
-                "mean_absolute_deviation_pressure_ts": 0.0,
-                "activity_and_small_scatter": 0.0,
-                "environment_and_small_scatter": 0.0,
-                "label": 0.0
-            }
-            ]
-        },
-        "test": {
-            "number_of_samples": 2,
-            "features": [
-            {
-                "maximum_pressure_ts": 0.0,
-                "minimum_pressure_ts": 0.0,
-                "median_pressure_ts": 0.0,
-                "mean_absolute_deviation_pressure_ts": 0.0,
-                "activity_and_small_scatter": 0.0,
-                "environment_and_small_scatter": 0.0,
-                "label": 0.0
-            },
-            {
-                "maximum_pressure_ts": 0.0,
-                "minimum_pressure_ts": 0.0,
-                "median_pressure_ts": 0.0,
-                "mean_absolute_deviation_pressure_ts": 0.0,
-                "activity_and_small_scatter": 0.0,
-                "environment_and_small_scatter": 0.0,
-                "label": 0.0
-            }
-            ]
-        }
-        }
 
-def test_send_request(message_manager, json_body):
-    res = message_manager.get_app().test_client().post("/senddata" , json = json_body)
+@pytest.fixture
+def test_env_session():
+    return {
+            "uuid" : "wrwewr-ewrewr-werwrew-werrwe",
+            "environment" : "slippery",
+            }
+
+@pytest.fixture
+def test_act_session():
+    return {
+            "uuid" : "wrwewr-ewrewr-werwrew-werrwe",
+            "calendar" : "shopping",
+            }
+
+@pytest.fixture
+def test_time_series_session():
+    return {
+            "uuid" : "wrwewr-ewrewr-werwrew-werrwe",
+            "time_series" : list(range(1, 1237))
+          }
+
+def test_get_instance(json_io):
+    assert json_io == JsonIO.get_instance()
+
+def test_get_app(json_io):
+    assert json_io.get_app() == JsonIO.get_instance().get_app()
+
+def test_label_record(json_io ,test_label_session):
+    res = json_io.get_app().test_client().post("/record" , json = test_label_session)
     assert res.status_code == 200
 
+def test_env_record(json_io ,test_env_session):
+    res = json_io.get_app().test_client().post("/record" , json = test_env_session)
+    assert res.status_code == 200    
+    
+def test_activity_record(json_io ,test_act_session):
+    res = json_io.get_app().test_client().post("/record" , json = test_act_session)
+    assert res.status_code == 200  
 
-def test_get_instance(message_manager):
-    assert message_manager is not None
-    assert isinstance(message_manager, MessageManager)
-    assert MessageManager.get_instance().get_app() == message_manager.get_app()
-
-def test_send_to_main(message_manager):
-    dataset = {"key": "value"}
-    message_manager.send_to_main(dataset)
-    assert not message_manager.get_queue().empty()
+def test_time_series_record(json_io ,test_time_series_session):
+    res = json_io.get_app().test_client().post("/record" , json = test_time_series_session)
+    assert res.status_code == 200

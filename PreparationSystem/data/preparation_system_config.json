@@ -4,7 +4,7 @@
   "segregation_system_port": 6000,
   "production_system_ip": "10.8.0.2",
   "production_system_port": 6001,
-  "max_value": 3,
+  "max_value": 3.5,
   "min_value": 0,
   "features": {
     "environment": {"slippery": 1, "plain": 2, "slope": 3, "house":4, "track":5 },

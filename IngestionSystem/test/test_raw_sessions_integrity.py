@@ -1,41 +1,26 @@
 import os
 import sys
 import pytest
-from dotenv import load_dotenv
-sys.path.insert(0, r'../../development_system')
-from model.report import Report
-load_dotenv()
+sys.path.insert(0, r'..')
+from src.raw_session_integrity import RawSessionIntegrity
+
+
 
 @pytest.fixture
-def csv_file_path():
-    return "./csv/test-file.csv"
+def test_time_series():
+    return {
+        "uuid" : "wrwewr-ewrewr-werwrew-werrwe",
+        "time_series" : list(range(1, 1237))
+    } 
 
 @pytest.fixture
-def json_file_path():
-    return "./json/test-file.json"
+def test_time_series_missing():
+    return {
+        "uuid" : "wrwewr-ewrewr-werwrew-werrwe",
+        "time_series" : list(range(1, 1235)) + [None, None]
+    }
 
-@pytest.fixture
-def data():
-    return [{
-        "key" : "value"
-    },
-    {
-        "key" : "value"
-    },
-    {
-        "key" : "value"
-    },
-    {
-        "key" : "value"
-    }]
-
-
-def test_json_file(data, json_file_path):
-    report = Report(data)
-    report.generate_json(json_file_path)
-    assert os.path.isfile(json_file_path) is True
-
-def test_csv_file(data, csv_file_path):
-    report = Report(data)
-    report.generate_csv(csv_file_path)
-    assert os.path.isfile(csv_file_path) is True
+def test_mark_missing_samples(test_time_series, test_time_series_missing):
+    
+    assert RawSessionIntegrity.mark_missing_samples(time_series = test_time_series["time_series"], threshold = 1) is True
+    assert RawSessionIntegrity.mark_missing_samples(time_series = test_time_series_missing["time_series"], threshold = 1) is False

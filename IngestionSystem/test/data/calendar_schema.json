@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "calendar": {
+      "type": "string",
+      "enum": ["sport", "shopping", "cooking", "gaming"]
+    },
+    "uuid": {
+      "type": "string"
+    }
+  },
+  "required": ["calendar", "uuid"]
+}

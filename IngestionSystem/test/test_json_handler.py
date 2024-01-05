@@ -3,10 +3,59 @@ import os
 import tempfile
 import json
 import pytest
-from dotenv import load_dotenv
-sys.path.insert(0, r'../../development_system')
-from utils.json_reader import JsonReader
-load_dotenv()
+sys.path.insert(0, r'..')
+from utility.json_handler import JsonHandler
+
+
+
+# Fixture to create a temporary JSON file for testing
+@pytest.fixture
+def temp_json():
+    label_content = {
+        "uuid": "_id",
+        "pressure_detected": "Regular"
+    }
+    return label_content
+
+@pytest.fixture
+def temp_json_schema():
+    schema = {
+        "type": "object",
+        "properties": {
+            "pressure_detected": {
+                "type": "string",
+                "enum": ["Anomalous", "Regular"]
+            },
+            "uuid": {
+                "type": "string"
+            }
+        },
+        "required": ["pressure_detected", "uuid"]
+    }
+    return schema
+
+# Fixture to create a temporary JSON schema file for testing
+@pytest.fixture
+def temp_json_schema_file():
+    schema = {
+        "type": "object",
+        "properties": {
+            "pressure_detected": {
+                "type": "string",
+                "enum": ["Anomalous", "Regular"]
+            },
+            "uuid": {
+                "type": "string"
+            }
+        },
+        "required": ["pressure_detected", "uuid"]
+    }
+
+    with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_schema_file:
+        json.dump(schema, temp_schema_file)
+        temp_schema_file.flush()
+        yield temp_schema_file.name
+    os.remove(temp_schema_file.name)
 
 # Fixture to create a temporary JSON file for testing
 @pytest.fixture
@@ -19,35 +68,19 @@ def temp_json_file():
         json.dump(content, temp_file)
         temp_file.flush()
         yield temp_file.name
-    os.remove(temp_file.name)
+    os.remove(temp_file.name)  
 
-def test_read_json_file(temp_json_file):
-    success, file_content = JsonReader.read_json_file(temp_json_file)
-    assert success is True
+def test_load_json_file(temp_json_file):
+    json_handler = JsonHandler()
+    file_content = json_handler.load_json(temp_json_file)
     assert file_content == {"key1": "value1", "key2": "value2"}
-
-def test_read_json_file_nonexistent():
-    non_existent_file = "non_existent_file.json"
-    success, file_content = JsonReader.read_json_file(non_existent_file)
-    assert success is False
-    assert file_content is None
-
-def test_update_json_file(temp_json_file):
-    success = JsonReader.update_json_file(temp_json_file, "key3", "value3")
+        
+def test_validate_json_data_file(temp_json, temp_json_schema_file):
+    json_handler = JsonHandler()
+    success = json_handler.validate_json_data_file(json_data=temp_json, schema_path=temp_json_schema_file)
     assert success is True
 
-    _, file_content = JsonReader.read_json_file(temp_json_file)
-    assert file_content == {"key1": "value1", "key2": "value2", "key3": "value3"}
-
-def test_update_json_file_error():
-    error_file = "error_file.json" 
-    success = JsonReader.update_json_file(error_file, "key3", "value3")
-    assert success is False
-
-def test_write_json_file(temp_json_file):
-    new_content = {"key1": "updated_value1", "key4": "value4"}
-    success = JsonReader.write_json_file(temp_json_file, new_content)
+def test_validate_json(temp_json, temp_json_schema):
+    json_handler = JsonHandler()
+    success = json_handler.validate_json(json_data=temp_json, schema=temp_json_schema)
     assert success is True
-
-    _, file_content = JsonReader.read_json_file(temp_json_file)
-    assert file_content == new_content

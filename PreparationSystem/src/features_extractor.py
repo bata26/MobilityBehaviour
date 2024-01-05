@@ -16,7 +16,7 @@ class FeaturesExtractor:
         :return: None
         """
         max_pressure, min_pressure, median_pressure, mean_absolute_deviation, env_and_scatter, act_and_scatter = self.extract_shoes_sensors_features(raw_session, features)
-        self.prepare_session_development(raw_session, prepared_session, max_pressure, min_pressure, median_pressure, mean_absolute_deviation, env_and_scatter, act_and_scatter)
+        self.prepare_session(raw_session, prepared_session, max_pressure, min_pressure, median_pressure, mean_absolute_deviation, env_and_scatter, act_and_scatter)
 
     def extract_shoes_sensors_features(self, raw_session: list, features: dict):
         """
@@ -56,7 +56,7 @@ class FeaturesExtractor:
 
 
     @staticmethod
-    def prepare_session_development(raw_session: dict, prepared_session: dict, max_pressure: int, min_pressure: int,
+    def prepare_session(raw_session: dict, prepared_session: dict, max_pressure: int, min_pressure: int,
                                      median_pressure: int, mean_absolute_deviation: int, env_and_scatter: int, act_and_scatter: int):
         """
         Prepares the session (development mode).

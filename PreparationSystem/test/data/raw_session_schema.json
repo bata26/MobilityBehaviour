@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "properties": {
+    "uuid": {
+      "type": "string"
+    },
+    "calendar": {
+      "type": "string",
+      "enum": ["sport", "shopping", "cooking", "gaming"]
+    },
+    "pressure_detected": {
+      "type": "string",
+      "enum": ["Regular", "Anomalous", "None"]
+    },
+    "environment": {
+      "type": "string",
+      "enum": ["slippery", "plain", "slope", "house", "track"]
+    },
+    "time_series": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 1236,
+      "items": {
+      "type": "number"
+      }
+    }
+  },
+  "required": ["uuid", "calendar", "environment", "time_series", "pressure_detected"]
+}

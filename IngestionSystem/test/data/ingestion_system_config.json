@@ -1,0 +1,11 @@
+{
+  "operative_mode" : "development",
+  "preparation_system_ip" : "127.0.0.1",
+  "preparation_system_port" : 5000,
+  "evaluation_system_ip": "10.8.0.7",
+  "evaluation_system_port": 6000,
+  "production_window": 5,
+  "evaluation_window": 5,
+  "missing_samples_threshold": 1,
+  "db_name":"mobility.db"
+}

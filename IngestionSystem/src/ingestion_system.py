@@ -88,8 +88,7 @@ class IngestionSystem:
 
                         # Check Raw Session integrity
                         threshold = self.configuration.missing_samples_threshold
-                        raw_session_integrity = RawSessionIntegrity()
-                        good_session = raw_session_integrity.mark_missing_samples(time_series=raw_session['time_series'],
+                        good_session = RawSessionIntegrity.mark_missing_samples(time_series=raw_session['time_series'],
                                                                                   threshold=threshold)
 
                         if good_session:

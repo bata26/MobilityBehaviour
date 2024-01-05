@@ -18,10 +18,10 @@
       "type": "integer"
     },
     "max_value": {
-      "type": "integer"
+      "type": "number"
     },
     "min_value": {
-      "type": "integer"
+      "type": "number"
     },
     "features": {
       "type": "object",

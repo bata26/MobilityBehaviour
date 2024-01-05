@@ -101,7 +101,6 @@ class JsonIO:
 
 app = JsonIO.get_instance().get_app()
 log = logging.getLogger('werkzeug')
-log.disabled = True
 
 
 @app.post('/record')

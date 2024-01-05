@@ -1,7 +1,7 @@
 import json
 import logging
 import os
-from utility.json_handler import validate_json_data_file
+from utility.json_handler import JsonHandler
 
 
 class IngestionSystemConfiguration:
@@ -16,13 +16,14 @@ class IngestionSystemConfiguration:
         :param json_configuration_path: path to the configuration file
         :param json_schema_path:  path to the json schema of the configuration file
         """
+        json_handler = JsonHandler()
         # Open the configuration file
         with open(json_configuration_path,
                   "r", encoding="UTF-8") as file:
             # Load JSON configuration
             json_conf = json.load(file)
             # Validate configuration
-            if not validate_json_data_file(json_conf, json_schema_path):
+            if not json_handler.validate_json_data_file(json_data=json_conf, schema_path=json_schema_path):
                 logging.error("Impossible to load the ingestion system "
                               "configuration: JSON file is not valid")
                 raise ValueError("Ingestion System configuration failed")

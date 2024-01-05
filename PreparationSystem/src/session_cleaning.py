@@ -1,8 +1,6 @@
 import json
 import os
 from jsonschema import validate, ValidationError
-from utility.json_handler import validate_json_file_file
-
 
 class SessionCleaning:
 
@@ -41,10 +39,10 @@ class SessionCleaning:
                 value += time_series[i]
                 list_number += 1
         if list_number != 0:
-            time_series[missing_value].append(value / list_number)
+            time_series[missing_value]=(value / list_number)
 
     @staticmethod
-    def correct_outliers(time_series: list, min_value: int, max_value: int):
+    def correct_outliers(time_series: list, min_value: float, max_value: float):
         """
         Corrects outliers in the data.
         :param time_series: List of time series.
@@ -58,25 +56,5 @@ class SessionCleaning:
             elif time_series[i] < min_value:
                 time_series[i] = min_value
 
-    @staticmethod
-    def validate_raw_session(raw_session: dict):
-        """
-        Validates the received raw session according to the loaded schema.
-        :param raw_session: The dict containing the received raw session.
-        :return: True if the raw session is valid, False if it is not valid.
-        """
-        try:
-            with open(os.path.join('data', 'raw_session_schema.json')) as f:
-                schema = json.load(f)
-
-            validate(raw_session, schema)
-            return True
-
-        except FileNotFoundError:
-            print('[-] Failed to open schema file')
-            return False
-
-        except ValidationError:
-            return False
 
 

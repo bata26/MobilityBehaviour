@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "pressure_detected": {
+      "type": "string",
+      "enum": ["Anomalous", "Regular"]
+    },
+    "uuid": {
+      "type": "string"
+    }
+  },
+  "required": ["pressure_detected", "uuid"]
+}

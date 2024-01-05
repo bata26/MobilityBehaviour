@@ -6,6 +6,7 @@ from src.features_extractor import FeaturesExtractor
 from src.preparation_system_configuration import PreparationSystemConfiguration
 import logging
 from jsonschema import ValidationError
+from utility.json_handler import JsonHandler
 
 CONFIG_PATH = './data/preparation_system_config.json'
 CONFIG_SCHEMA_PATH = './data/preparation_system_config_schema.json'
@@ -46,8 +47,9 @@ class PreparationSystem:
             # Get received raw session
             self.raw_session = JsonIO.get_instance().get_received_json()
             print('[+] Raw session received')
+            json_handler = JsonHandler()
             # Check raw session validity
-            if SessionCleaning.validate_raw_session(self.raw_session):
+            if json_handler.validate_json_data_file(self.raw_session, "./data/raw_session_schema.json"):
                 print('[+] Raw session is valid')
             else:
                 print('[-] Raw session is not valid')

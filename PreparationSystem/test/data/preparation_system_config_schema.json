@@ -1,0 +1,92 @@
+{
+  "type": "object",
+  "properties": {
+    "operative_mode": {
+      "type": "string",
+      "enum": ["development", "production"]
+    },
+    "segregation_system_ip": {
+      "type": "string"
+    },
+    "segregation_system_port": {
+      "type": "integer"
+    },
+    "production_system_ip": {
+      "type": "string"
+    },
+    "production_system_port": {
+      "type": "integer"
+    },
+    "max_value": {
+      "type": "number"
+    },
+    "min_value": {
+      "type": "number"
+    },
+    "features": {
+      "type": "object",
+      "properties": {
+        "environment": {
+          "type": "object",
+          "properties": {
+            "slippery": {
+              "type": "integer"
+            },
+            "plain": {
+              "type": "integer"
+            },
+            "slope": {
+              "type": "integer"
+            },
+            "house": {
+              "type": "integer"
+            },
+            "track": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "slippery",
+            "plain",
+            "slope",
+            "house",
+            "track"
+          ]
+        },
+        "calendar": {
+          "type": "object",
+          "properties": {
+            "shopping": {
+              "type": "integer"
+            },
+            "sport": {
+              "type": "integer"
+            },
+            "cooking": {
+              "type": "integer"
+            },
+            "gaming": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "shopping",
+            "sport",
+            "cooking",
+            "gaming"
+          ]
+        }        
+      }
+    }
+  },
+  "required": [
+  "operative_mode",
+  "segregation_system_ip",
+  "segregation_system_port",
+  "production_system_ip",
+  "production_system_port",
+  "min_value",
+  "max_value",
+  "features"
+  ]
+}

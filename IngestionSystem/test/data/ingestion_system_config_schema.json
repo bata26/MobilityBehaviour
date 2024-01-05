@@ -1,0 +1,43 @@
+{
+  "type": "object",
+  "properties": {
+    "operative_mode": {
+      "type": "string",
+      "enum": ["development", "production"]
+    },
+    "preparation_system_ip": {
+      "type": "string"
+    },
+    "preparation_system_port": {
+      "type": "integer"
+    },
+    "evaluation_system_ip": {
+      "type": "string"
+    },
+    "evaluation_system_port": {
+      "type": "integer"
+    },
+    "production_window": {
+      "type": "integer"
+    },
+    "evaluation_window": {
+      "type": "integer"
+    },
+    "missing_samples_threshold": {
+      "type": "integer"
+    },
+    "db_name": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "operative_mode",
+    "preparation_system_ip",
+    "preparation_system_port",
+    "evaluation_system_ip",
+    "evaluation_system_port",
+    "production_window",
+    "evaluation_window",
+    "missing_samples_threshold",
+    "db_name"]
+}
