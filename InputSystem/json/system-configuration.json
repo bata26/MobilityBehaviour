@@ -1,0 +1,6 @@
+{
+    "situation": "ideal",
+    "probability-of-error": 10,
+    "interval": 5,
+    "stage": "waiting"
+}

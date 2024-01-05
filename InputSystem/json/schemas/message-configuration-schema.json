@@ -1,0 +1,33 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "src" : {
+            "type" : "object",
+            "properties": {
+                "ip":{
+                    "type" : "string"
+                },
+                "port":{
+                    "type" : "integer"
+                }
+            },
+            "required": ["ip" , "port"]
+        },
+        "dest" : {
+            "type" : "object",
+            "properties": {
+                "ip":{
+                    "type" : "string"
+                },
+                "port":{
+                    "type" : "integer"
+                }
+            },
+            "required": ["ip" , "port"]
+        }
+
+    },
+    "required" : [ "src" , "dest"]
+
+}

@@ -1,0 +1,15 @@
+{
+    "type": "object",
+    "properties": {
+      "situation" : {
+        "type" : "string"
+      },
+      "probability-of-error" : {
+        "type" : "integer"
+      },
+      "interval" : {
+        "type" : "number"
+      }
+    },
+    "required": ["situation", "probability-of-error", "interval"]
+  }
