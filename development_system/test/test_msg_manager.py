@@ -22,7 +22,7 @@ def json_body():
                 "mean_absolute_deviation_pressure_ts": 0.0,
                 "activity_and_small_scatter": 0.0,
                 "environment_and_small_scatter": 0.0,
-                "label": 0.0
+                "label": "Regular"
             },
             {
                 "maximum_pressure_ts": 0.0,
@@ -31,7 +31,7 @@ def json_body():
                 "mean_absolute_deviation_pressure_ts": 0.0,
                 "activity_and_small_scatter": 0.0,
                 "environment_and_small_scatter": 0.0,
-                "label": 0.0
+                "label": "Regular"
             }
             ]
         },
@@ -45,7 +45,7 @@ def json_body():
                 "mean_absolute_deviation_pressure_ts": 0.0,
                 "activity_and_small_scatter": 0.0,
                 "environment_and_small_scatter": 0.0,
-                "label": 0.0
+                "label": "Regular"
             },
             {
                 "maximum_pressure_ts": 0.0,
@@ -54,7 +54,7 @@ def json_body():
                 "mean_absolute_deviation_pressure_ts": 0.0,
                 "activity_and_small_scatter": 0.0,
                 "environment_and_small_scatter": 0.0,
-                "label": 0.0
+                "label": "Regular"
             }
             ]
         },
@@ -68,7 +68,7 @@ def json_body():
                 "mean_absolute_deviation_pressure_ts": 0.0,
                 "activity_and_small_scatter": 0.0,
                 "environment_and_small_scatter": 0.0,
-                "label": 0.0
+                "label": "Regular"
             },
             {
                 "maximum_pressure_ts": 0.0,
@@ -77,7 +77,7 @@ def json_body():
                 "mean_absolute_deviation_pressure_ts": 0.0,
                 "activity_and_small_scatter": 0.0,
                 "environment_and_small_scatter": 0.0,
-                "label": 0.0
+                "label": "Regular"
             }
             ]
         }

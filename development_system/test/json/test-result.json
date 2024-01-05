@@ -1,0 +1,9 @@
+[
+    {
+        "uuid": "NN0",
+        "test_error": 1.0,
+        "validation_error": 1.0,
+        "difference": 0.0,
+        "tolerance": 0.3
+    }
+]

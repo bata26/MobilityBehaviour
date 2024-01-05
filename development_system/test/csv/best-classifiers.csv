@@ -1,0 +1,6 @@
+,uuid,train_error,validation_error,layers,neurons,hidden_layers_structure,error_difference,overfitting_threshold
+0,NN0,1.0,1.0,1,128,"(128,)",0.0,0.25
+1,NN1,1.0,1.0,1,64,"(64,)",0.0,0.25
+2,NN2,1.0,1.0,1,32,"(32,)",0.0,0.25
+3,NN3,1.0,1.0,1,16,"(16,)",0.0,0.25
+4,NN4,1.0,1.0,1,8,"(8,)",0.0,0.25

@@ -1,5 +1,5 @@
 {
-    "iterations-number": 5,
+    "iterations-number": 100,
     "hidden-layer-size-range": [
         1,
         6

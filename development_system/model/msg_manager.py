@@ -7,11 +7,29 @@ from flask import Flask, request
 import requests
 
 from model.msg_configuration import MessageConfiguration
+from marshmallow import Schema, fields
 
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 load_dotenv()
 
+class FeatureSchema(Schema):
+    maximum_pressure_ts = fields.Float(required=True)
+    minimum_pressure_ts = fields.Float(required=True)
+    median_pressure_ts = fields.Float(required=True)
+    mean_absolute_deviation_pressure_ts = fields.Float(required=True)
+    activity_and_small_scatter = fields.Float(required=True)
+    environment_and_small_scatter = fields.Float(required=True)
+    label = fields.String(required=True)
+
+class DataSchema(Schema):
+    number_of_samples = fields.Int(required=True)
+    features = fields.List(fields.Nested(FeatureSchema()))
+
+class FullSchema(Schema):
+    train = fields.Nested(DataSchema())
+    validation = fields.Nested(DataSchema())
+    test = fields.Nested(DataSchema())
 
 class MessageManager:
     _instance = None
@@ -67,6 +85,14 @@ def post_json():
         return {'error': 'No Payload Received'}, 500
 
     received_json = request.json
+
+    schema = FullSchema()
+    errors = schema.validate(received_json)
+
+    if errors:
+        return errors, 400
+
+    print("[INFO] Received payload validated")
     receive_thread = Thread(target=MessageManager.get_instance().send_to_main, args=(received_json,))
     receive_thread.start()
     return {}, 200

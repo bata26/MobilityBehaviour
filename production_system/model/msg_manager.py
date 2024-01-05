@@ -7,7 +7,24 @@ from model.msg_configuration import MessageConfiguration
 from flask import Flask, request
 from model.prepared_session import PreparedSession
 import requests as r
+from marshmallow import Schema, fields, validate
 
+class DeploySchema(Schema):
+    file = fields.Field(required=True, validate=validate.OneOf(["joblib"]))
+class FeaturesSchema(Schema):
+    maximum_pressure_ts = fields.Float(required=True)
+    minimum_pressure_ts = fields.Float(required=True)
+    median_pressure_ts = fields.Float(required=True)
+    mean_absolute_deviation_pressure_ts = fields.Float(required=True)
+    activity_and_small_scatter = fields.Float(required=True)
+    environment_and_small_scatter = fields.Float(required=True)
+
+class PreparedSessionSchema(Schema):
+    _id = fields.Str(required=True)
+    calendar = fields.Str(required=True)
+    environment = fields.Str(required=True)
+    label = fields.Str(required=True)
+    features = fields.Nested(FeaturesSchema, required=True)
 
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
@@ -74,6 +91,12 @@ app = MessageManager.get_instance().get_app()
 
 @app.post('/deploy')
 def deploy():
+    schema = DeploySchema()
+    errors = schema.validate(request.files)
+
+    if errors:
+        return errors, 400
+
     f = request.files['file']
     f.save(os.getenv("CLASSIFIER_FILE_PATH"))
     receive_thread = Thread(target=MessageManager.get_instance().send_classifier)
@@ -84,6 +107,12 @@ def deploy():
 def receive_prepared_session():
     if request.json is None:
         return {'error': 'No Payload Received'}, 500
+
+    schema = PreparedSessionSchema()
+    errors = schema.validate(request.json)
+
+    if errors:
+        return errors, 400
 
     received_json = request.json
     print("[DEBUG] received json : " , received_json)

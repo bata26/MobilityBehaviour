@@ -1,5 +1,5 @@
 {
     "starting-mode": "waiting",
     "ongoing-validation": false,
-    "stages": "set_avg_hyp"
+    "stage": "snd_clsfr"
 }

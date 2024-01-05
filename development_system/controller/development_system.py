@@ -27,11 +27,12 @@ class DevelopmentSystem:
         self._configuration.stage = new_state
         self._configuration.update_stage()
 
-    def run(self):
+    def run(self, productivity = False):
 
-        run_thread = Thread(target=MessageManager.get_instance().start_server)
-        run_thread.setDaemon(True)
-        run_thread.start()
+        if productivity is True:
+            run_thread = Thread(target=MessageManager.get_instance().start_server)
+            run_thread.setDaemon(True)
+            run_thread.start()
 
         while True:
             # RECEIVE DATASET
@@ -49,7 +50,10 @@ class DevelopmentSystem:
                 self.update_stage("set_nr_iter")
 
             if self._configuration.stage == "set_nr_iter":
-                inserted_iterations = int(input("[HUMAN] Insert number of iterations\n"))
+                if productivity is True:
+                    inserted_iterations = 100
+                else:
+                    inserted_iterations = int(input("[HUMAN] Insert number of iterations\n"))
 
                 self._train_controller.update_iterations_number(inserted_iterations)
                 print("[INFO] Start Training Classifier")
@@ -67,7 +71,11 @@ class DevelopmentSystem:
                 self._train_controller.generate_learning_report()
                 print("[INFO] Exported chart, waiting for human to check learning plot")
                 print("[HUMAN] Wait for checking the learning_plot")
-                learning_res = input("Is the number of iterations fine? (Y/n)\n")
+
+                if productivity is True:
+                    learning_res = "y"
+                else:
+                    learning_res = input("Is the number of iterations fine? (Y/n)\n")
 
                 if learning_res == "Y" or learning_res == "y":
                     self.update_stage("set_hyp")
@@ -94,12 +102,18 @@ class DevelopmentSystem:
                 test_controller.generate_test_report()
 
                 print("[INFO] Test Report Generated, waiting for human")
-                test_res = input("[HUMAN] Is the test passed? (Y/n)\n")
+                if productivity is True:
+                    test_res = "y"
+                else:
+                    test_res = input("[HUMAN] Is the test passed? (Y/n)\n")
 
                 if test_res == "Y" or test_res == "y":
                     self.update_stage("snd_clsfr")
                 elif test_res == "n" or test_res == "N":
                     self.update_stage("ask_cnfg")
+
+                if productivity is True:
+                    break
 
             if self._configuration.stage == "ask_cnfg":
                 print("[WARN] Test not passed, needed new config")

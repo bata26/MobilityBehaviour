@@ -1,5 +1,6 @@
 import sys
 import os
+import time
 import signal
 from dotenv import load_dotenv
 from controller.development_system import DevelopmentSystem
@@ -12,6 +13,11 @@ def handler(signum, frame):
 
 signal.signal(signal.SIGINT, handler)
 
+
 load_dotenv()
 if __name__ == '__main__':
-    DevelopmentSystem().run()
+    start_time = time.time()
+    DevelopmentSystem().run(True)
+    end_time = time.time()
+    print("START : " , start_time)
+    print("END : " , end_time)
