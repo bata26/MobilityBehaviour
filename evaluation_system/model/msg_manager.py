@@ -75,7 +75,6 @@ def receive_classifier_labels():
 
 @app.get('/start')
 def start_app():
-    print("[INFO] Start msg received")
     receive_thread = Thread(target=MessageManager.get_instance().send_start)
     receive_thread.start()
     return {}, 200
