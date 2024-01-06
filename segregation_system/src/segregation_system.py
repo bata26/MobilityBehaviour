@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 import json
 from threading import Thread
 from jsonschema import validate, ValidationError
@@ -68,6 +69,8 @@ class SegregationSystem:
         listener.setDaemon(True)
         listener.start()
 
+        while JsonIO.get_instance().get_queue().get(block=True) is False:
+            time.sleep(3)
         while True:
             stage = self.segregation_system_config['stage']
 

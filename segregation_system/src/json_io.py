@@ -1,4 +1,5 @@
 import queue
+from threading import Thread
 from flask import Flask, request
 from requests import post, exceptions
 
@@ -25,6 +26,12 @@ class JsonIO:
 
     def get_app(self):
         return self._app
+
+    def send_to_main(self):
+        self._received_json_queue.put(True, block=True)
+
+    def get_queue(self):
+        return self._received_json_queue
 
     def receive(self):
         # get json message from the queue
@@ -57,6 +64,12 @@ class JsonIO:
 
 app = JsonIO.get_instance().get_app()
 
+@app.get('/start')
+def start_app():
+    print("[INFO] Start msg received")
+    receive_thread = Thread(target=JsonIO.get_instance().send_to_main)
+    receive_thread.start()
+    return {}, 200
 
 @app.post('/preparedsession')
 def post_json():
