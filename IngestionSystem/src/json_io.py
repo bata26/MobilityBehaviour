@@ -1,5 +1,4 @@
 import logging
-import os
 from typing import Any
 from flask import Flask, request
 from threading import Thread
@@ -36,7 +35,7 @@ class JsonIO:
         """
         return self.app
 
-    def get_received_record(self, received_record: dict) -> bool:
+    def put_received_record(self, received_record: dict) -> bool:
         """
         Receives a record and enqueues it in a thread-safe queue
         :param received_record: record sent from a data source (calendar, labels, settings, pressure time series)
@@ -50,6 +49,9 @@ class JsonIO:
             logging.error('Full queue exception')
             return False
         return True
+    
+    def send_to_main(self):
+        self.received_records_queue.put(True, block=True)
 
     def receive(self) -> Any:
         """
@@ -99,6 +101,7 @@ class JsonIO:
         self.app.run(host=ip, port=port, debug=False)
 
 
+
 app = JsonIO.get_instance().get_app()
 log = logging.getLogger('werkzeug')
 
@@ -112,7 +115,20 @@ def post_json():
         return {'error': 'No record received'}, 500
 
     received_record = request.json
-    new_thread = Thread(target=JsonIO.get_instance().get_received_record, args=(received_record, ))
+    new_thread = Thread(target=JsonIO.get_instance().put_received_record, args=(received_record, ))
     new_thread.start()
 
+    return {}, 200
+
+@app.get('/start')
+def start_system():
+    """
+    The function is called when a post request is received on the json endpoint.
+    This function starts the entire system.
+    :return: Returns a JSON response with status code 200 if the request is successful,
+            and with status code 500 if it's not.
+    """
+    print("[INFO] Start msg received")
+    receive_thread = Thread(target=JsonIO.get_instance().send_to_main)
+    receive_thread.start()
     return {}, 200

@@ -2,13 +2,11 @@ import json
 import logging
 from utility.json_handler import JsonHandler
 
-
 class PreparationSystemConfiguration:
     """
     Class responsible for retrieving and validating the configuration parameters
     set by the system administrator. It offers the parameters as public attributes.
     """
-    
     def __init__(self, json_configuration_path: str, json_schema_path: str):
         """
         ``Configuration`` constructor
@@ -26,7 +24,6 @@ class PreparationSystemConfiguration:
                 logging.error("Impossible to load the preparation system "
                               "configuration: JSON file is not valid")
                 raise ValueError("Preparation System configuration failed")
-            
             # Add JSON attributes to current object
             self.production_system_ip = json_conf['production_system_ip']
             self.segregation_system_ip = json_conf['segregation_system_ip']

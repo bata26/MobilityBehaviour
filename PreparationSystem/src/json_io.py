@@ -28,16 +28,17 @@ class JsonIO:
         """
         self.app.run(host=ip, port=port, debug=False)
 
-    def get_received_json(self):
+    def receive(self):
         """
-        Retrieves a raw session from the received JSON queue.
+        Retrieves a raw session or the start message 
+        from the received JSON queue.
         :return: Raw session
         """
         return self.received_json_queue.get(block=True)
 
     # -------- SERVER HANDLER --------
 
-    def receive(self, received_json):
+    def put_received_record(self, received_json):
         """
         Adds the received JSON payload to _received_json_queue.
         :param received_json: JSON payload received by the server.
@@ -48,6 +49,9 @@ class JsonIO:
             self.received_json_queue.put(received_json, timeout=5)
         except queue.Full:
             print("Full queue exception")
+
+    def send_to_main(self):
+        self.received_json_queue.put(True, block=True)        
 
     # -------- CLIENT REQUEST --------
 
@@ -98,7 +102,20 @@ def post_json():
 
     received_json = request.json
 
-    new_thread = Thread(target=JsonIO.get_instance().receive, args=(received_json,))
+    new_thread = Thread(target=JsonIO.get_instance().put_received_record, args=(received_json,))
     new_thread.start()
 
+    return {}, 200
+
+@app.get('/start')
+def start_system():
+    """
+    The function is called when a post request is received on the json endpoint.
+    This function starts the entire system.
+    :return: Returns a JSON response with status code 200 if the request is successful,
+            and with status code 500 if it's not.
+    """
+    print("[INFO] Start msg received")
+    receive_thread = Thread(target=JsonIO.get_instance().send_to_main)
+    receive_thread.start()
     return {}, 200

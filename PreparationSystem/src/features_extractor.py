@@ -1,6 +1,5 @@
-import numpy as np
 import random
-
+import numpy as np
 
 class FeaturesExtractor:
     """
@@ -15,9 +14,11 @@ class FeaturesExtractor:
         :param features: Dictionary of features to extract from pressure time series session data.
         :return: None
         """
-        max_pressure, min_pressure, median_pressure, mean_absolute_deviation, env_and_scatter, act_and_scatter = self.extract_shoes_sensors_features(raw_session, features)
-        self.prepare_session(raw_session, prepared_session, max_pressure, min_pressure, median_pressure, mean_absolute_deviation, env_and_scatter, act_and_scatter)
-
+        max_pressure, min_pressure, median_pressure, \
+        mean_absolute_deviation, env_and_scatter, act_and_scatter = self.extract_shoes_sensors_features(raw_session, features)
+        self.prepare_session(raw_session, prepared_session, max_pressure, min_pressure, \
+                        median_pressure, mean_absolute_deviation, env_and_scatter, act_and_scatter)
+        
     def extract_shoes_sensors_features(self, raw_session: list, features: dict):
         """
         Extracts the relevant features from the preussure time series data of the raw session data.
@@ -43,21 +44,24 @@ class FeaturesExtractor:
         activity_and_small_scatter = None
 
         if operation_env == 0:
-            environment_and_small_scatter = features['environment'][raw_session['environment']] + scattering_env
-        else: 
-            environment_and_small_scatter = features['environment'][raw_session['environment']] - scattering_env
+            environment_and_small_scatter = features['environment'][raw_session['environment']] + \
+                scattering_env
+        else:
+            environment_and_small_scatter = features['environment'][raw_session['environment']] - \
+                scattering_env
 
         if operation_act == 0:
-            activity_and_small_scatter = features['calendar'][raw_session['calendar']] + scattering_act
-        else: 
-            activity_and_small_scatter = features['calendar'][raw_session['calendar']] - scattering_act
-        
-        return max_pressure, min_pressure, median_pressure, mean_absolute_deviation, environment_and_small_scatter, activity_and_small_scatter
-
-
+            activity_and_small_scatter = features['calendar'][raw_session['calendar']] + \
+                scattering_act
+        else:
+            activity_and_small_scatter = features['calendar'][raw_session['calendar']] - \
+                scattering_act
+        return max_pressure, min_pressure, median_pressure, \
+            mean_absolute_deviation, environment_and_small_scatter, activity_and_small_scatter
     @staticmethod
-    def prepare_session(raw_session: dict, prepared_session: dict, max_pressure: int, min_pressure: int,
-                                     median_pressure: int, mean_absolute_deviation: int, env_and_scatter: int, act_and_scatter: int):
+    def prepare_session(raw_session: dict, prepared_session: dict, max_pressure: int,
+                        min_pressure: int, median_pressure: int, mean_absolute_deviation: int,
+                        env_and_scatter: int, act_and_scatter: int):
         """
         Prepares the session (development mode).
         :param raw_session: Raw session data.

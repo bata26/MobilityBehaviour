@@ -1,9 +1,13 @@
-import json
-import os
-from jsonschema import validate, ValidationError
-
+'''
+Module Name: SessionCleaning
+Description: This class corrects the missing samples 
+and the outliers.
+'''
 class SessionCleaning:
-
+    """
+    Class that corrects through interpolation the missing samples
+    and corrects the outliers through substitution
+    """
     def correct_missing_samples(self, time_series: list):
         """
         Checks for missing samples in the list of pressure time series;
@@ -11,9 +15,9 @@ class SessionCleaning:
         :param time_series: List of time_series.
         :return: True if there are no missing samples or the missing ones are recoverable.
         """
-        for i in range(len(time_series)):
+        for i, value in enumerate(time_series):
             # If a sample is missing the interpolation is computed
-            if not time_series[i]:
+            if value is None:
                 print(f'[-] Value nr. { + 1} is missing')
                 if 3 <= i <= 1232:
                     self.interpolate_list(time_series, i)
@@ -30,7 +34,8 @@ class SessionCleaning:
         :return: None
         """
         # List of adjacent value in the time_series
-        lists_to_use = [missing_value - 1, missing_value + 1, missing_value - 2, missing_value + 2, missing_value - 3, missing_value + 3]
+        lists_to_use = [missing_value - 1, missing_value + 1, missing_value - 2, \
+                        missing_value + 2, missing_value - 3, missing_value + 3]
 
         value = 0
         list_number = 0
@@ -39,7 +44,7 @@ class SessionCleaning:
                 value += time_series[i]
                 list_number += 1
         if list_number != 0:
-            time_series[missing_value]=(value / list_number)
+            time_series[missing_value] = value / list_number
 
     @staticmethod
     def correct_outliers(time_series: list, min_value: float, max_value: float):
@@ -50,11 +55,8 @@ class SessionCleaning:
         :param max_value: Upper bound.
         :return: None
         """
-        for i in range(len(time_series)):
-            if time_series[i] > max_value:
+        for i, value in enumerate(time_series):
+            if value > max_value:
                 time_series[i] = max_value
-            elif time_series[i] < min_value:
+            elif value < min_value:
                 time_series[i] = min_value
-
-
-

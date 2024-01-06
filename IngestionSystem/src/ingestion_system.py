@@ -1,14 +1,19 @@
-from jsonschema import ValidationError
-from threading import Thread
-from src.json_io import JsonIO
 import logging
+import time
+from threading import Thread
+from jsonschema import ValidationError
 from src.raw_session_integrity import RawSessionIntegrity
 from src.raw_sessions_store import RawSessionsStore
 from src.ingestion_system_configuration import IngestionSystemConfiguration
+from src.json_io import JsonIO
 
 CONFIG_PATH = './data/ingestion_system_config.json'
 CONFIG_SCHEMA_PATH = './data/ingestion_system_config_schema.json'
 
+'''
+Module Name: IngestionSystem
+Description: This class acts as a controller for the system.
+'''
 
 class IngestionSystem:
     """
@@ -24,21 +29,18 @@ class IngestionSystem:
         except ValidationError:
             logging.error('Error during the Ingestion System initialization phase')
             exit(-1)
-        
         print(f'[+] The configuration is valid, {self.configuration.operative_mode} mode')
-        
         self.last_uuid_received = None
         self.evaluation = False
         self.sessions_to_evaluation = 0
         self.sessions_to_produce = 0
-            
 
     def run(self) -> None:
         """
         Runs the Ingestion System main process
         """
         operative_mode = self.configuration.operative_mode
-        logging.info(f'Operative Mode: {operative_mode}', 2)
+        logging.info('Operative Mode: %s', operative_mode)
 
         # Create an instance of RawSessionsStore
         raw_sessions_store = RawSessionsStore()
@@ -46,7 +48,8 @@ class IngestionSystem:
         # Run REST server
         listener = Thread(target=JsonIO.get_instance().listen, args=('0.0.0.0', 4000), daemon=True)
         listener.start()
-
+        while JsonIO.get_instance().receive() is False:
+            time.sleep(3)
         while True:
             # Wait for a new record
             received_record = JsonIO.get_instance().receive()
@@ -56,26 +59,29 @@ class IngestionSystem:
                 if self.last_uuid_received is not None:
                     if self.last_uuid_received == received_record['uuid']:
                         # Check on the current session
-                        session_complete = raw_sessions_store.is_session_complete(uuid=received_record['uuid'],
-                                                                                  operative_mode=operative_mode,
-                                                                                  last_missing_sample=False,
-                                                                                  evaluation=self.evaluation)
+                        session_complete = raw_sessions_store. \
+                        is_session_complete(uuid=received_record['uuid'], \
+                                            operative_mode=operative_mode, \
+                                            last_missing_sample=False, \
+                                            evaluation=self.evaluation)
                         uuid = received_record['uuid']
                     else:
                         # Check on the previous session because of a missing sample
-                        logging.warning(f'Raw Session {self.last_uuid_received} missing sample detected')
-                        session_complete = raw_sessions_store.is_session_complete(uuid=self.last_uuid_received,
-                                                                                  operative_mode=operative_mode,
-                                                                                  last_missing_sample=True,
-                                                                                  evaluation=self.evaluation)
+                        logging.warning('Raw Session %s missing sample detected', \
+                                        self.last_uuid_received)
+                        session_complete = raw_sessions_store. \
+                                            is_session_complete(uuid=self.last_uuid_received, \
+                                                                operative_mode=operative_mode, \
+                                                                last_missing_sample=True, \
+                                                                evaluation=self.evaluation)
                         uuid = self.last_uuid_received
                         self.last_uuid_received = received_record['uuid']
                         last_missing_sample = True
 
                     if session_complete:
-                        # If the session is complete there is no need for the next record to test "is_session_complete"
+                        # If the session is complete there is no need for the next record to test"
                         self.last_uuid_received = None
-                        logging.info(f'Raw Session {uuid} complete')
+                        logging.info('Raw Session %s complete', uuid)
 
                         # Load Raw Session from the Data Store
                         raw_session = raw_sessions_store.load_raw_session(uuid=uuid)
@@ -88,58 +94,64 @@ class IngestionSystem:
 
                         # Check Raw Session integrity
                         threshold = self.configuration.missing_samples_threshold
-                        good_session = RawSessionIntegrity.mark_missing_samples(time_series=raw_session['time_series'],
-                                                                                  threshold=threshold)
+                        good_session = RawSessionIntegrity. \
+                        mark_missing_samples(time_series=raw_session['time_series'], \
+                                            threshold=threshold)
 
                         if good_session:
                             # Send Raw Session to the Preparation System
                             preparation_system_ip = self.configuration.preparation_system_ip
                             preparation_system_port = self.configuration.preparation_system_port
-                            sent_to_preparation = JsonIO.get_instance().send(endpoint_ip=preparation_system_ip,
-                                                                             endpoint_port=preparation_system_port,
-                                                                             data=raw_session,
-                                                                             dest_system="preparation")
+                            sent_to_preparation = JsonIO.get_instance(). \
+                                                send(endpoint_ip=preparation_system_ip, \
+                                                endpoint_port=preparation_system_port, \
+                                                data=raw_session, \
+                                                dest_system="preparation")
 
                             if sent_to_preparation:
-                                logging.info(f'Raw Session {uuid} sent to the Preparation System', 0)
+                                logging.info('Raw Session %s sent to the Preparation System', uuid)
 
                             if self.evaluation:
                                 # Send Raw Session to the Evaluation System
                                 evaluation_system_ip = self.configuration.evaluation_system_ip
                                 evaluation_system_port = self.configuration.evaluation_system_port
-                                label = {'uuid': raw_session['uuid'], 'label': raw_session['pressure_detected']}
-                                sent_to_evaluation = JsonIO.get_instance().send(endpoint_ip=evaluation_system_ip,
-                                                                                endpoint_port=evaluation_system_port,
-                                                                                data=label,
-                                                                                dest_system="evaluation")
+                                label = {'uuid': raw_session['uuid'], \
+                                        'label': raw_session['pressure_detected']}
+                                sent_to_evaluation = JsonIO.get_instance(). \
+                                                        send(endpoint_ip=evaluation_system_ip, \
+                                                            endpoint_port=evaluation_system_port, \
+                                                            data=label, \
+                                                            dest_system="evaluation")
                                 if sent_to_evaluation:
-                                    logging.info(f'Label "{raw_session["pressure_detected"]}" sent to the evaluation System', 1)
+                                    logging.info('Label %s sent to the evaluation System', \
+                                                 raw_session["pressure_detected"])
                                     self.sessions_to_evaluation += 1
-                                    logging.info(f'Labels to sent to the evaluation System: {self.sessions_to_evaluation}')
-
+                                    logging.info('Labels to sent to the evaluation System: %s', \
+                                                 self.sessions_to_evaluation)
                                     if self.sessions_to_evaluation == self.configuration.evaluation_window:
                                         self.sessions_to_evaluation = 0
                                         self.evaluation = False
-                                        logging.info(f'evaluation phase ended')
+                                        logging.info('Evaluation phase ended')
                             else:
                                 if self.configuration.operative_mode == 'production':
                                     self.sessions_to_produce += 1
-                                    logging.info(f'Sessions executed: {self.sessions_to_produce}')
+                                    logging.info('Sessions executed: %s', self.sessions_to_produce)
 
                                     if self.sessions_to_produce == self.configuration.production_window:
                                         self.evaluation = True
                                         self.sessions_to_produce = 0
                                         logging.info('Entering in evaluation phase')
                         else:
-                            logging.error(f'Raw Session {uuid} discarded [threshold not satisfied]')
+                            logging.error('Raw Session %s discarded, threshold not satisfied', \
+                                         uuid)
                     else:
                         if last_missing_sample:
-                            logging.error(f'Raw Session {uuid} not complete [no recovery possible]')
+                            logging.error('Raw Session %s not complete [no recovery possible]', \
+                                          uuid)
                             # Session not complete (meaning that some required record is missing)
-                            # Being last_missing_samples equal to True, the system will not receive any other record
-                            # related to this session (session is lost) so it must be deleted from the data store
+                            # The system will not receive any other record
+                            # related to this session (lost) so it must be delete from the store
                             raw_sessions_store.delete_raw_session(uuid=uuid)
                             self.last_uuid_received = None
                 else:
                     self.last_uuid_received = received_record['uuid']
-        
