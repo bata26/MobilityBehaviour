@@ -39,7 +39,7 @@ class LabelStorage:
         self.semaphore = threading.Semaphore(1)
         self.tot_labels_received = 0
         db_name = config.db_name
-        db_path = os.path.join('.\data', db_name)
+        db_path = os.path.join('data', db_name)
 
         if not os.path.exists(db_path):
             print("Database doesn't exist")
