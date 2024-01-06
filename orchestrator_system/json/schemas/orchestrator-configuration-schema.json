@@ -1,0 +1,92 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "src" : {
+            "type" : "object",
+            "properties": {
+                "ip":{
+                    "type" : "string"
+                },
+                "port":{
+                    "type" : "integer"
+                }
+            },
+            "required": ["ip" , "port"]
+        },
+        "ingestion-system" : {
+            "type" : "object",
+            "properties": {
+                "ip":{
+                    "type" : "string"
+                },
+                "port":{
+                    "type" : "integer"
+                }
+            },
+            "required": ["ip" , "port"]
+        },
+        "preparation-system" : {
+            "type" : "object",
+            "properties": {
+                "ip":{
+                    "type" : "string"
+                },
+                "port":{
+                    "type" : "integer"
+                }
+            },
+            "required": ["ip" , "port"]
+        },
+        "segregation-system" : {
+            "type" : "object",
+            "properties": {
+                "ip":{
+                    "type" : "string"
+                },
+                "port":{
+                    "type" : "integer"
+                }
+            },
+            "required": ["ip" , "port"]
+        },
+        "development-system" : {
+            "type" : "object",
+            "properties": {
+                "ip":{
+                    "type" : "string"
+                },
+                "port":{
+                    "type" : "integer"
+                }
+            },
+            "required": ["ip" , "port"]
+        },
+        "production-system" : {
+            "type" : "object",
+            "properties": {
+                "ip":{
+                    "type" : "string"
+                },
+                "port":{
+                    "type" : "integer"
+                }
+            },
+            "required": ["ip" , "port"]
+        },
+        "evaluation-system" : {
+            "type" : "object",
+            "properties": {
+                "ip":{
+                    "type" : "string"
+                },
+                "port":{
+                    "type" : "integer"
+                }
+            },
+            "required": ["ip" , "port"]
+        }
+    },
+    "required" : ["client-system","ingestion-system","preparation-system","segregation-system","development-system","production-system","evaluation-system"]
+
+}

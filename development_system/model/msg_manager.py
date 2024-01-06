@@ -59,7 +59,11 @@ class MessageManager:
 
     def send_to_main(self , dataset):
         self._queue.put(dataset, block=True)
-        print('New Dataset received')
+        print('[INFO] Dataset received')
+
+    def send_start(self):
+        self._queue.put(True, block=True)
+        print('[INFO] Start message received')
 
     def send_classifier(self , uuid):
         url = f"http://{self._configuration.host_dest_ip}:{self._configuration.host_dest_port}/deploy"
@@ -78,6 +82,13 @@ class MessageManager:
             raise TimeoutError
 
 app = MessageManager.get_instance().get_app()
+
+@app.get('/start')
+def start_app():
+    print("[INFO] Start msg received")
+    receive_thread = Thread(target=MessageManager.get_instance().send_start)
+    receive_thread.start()
+    return {}, 200
 
 @app.post('/senddata')
 def post_json():

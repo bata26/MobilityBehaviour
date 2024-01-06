@@ -1,7 +1,7 @@
 {
     "src" : {
         "ip" : "0.0.0.0",
-        "port" : 6001
+        "port" : 6000
     },
     "evaluation-system":{
         "ip" : "10.8.0.7",

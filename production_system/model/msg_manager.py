@@ -10,7 +10,7 @@ import requests as r
 from marshmallow import Schema, fields, validate
 
 class DeploySchema(Schema):
-    file = fields.Field(required=True, validate=validate.OneOf(["joblib"]))
+    file = fields.Field(required=True)
 class FeaturesSchema(Schema):
     maximum_pressure_ts = fields.Float(required=True)
     minimum_pressure_ts = fields.Float(required=True)
@@ -61,6 +61,10 @@ class MessageManager:
         self._queue.put(True, block=True)
         print('New Classifier received')
 
+    def send_to_main(self):
+        self._queue.put(True, block=True)
+        print('New Classifier received')
+
     def send_prepared_session(self , received_prepared_session):
         prepared_session = PreparedSession(received_prepared_session)
         self._queue.put(prepared_session, block=True)
@@ -88,6 +92,14 @@ class MessageManager:
 
 
 app = MessageManager.get_instance().get_app()
+
+
+@app.get('/start')
+def start_app():
+    print("[INFO] Start msg received")
+    receive_thread = Thread(target=MessageManager.get_instance().send_to_main)
+    receive_thread.start()
+    return {}, 200
 
 @app.post('/deploy')
 def deploy():

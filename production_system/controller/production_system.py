@@ -1,5 +1,5 @@
 from threading import Thread
-
+import time
 from model.msg_manager import MessageManager
 from model.system_configuration import SystemConfiguration
 from controller.deploy_controller import DeployController
@@ -21,6 +21,10 @@ class ProductionSystem:
         run_thread = Thread(target=MessageManager.get_instance().start_server)
         run_thread.setDaemon(True)
         run_thread.start()
+
+        while MessageManager.get_instance().get_queue().get(block=True) is False:
+            time.sleep(3)
+
         while True:
 
             if self._configuration.classifier_deployed is False:

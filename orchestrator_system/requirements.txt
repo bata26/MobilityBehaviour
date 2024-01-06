@@ -1,0 +1,5 @@
+requests==2.31.0
+python-dotenv==1.0.0
+fastjsonschema==2.19.0
+jsonschema==4.20.0
+jsonschema-specifications==2023.11.2

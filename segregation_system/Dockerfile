@@ -8,4 +8,4 @@ ADD . /app
 ENV TZ=Europe/Rome
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 EXPOSE 6000
-CMD ["python3", "main.py"]
+CMD ["python3", "-u" ,"main.py"]
