@@ -75,25 +75,25 @@ class Dataset:
                         "environment" : sample["environment"]
                     }
             print("[DEBUG] Sto per mandare : " , req_body)
-            #msg_manager.send_data(req_body)
+            msg_manager.send_data(req_body)
             req_body = {
                         "uuid": sample["uuid"],
                         "calendar" : sample["activity"]
                     }
             print("[DEBUG] Sto per mandare : " , req_body)
-            #msg_manager.send_data(req_body)
+            msg_manager.send_data(req_body)
             req_body = {
                         "uuid": sample["uuid"],
                         "pressure_detected" : sample["label"]
                     }
             print("[DEBUG] Sto per mandare : " , req_body)
-            #msg_manager.send_data(req_body)
+            msg_manager.send_data(req_body)
             req_body = {
                         "uuid": sample["uuid"],
                         "time_series" : sample["ts"]
                     }
             print("[DEBUG] Sto per mandare : " , req_body)
-            #msg_manager.send_data(req_body)
+            msg_manager.send_data(req_body)
         except Exception as e:
             raise e
 

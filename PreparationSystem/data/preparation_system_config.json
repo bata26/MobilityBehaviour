@@ -1,7 +1,7 @@
 {
   "operative_mode": "development",
-  "segregation_system_ip": "10.8.0.3",
-  "segregation_system_port": 6000,
+  "segregation_system_ip": "10.8.0.2",
+  "segregation_system_port": 6005,
   "production_system_ip": "10.8.0.2",
   "production_system_port": 6001,
   "max_value": 3.5,

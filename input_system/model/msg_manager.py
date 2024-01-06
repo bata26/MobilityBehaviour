@@ -47,7 +47,7 @@ class MessageManager:
         print('New Dataset received')
 
     def send_data(self, json):
-        uri = "http://" + self._configuration.evaluation_system_ip + ":" + str(self._configuration.evaluation_system_port) + "/record"
+        uri = "http://" + self._configuration.host_dest_ip + ":" + str(self._configuration.host_dest_port) + "/record"
         try:
             res = requests.post(uri, json=json, timeout=3)
             if res.status_code != 200:
