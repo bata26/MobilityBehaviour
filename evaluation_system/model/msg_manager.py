@@ -33,12 +33,16 @@ class MessageManager:
     def get_app(self):
         return self._app
 
-    def receive_label(self):
+    def receive(self):
         # get json message from the queue
         return self._queue.get(block=True)
 
     def send_label(self, label_dict):
         self._queue.put(label_dict, block=True)
+
+    def send_start(self):
+        self._queue.put(True, block=True)
+        print('[INFO] Start signal received')
 
 
 app = MessageManager.get_instance().get_app()
@@ -47,7 +51,7 @@ app = MessageManager.get_instance().get_app()
 @app.post('/expertLabels')
 def receive_expert_labels():
     if request.json is None:
-        return {'error': 'No Payload Received'}, 500
+        return {'[ERROR] No Payload Received'}, 500
     print(request.json)
     received_json = request.json
     received_json['source'] = 'expert'  # Add 'source' attribute with the value 'expert'
@@ -61,11 +65,17 @@ def receive_expert_labels():
 @app.post('/classifierLabels')
 def receive_classifier_labels():
     if request.json is None:
-        return {'error': 'No Payload Received'}, 500
-    print(request.json)
+        return {'[ERROR] No Payload Received'}, 500
     received_json = request.json
     received_json['source'] = 'classifier'  # Add 'source' attribute with the value 'classifier'
 
     receive_thread = Thread(target=MessageManager.get_instance().send_label, args=(received_json,))
+    receive_thread.start()
+    return {}, 200
+
+@app.get('/start')
+def start_app():
+    print("[INFO] Start msg received")
+    receive_thread = Thread(target=MessageManager.get_instance().send_start)
     receive_thread.start()
     return {}, 200

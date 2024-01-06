@@ -1,4 +1,6 @@
 from threading import Thread
+import time
+
 from model.msg_manager import MessageManager
 from model.system_configuration import SystemConfiguration
 from model.json_validator import JsonValidator
@@ -25,10 +27,15 @@ class EvaluationSystem:
         run_thread = Thread(target=MessageManager.get_instance().start_server)
         run_thread.setDaemon(True)
         run_thread.start()
+
+        while MessageManager.get_instance().receive() is not True:
+            time.sleep(3)
+
         while True:
             print("[INFO] Creating label tables...")
             self.label_storage.create_tables()
             print("[INFO] Waiting for label...")
-            received_label = MessageManager.get_instance().receive_label()
+            received_label = MessageManager.get_instance().receive()
             print("[INFO] Label received")
             self.label_storage.store_label(received_label)
+
