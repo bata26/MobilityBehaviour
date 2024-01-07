@@ -1,3 +1,4 @@
+import sys
 import logging
 import time
 from threading import Thread
@@ -28,23 +29,24 @@ class IngestionSystem:
             self.configuration = IngestionSystemConfiguration(CONFIG_PATH, CONFIG_SCHEMA_PATH)
         except ValidationError:
             logging.error('Error during the Ingestion System initialization phase')
-            exit(-1)
-        print(f'[+] The configuration is valid, {self.configuration.operative_mode} mode')
+            sys.exit(1)
         self.last_uuid_received = None
         self.evaluation = False
         self.sessions_to_evaluation = 0
         self.sessions_to_produce = 0
+        self.operative_mode = self.configuration.operative_mode
+        print(f'[+] The configuration is valid, {self.operative_mode} mode')
 
     def run(self) -> None:
         """
         Runs the Ingestion System main process
         """
-        operative_mode = self.configuration.operative_mode
-        logging.info('Operative Mode: %s', operative_mode)
+        logging.info('Operative Mode: %s', self.operative_mode)
 
         # Create an instance of RawSessionsStore
         raw_sessions_store = RawSessionsStore()
-
+        # Create an instance of RawSessionIntegrity
+        raw_session_integrity = RawSessionIntegrity()
         # Run REST server
         listener = Thread(target=JsonIO.get_instance().listen, args=('0.0.0.0', 4000), daemon=True)
         listener.start()
@@ -61,7 +63,6 @@ class IngestionSystem:
                         # Check on the current session
                         session_complete = raw_sessions_store. \
                         is_session_complete(uuid=received_record['uuid'], \
-                                            operative_mode=operative_mode, \
                                             last_missing_sample=False, \
                                             evaluation=self.evaluation)
                         uuid = received_record['uuid']
@@ -71,7 +72,6 @@ class IngestionSystem:
                                         self.last_uuid_received)
                         session_complete = raw_sessions_store. \
                                             is_session_complete(uuid=self.last_uuid_received, \
-                                                                operative_mode=operative_mode, \
                                                                 last_missing_sample=True, \
                                                                 evaluation=self.evaluation)
                         uuid = self.last_uuid_received
@@ -93,19 +93,13 @@ class IngestionSystem:
                         raw_sessions_store.delete_raw_session(uuid=uuid)
 
                         # Check Raw Session integrity
-                        threshold = self.configuration.missing_samples_threshold
-                        good_session = RawSessionIntegrity. \
-                        mark_missing_samples(time_series=raw_session['time_series'], \
-                                            threshold=threshold)
+                        good_session = raw_session_integrity. \
+                        mark_missing_samples(time_series=raw_session['time_series'])
 
                         if good_session:
                             # Send Raw Session to the Preparation System
-                            preparation_system_ip = self.configuration.preparation_system_ip
-                            preparation_system_port = self.configuration.preparation_system_port
                             sent_to_preparation = JsonIO.get_instance(). \
-                                                send(endpoint_ip=preparation_system_ip, \
-                                                endpoint_port=preparation_system_port, \
-                                                data=raw_session, \
+                                                send(data=raw_session, \
                                                 dest_system="preparation")
 
                             if sent_to_preparation:
@@ -113,14 +107,10 @@ class IngestionSystem:
 
                             if self.evaluation:
                                 # Send Raw Session to the Evaluation System
-                                evaluation_system_ip = self.configuration.evaluation_system_ip
-                                evaluation_system_port = self.configuration.evaluation_system_port
                                 label = {'uuid': raw_session['uuid'], \
                                         'label': raw_session['pressure_detected']}
                                 sent_to_evaluation = JsonIO.get_instance(). \
-                                                        send(endpoint_ip=evaluation_system_ip, \
-                                                            endpoint_port=evaluation_system_port, \
-                                                            data=label, \
+                                                        send( data=label, \
                                                             dest_system="evaluation")
                                 if sent_to_evaluation:
                                     logging.info('Label %s sent to the evaluation System', \
@@ -133,7 +123,7 @@ class IngestionSystem:
                                         self.evaluation = False
                                         logging.info('Evaluation phase ended')
                             else:
-                                if self.configuration.operative_mode == 'production':
+                                if self.operative_mode == 'production':
                                     self.sessions_to_produce += 1
                                     logging.info('Sessions executed: %s', self.sessions_to_produce)
 

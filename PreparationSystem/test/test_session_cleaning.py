@@ -1,6 +1,6 @@
-import numpy as np
 import sys
 import pytest
+import numpy as np
 sys.path.insert(0, r'..')
 from src.session_cleaning import SessionCleaning
 
@@ -13,10 +13,9 @@ def test_raw_session():
             "environment" : "slippery",
             "pressure_dected" : "Regular"}
 
-
 def test_session_cleaning(test_raw_session):
     cleaner = SessionCleaning()
     assert cleaner.correct_missing_samples(time_series = test_raw_session["time_series"]) is True
-    cleaner.correct_outliers(time_series = test_raw_session["time_series"], max_value=3.5, min_value=0)
-    assert np.max(test_raw_session["time_series"]) == 3.5 
-    assert np.min(test_raw_session["time_series"]) == 0 
+    cleaner.correct_outliers(time_series = test_raw_session["time_series"])
+    assert np.max(test_raw_session["time_series"]) == 3
+    assert np.min(test_raw_session["time_series"]) == 0

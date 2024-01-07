@@ -1,21 +1,35 @@
 import random
+import sys
 import numpy as np
+from jsonschema import ValidationError
+from src.preparation_system_configuration import PreparationSystemConfiguration
+
+CONFIG_PATH = './data/preparation_system_config.json'
+CONFIG_SCHEMA_PATH = './data/preparation_system_config_schema.json'
 
 class FeaturesExtractor:
     """
     Class that extracts features and prepares the session to be sent.
     """
+    def __init__(self):
+        """
+        Initializes a new Features Extractor instance.
+        """
+        try:
+            self.configuration = PreparationSystemConfiguration(CONFIG_PATH, CONFIG_SCHEMA_PATH)
+        except ValidationError:
+            sys.exit(1)    
 
-    def extract_features(self, raw_session: dict, prepared_session: dict, features: dict):
+    def extract_features(self, raw_session: dict, prepared_session: dict):
         """
         Extracts the relevant features from the session data.
         :param raw_session: Raw session data.
         :param prepared_session: Dictionary to store the prepared session to send.
-        :param features: Dictionary of features to extract from pressure time series session data.
         :return: None
         """
         max_pressure, min_pressure, median_pressure, \
-        mean_absolute_deviation, env_and_scatter, act_and_scatter = self.extract_shoes_sensors_features(raw_session, features)
+            mean_absolute_deviation, env_and_scatter, act_and_scatter = \
+            self.extract_shoes_sensors_features(raw_session, self.configuration.features)
         self.prepare_session(raw_session, prepared_session, max_pressure, min_pressure, \
                         median_pressure, mean_absolute_deviation, env_and_scatter, act_and_scatter)
         

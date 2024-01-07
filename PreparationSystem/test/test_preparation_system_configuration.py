@@ -1,9 +1,9 @@
 import sys
-import pytest
-sys.path.insert(0, r'..')
+import os
 import tempfile
 import json
-import os
+import pytest
+sys.path.insert(0, r'..')
 from src.preparation_system_configuration import PreparationSystemConfiguration
 
 
@@ -87,7 +87,7 @@ def temp_config_schema_file():
             "cooking",
             "gaming"
           ]
-        }        
+        }     
       }
     }
   },
@@ -130,7 +130,7 @@ def temp_config_file():
         json.dump(content, temp_file)
         temp_file.flush()
         yield temp_file.name
-    os.remove(temp_file.name)  
+    os.remove(temp_file.name)
 
 def test_ingestion_system_configuration(temp_config_file, temp_config_schema_file):
     configuration = PreparationSystemConfiguration(temp_config_file, temp_config_schema_file)

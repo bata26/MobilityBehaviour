@@ -6,8 +6,6 @@ import pytest
 sys.path.insert(0, r'..')
 from utility.json_handler import JsonHandler
 
-
-
 # Fixture to create a temporary JSON file for testing
 @pytest.fixture
 def temp_json():
@@ -68,16 +66,17 @@ def temp_json_file():
         json.dump(content, temp_file)
         temp_file.flush()
         yield temp_file.name
-    os.remove(temp_file.name)  
+    os.remove(temp_file.name)
 
 def test_load_json_file(temp_json_file):
     json_handler = JsonHandler()
     file_content = json_handler.load_json(temp_json_file)
     assert file_content == {"key1": "value1", "key2": "value2"}
-        
+
 def test_validate_json_data_file(temp_json, temp_json_schema_file):
     json_handler = JsonHandler()
-    success = json_handler.validate_json_data_file(json_data=temp_json, schema_path=temp_json_schema_file)
+    success = json_handler.validate_json_data_file \
+        (json_data=temp_json, schema_path=temp_json_schema_file)
     assert success is True
 
 def test_validate_json(temp_json, temp_json_schema):

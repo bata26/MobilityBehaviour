@@ -2,9 +2,9 @@ import sys
 import os
 import tempfile
 import json
-from utility.json_handler import JsonHandler
 import pytest
 sys.path.insert(0, r'..')
+from utility.json_handler import JsonHandler
 
 
 
@@ -15,7 +15,6 @@ def test_raw_session_json():
         "key1": "value1",
         "key2": "value2"
     }
-
 
 @pytest.fixture
 def test_json_schema():
@@ -66,7 +65,8 @@ def test_raw_session_file():
         temp_file.flush()
         yield temp_file.name
     os.remove(temp_file.name)
-def test_load_json_file():
+
+def test_load_json_file(test_raw_session_file):
     json_handler = JsonHandler()
     file_content = json_handler.load_json(test_raw_session_file)
     assert file_content == {
@@ -74,12 +74,13 @@ def test_load_json_file():
         "key2": "value2"
     }
 
-def test_validate_json_data_file():
+def test_validate_json_data_file(test_raw_session_json, test_json_schema_file):
     json_handler = JsonHandler()
     success = json_handler.validate_json_data_file(json_data=test_raw_session_json, \
                                                     schema_path=test_json_schema_file)
     assert success is True
-def test_validate_json():
+
+def test_validate_json(test_raw_session_json, test_json_schema):
     json_handler = JsonHandler()
     success = json_handler.validate_json(json_data=test_raw_session_json, schema=test_json_schema)
     assert success is True

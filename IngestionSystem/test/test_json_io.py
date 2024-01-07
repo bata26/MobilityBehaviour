@@ -47,12 +47,13 @@ def test_label_record(json_io ,test_label_session):
 
 def test_env_record(json_io ,test_env_session):
     res = json_io.get_app().test_client().post("/record" , json = test_env_session)
-    assert res.status_code == 200    
-    
+    assert res.status_code == 200
+
 def test_activity_record(json_io ,test_act_session):
     res = json_io.get_app().test_client().post("/record" , json = test_act_session)
-    assert res.status_code == 200  
+    assert res.status_code == 200
 
 def test_time_series_record(json_io ,test_time_series_session):
     res = json_io.get_app().test_client().post("/record" , json = test_time_series_session)
     assert res.status_code == 200
+    

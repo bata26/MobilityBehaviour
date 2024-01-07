@@ -17,7 +17,6 @@ CONFIG_SCHEMA_PATH = './data/preparation_system_config_schema.json'
 Module Name: PreparationSystem
 Description: This class acts as a controller for the system.
 '''
-
 class PreparationSystem:
     """
     Class that controls the execution of the Preparation System 
@@ -48,6 +47,11 @@ class PreparationSystem:
         the current operating mode.
         :return: None
         """
+        # Create an instance of SessionCleaning
+        cleaner = SessionCleaning()
+         # Create an instance of JsonHandler
+        json_handler = JsonHandler()
+
         # Start the Flask app listener on the port specified
         listener_thread = Thread(target=JsonIO.get_instance().listener, \
                                  args=('0.0.0.0', 5000), daemon=True)
@@ -58,7 +62,6 @@ class PreparationSystem:
             # Get received raw session
             self.raw_session = JsonIO.get_instance().receive()
             print('[+] Raw session received')
-            json_handler = JsonHandler()
             # Check raw session validity
             if json_handler.validate_json_data_file(self.raw_session, \
                                                     "./data/raw_session_schema.json"):
@@ -68,32 +71,29 @@ class PreparationSystem:
                 continue
 
             # Correct missing samples
-            if SessionCleaning().correct_missing_samples(self.raw_session['time_series']):
+            if cleaner.correct_missing_samples(self.raw_session['time_series']):
                 print('[+] Pressure time series ok')
             else:
                 print('[-] Missing samples are unrecoverable, raw session discarded')
                 continue
             # Correct outliers
-            SessionCleaning.correct_outliers(self.raw_session['time_series'],
-                                             self.configuration.min_value,
-                                             self.configuration.max_value)
+            cleaner.correct_outliers(self.raw_session['time_series'])
 
             # Extract features and prepare session
             self.prepared_session = {}
             FeaturesExtractor().extract_features \
-                (self.raw_session, self.prepared_session, self.configuration.features)
+                (self.raw_session, self.prepared_session)
             print('[+] Features extracted and session prepared')
 
             # Send prepared session to the endpoint corresponding to the current operating mode
             if self.configuration.operative_mode == 'development':
-                if JsonIO.get_instance().send(self.configuration.segregation_system_ip,
-                                              self.configuration.segregation_system_port,
-                                              self.prepared_session):
+                if JsonIO.get_instance().send(self.prepared_session,
+                                              "segregation"):
                     print(f'[+] Prepared session sent at \
                           {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
 
             elif self.configuration.operative_mode == 'production':
-                if JsonIO.get_instance().send(self.configuration.production_system_ip,
-                                              self.configuration.production_system_port,
-                                              self.prepared_session):
-                    print(f'[+] Prepared session sent at {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
+                if JsonIO.get_instance().send(self.prepared_session,
+                                              "production"):
+                    print(f'[+] Prepared session sent at \
+                          {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')

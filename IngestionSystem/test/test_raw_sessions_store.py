@@ -48,7 +48,8 @@ def test_init_storing():
     store = RawSessionsStore()
     assert True
 
-def test_get_record_type(test_label_session, test_act_session, test_env_session, test_time_series_session):
+def test_get_record_type(test_label_session, test_act_session, \
+                         test_env_session, test_time_series_session):
     store = RawSessionsStore()
     record_type_act = store.get_record_type(test_act_session)
     record_type_env = store.get_record_type(test_env_session)
@@ -61,44 +62,39 @@ def test_get_record_type(test_label_session, test_act_session, test_env_session,
     assert record_type_ts == "time_series"
 
 
-def test_validate_schema_record(test_label_session, test_act_session, test_env_session, test_time_series_session):
+def test_validate_schema_record(test_label_session, test_act_session, \
+                                test_env_session, test_time_series_session):
     store = RawSessionsStore()
-    assert store.validate_schema_record(record=test_label_session, record_type="pressure_detected") is True
-    assert store.validate_schema_record(record=test_act_session, record_type="calendar") is True
-    assert store.validate_schema_record(record=test_env_session, record_type="environment") is True
-    assert store.validate_schema_record(record=test_time_series_session, record_type="time_series") is True
+    assert store.validate_schema_record \
+        (record=test_label_session, record_type="pressure_detected") is True
+    assert store.validate_schema_record \
+        (record=test_act_session, record_type="calendar") is True
+    assert store.validate_schema_record \
+        (record=test_env_session, record_type="environment") is True
+    assert store.validate_schema_record \
+        (record=test_time_series_session, record_type="time_series") is True
 
 def test_session_exists(test_uuid):
     store = RawSessionsStore()
-    result = store.raw_session_exists(uuid=test_uuid)   
+    result = store.raw_session_exists(uuid=test_uuid)
     assert result is False
 
-def test_store_record(test_label_session, test_act_session, test_env_session, test_time_series_session):
+def test_store_record(test_label_session, test_act_session, \
+                      test_env_session, test_time_series_session):
     store = RawSessionsStore()
     assert store.store_record(record=test_label_session) is True
     assert store.store_record(record=test_act_session) is True
     assert store.store_record(record=test_env_session) is True
     assert store.store_record(record=test_time_series_session) is True
 
-"""
-def test_load_raw_session(test_raw_session, test_label_session, test_act_session, test_env_session, test_time_series_session, test_uuid):
+def test_is_session_complete(test_label_session, test_act_session, \
+                             test_env_session, test_time_series_session, test_uuid):
     store = RawSessionsStore()
     store.store_record(record=test_label_session)
     store.store_record(record=test_act_session)
     store.store_record(record=test_env_session)
-    store.store_record(record=test_time_series_session)  
-    raw_session = store.load_raw_session(uuid=test_uuid)
-    assert raw_session == test_raw_session
-"""
-
-def test_is_session_complete(test_label_session, test_act_session, test_env_session, test_time_series_session, test_uuid):
-    store = RawSessionsStore()
-    store.store_record(record=test_label_session)
-    store.store_record(record=test_act_session)
-    store.store_record(record=test_env_session)
-    store.store_record(record=test_time_series_session)  
-    assert store.is_session_complete(uuid=test_uuid, operative_mode="development", last_missing_sample=True, evaluation=True) is True
-    assert store.is_session_complete(uuid=test_uuid, operative_mode="development", last_missing_sample=False, evaluation=True) is True
-    assert store.is_session_complete(uuid=test_uuid, operative_mode="production", last_missing_sample=True, evaluation=True) is True
-    assert store.is_session_complete(uuid=test_uuid, operative_mode="production", last_missing_sample=True, evaluation=False) is True
-    assert store.is_session_complete(uuid=test_uuid, operative_mode="production", last_missing_sample=False, evaluation=False) is True
+    store.store_record(record=test_time_series_session)
+    assert store.is_session_complete \
+        (uuid=test_uuid, last_missing_sample=True, evaluation=False) is True
+    assert store.is_session_complete \
+        (uuid=test_uuid, last_missing_sample=False, evaluation=True) is True

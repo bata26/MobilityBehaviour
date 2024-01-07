@@ -1,6 +1,5 @@
 import json
 import logging
-import os
 from utility.json_handler import JsonHandler
 
 
@@ -9,7 +8,6 @@ class IngestionSystemConfiguration:
     Class responsible for retrieving and validating the configuration parameters
     set by the system administrator. It offers the parameters as public attributes.
     """
-    
     def __init__(self, json_configuration_path: str, json_schema_path: str):
         """
         ``Configuration`` constructor
@@ -23,11 +21,12 @@ class IngestionSystemConfiguration:
             # Load JSON configuration
             json_conf = json.load(file)
             # Validate configuration
-            if not json_handler.validate_json_data_file(json_data=json_conf, schema_path=json_schema_path):
+            if not json_handler.validate_json_data_file(json_data=json_conf, \
+                                                        schema_path=json_schema_path):
                 logging.error("Impossible to load the ingestion system "
                               "configuration: JSON file is not valid")
                 raise ValueError("Ingestion System configuration failed")
-            
+
             # Add JSON attributes to current object
             self.db_name = json_conf['db_name']
             self.preparation_system_ip = json_conf['preparation_system_ip']

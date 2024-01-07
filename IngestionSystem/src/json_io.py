@@ -1,24 +1,32 @@
+import sys
 import logging
 from typing import Any
-from flask import Flask, request
 from threading import Thread
-from requests import post, exceptions
 import queue
+from flask import Flask, request
+from requests import post, exceptions
+from jsonschema import ValidationError
+from src.ingestion_system_configuration import IngestionSystemConfiguration
 
+CONFIG_PATH = './data/ingestion_system_config.json'
+CONFIG_SCHEMA_PATH = './data/ingestion_system_config_schema.json'
 
 class JsonIO:
     """
-    This class implements the methods for receiving records and sending the raw sessions to the Preparation System.
+    This class implements the methods for receiving records and
+    sending the raw sessions to the Preparation System.
     """
-
     instance = None
-
     def __init__(self):
         """
         Initializes the JsonIO object
         """
         self.app = Flask(__name__)
         self.received_records_queue = queue.Queue()
+        try:
+            self.configuration = IngestionSystemConfiguration(CONFIG_PATH, CONFIG_SCHEMA_PATH)
+        except ValidationError:
+            sys.exit(1)
 
     @staticmethod
     def get_instance() -> Any:
@@ -38,7 +46,8 @@ class JsonIO:
     def put_received_record(self, received_record: dict) -> bool:
         """
         Receives a record and enqueues it in a thread-safe queue
-        :param received_record: record sent from a data source (calendar, labels, settings, pressure time series)
+        :param received_record: record sent from a data source
+        (calendar, labels, settings, pressure time series)
         :return: True if the record is entered correctly. False if the insertion fails.
         """
         try:
@@ -49,7 +58,7 @@ class JsonIO:
             logging.error('Full queue exception')
             return False
         return True
-    
+
     def send_to_main(self):
         self.received_records_queue.put(True, block=True)
 
@@ -58,35 +67,30 @@ class JsonIO:
         Extracts a record from the queue containing all the received records
         :return: record
         """
-        # if self.received_records_queue.qsize() > 0:
-        #    with open(os.path.join(os.path.abspath('..'), 'data', 'queue_size.txt'), 'w') as f:
-        #        f.write(f'{self.received_records_queue.qsize() - 1}')
-
         return self.received_records_queue.get(block=True)
 
-    def send(self, endpoint_ip: str, endpoint_port: int, data: dict, dest_system: str) -> bool:
+    def send(self, data: dict, dest_system: str) -> bool:
         """
-        Sends data to the Preparation System
-        :param endpoint_ip: IP of the Preparation System
-        :param endpoint_port: Port of the Preparation System
+        Sends data to other systems
         :param data: dictionary containing the data to send
         :dest_system: destination system
         :return: True if the 'send' is successful. False otherwise.
         """
-
         try:
             if dest_system == "preparation":
-                connection_string = f'http://{endpoint_ip}:{endpoint_port}/json'
+                connection_string = f'http://{self.configuration.preparation_system_ip}: \
+                    {self.configuration.preparation_system_port}/json'
             elif dest_system == "evaluation":
-                connection_string = f'http://{endpoint_ip}:{endpoint_port}/expertLabels'
-            response = post(url=connection_string, json=data)
+                connection_string = f'http://{self.configuration.evaluation_system_ip}: \
+                    {self.configuration.evaluation_system_port}/expertLabels'
+            response = post(url=connection_string, json=data, timeout=3)
         except exceptions.RequestException:
-            logging.error(f'{connection_string} unreachable')
-            exit(-1)
+            logging.error('%s unreachable', connection_string)
+            sys.exit(1)
 
         if response.status_code != 200:
             error_message = response.json()['error']
-            logging.error(f'Error: {error_message}')
+            logging.error('Error: %s', error_message)
             return False
 
         return True
@@ -109,7 +113,8 @@ log = logging.getLogger('werkzeug')
 @app.post('/record')
 def post_json():
     """
-    Flask view function that handles requests related to records sent from the different data sources
+    Flask view function that handles requests related to records 
+    sent from the different data sources
     """
     if request.json is None:
         return {'error': 'No record received'}, 500

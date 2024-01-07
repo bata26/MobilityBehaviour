@@ -1,3 +1,10 @@
+import sys
+from jsonschema import ValidationError
+from src.preparation_system_configuration import PreparationSystemConfiguration
+
+CONFIG_PATH = './data/preparation_system_config.json'
+CONFIG_SCHEMA_PATH = './data/preparation_system_config_schema.json'
+
 '''
 Module Name: SessionCleaning
 Description: This class corrects the missing samples 
@@ -8,6 +15,14 @@ class SessionCleaning:
     Class that corrects through interpolation the missing samples
     and corrects the outliers through substitution
     """
+    def __init__(self) -> None:
+        try:
+            self.configuration = PreparationSystemConfiguration(CONFIG_PATH, CONFIG_SCHEMA_PATH)
+        except ValidationError:
+            sys.exit(1)
+        self.min_value = self.configuration.min_value
+        self.max_value = self.configuration.max_value
+
     def correct_missing_samples(self, time_series: list):
         """
         Checks for missing samples in the list of pressure time series;
@@ -46,17 +61,14 @@ class SessionCleaning:
         if list_number != 0:
             time_series[missing_value] = value / list_number
 
-    @staticmethod
-    def correct_outliers(time_series: list, min_value: float, max_value: float):
+    def correct_outliers(self, time_series: list):
         """
         Corrects outliers in the data.
         :param time_series: List of time series.
-        :param min_value: Lower bound.
-        :param max_value: Upper bound.
         :return: None
         """
         for i, value in enumerate(time_series):
-            if value > max_value:
-                time_series[i] = max_value
-            elif value < min_value:
-                time_series[i] = min_value
+            if value > self.max_value:
+                time_series[i] = self.max_value
+            elif value < self.min_value:
+                time_series[i] = self.min_value

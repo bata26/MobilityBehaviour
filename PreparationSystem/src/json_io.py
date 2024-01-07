@@ -1,8 +1,13 @@
+import sys
 import queue
 from threading import Thread
 from flask import Flask, request
 from requests import post, exceptions
+from jsonschema import ValidationError
+from src.preparation_system_configuration import PreparationSystemConfiguration
 
+CONFIG_PATH = './data/preparation_system_config.json'
+CONFIG_SCHEMA_PATH = './data/preparation_system_config_schema.json'
 
 class JsonIO:
     """
@@ -16,8 +21,27 @@ class JsonIO:
         Initializes a new JsonIO instance and creates a Flask application and a queue for storing
         received JSON payloads.
         """
+        try:
+            self.configuration = PreparationSystemConfiguration(CONFIG_PATH, CONFIG_SCHEMA_PATH)
+        except ValidationError:
+            sys.exit(1)
         self.app = Flask(__name__)
         self.received_json_queue = queue.Queue()
+    
+    @staticmethod
+    def get_instance():
+        """
+        :return: Instance of the JsonIO class
+        """
+        if JsonIO.json_io_instance is None:
+            JsonIO.json_io_instance = JsonIO()
+        return JsonIO.json_io_instance
+
+    def get_app(self):
+        """
+        :return: instance of the app Flask
+        """
+        return self.app
 
     def listener(self, ip, port):
         """
@@ -51,41 +75,33 @@ class JsonIO:
             print("Full queue exception")
 
     def send_to_main(self):
-        self.received_json_queue.put(True, block=True)        
-
+        self.received_json_queue.put(True, block=True)
     # -------- CLIENT REQUEST --------
-
-    def send(self, endpoint_ip: str, endpoint_port: int, json_to_send: dict):
+    def send(self, json_to_send: dict, dest_system: str):
         """
         Sends a JSON payload to a specified endpoint.
-        :param endpoint_ip: The IP address of the endpoint.
-        :param endpoint_port: The port of the endpoint.
         :param json_to_send: The JSON payload to send.
         :dest_system: destination system
         :return: True if the payload is sent successfully, False otherwise.
         """
         try:
-            connection_string = f'http://{endpoint_ip}:{endpoint_port}/preparedsession'
+            if dest_system == "production":
+                connection_string = \
+                    f'http://{self.configuration.production_system_ip}: \
+                        {self.configuration.production_system_port}/preparedsession'
+            elif dest_system == "segregation":
+                connection_string = \
+                    f'http://{self.configuration.segregation_system_ip}: \
+                        {self.configuration.segregation_system_port}/preparedsession'
             response = post(connection_string, json=json_to_send, timeout=5)
-
             if response.status_code != 200:
                 error_message = response.json()['error']
                 print(f'[-] Error: {error_message}')
                 return False
         except exceptions.RequestException as e:
             print(f'[-] Connection Error (endpoint unreachable): {e}')
-            exit(1)
+            sys.exit(1)
         return True
-
-    @staticmethod
-    def get_instance():
-        """
-        :return: Instance of the JsonIO class
-        """
-        if JsonIO.json_io_instance is None:
-            JsonIO.json_io_instance = JsonIO()
-        return JsonIO.json_io_instance
-
 
 app = JsonIO.get_instance().app
 
