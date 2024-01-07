@@ -8,7 +8,7 @@ class PreparationSystemConfiguration:
     Class responsible for retrieving and validating the configuration parameters
     set by the system administrator. It offers the parameters as public attributes.
     """
-    def __init__(self, json_configuration_path: str, json_schema_path: str):
+    def __init__(self, json_configuration_path: str, json_schema_path: str) -> None:
         """
         ``Configuration`` constructor
         :param json_configuration_path: path to the configuration file

@@ -23,7 +23,7 @@ class SessionCleaning:
         self.min_value = self.configuration.min_value
         self.max_value = self.configuration.max_value
 
-    def correct_missing_samples(self, time_series: list):
+    def correct_missing_samples(self, time_series: list) -> bool:
         """
         Checks for missing samples in the list of pressure time series;
         if they are recoverable, the missing samples are corrected.
@@ -41,7 +41,7 @@ class SessionCleaning:
         return True
 
     @staticmethod
-    def interpolate_list(time_series, missing_value):
+    def interpolate_list(time_series, missing_value) -> None:
         """
         Interpolates the specified value with the adjacent ones in the list.
         :param time_series: List of time series.
@@ -61,7 +61,7 @@ class SessionCleaning:
         if list_number != 0:
             time_series[missing_value] = value / list_number
 
-    def correct_outliers(self, time_series: list):
+    def correct_outliers(self, time_series: list) -> None:
         """
         Corrects outliers in the data.
         :param time_series: List of time series.

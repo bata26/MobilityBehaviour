@@ -20,9 +20,9 @@ class RawSessionsStore:
         Initializes the Raw Sessions Store
         """
         self.conn = None
-        self.config = IngestionSystemConfiguration(CONFIG_PATH, CONFIG_SCHEMA_PATH)
+        self.configuration = IngestionSystemConfiguration(CONFIG_PATH, CONFIG_SCHEMA_PATH)
 
-        db_path = os.path.join(os.path.abspath('..'), self.config.db_name)
+        db_path = os.path.join(os.path.abspath('..'), self.configuration.db_name)
         if os.path.exists(db_path):
             # print('[+] sqlite3 previous database deleted')
             os.remove(db_path)
@@ -40,7 +40,7 @@ class RawSessionsStore:
         :return: True if the connection is successful. False if the connection fails.
         """
         try:
-            self.conn = sqlite3.connect(os.path.join(os.path.abspath('..'), self.config.db_name))
+            self.conn = sqlite3.connect(os.path.join(os.path.abspath('..'), self.configuration.db_name))
             return True
         except sqlite3.Error as e:
             logging.error('sqlite3 open connection error %s', e)
@@ -328,7 +328,7 @@ class RawSessionsStore:
         :return: True if the session is completed. False otherwise.
         """
         self.check_connection()
-        operative_mode = self.config.operative_mode
+        operative_mode = self.configuration.operative_mode
         try:
             if last_missing_sample:
                 # Since last_missing_samples is True it means that

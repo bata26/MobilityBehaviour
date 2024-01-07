@@ -17,7 +17,7 @@ class JsonIO:
     sending the raw sessions to the Preparation System.
     """
     instance = None
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializes the JsonIO object
         """

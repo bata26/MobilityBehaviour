@@ -24,7 +24,7 @@ class PreparationSystem:
     the prepared session from the raw one.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializes the PreparationSystem class, validates 
         the configuration and sets the instance variables
@@ -39,7 +39,7 @@ class PreparationSystem:
         self.raw_session = None
         self.prepared_session = None
 
-    def run(self):
+    def run(self) -> None:
         """
         Method that runs all the instructions needed for session preparation.
         It continuously listens for new raw sessions, processes them, extracts features,

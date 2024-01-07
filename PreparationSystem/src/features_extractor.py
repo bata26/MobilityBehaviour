@@ -11,14 +11,14 @@ class FeaturesExtractor:
     """
     Class that extracts features and prepares the session to be sent.
     """
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializes a new Features Extractor instance.
         """
         try:
             self.configuration = PreparationSystemConfiguration(CONFIG_PATH, CONFIG_SCHEMA_PATH)
         except ValidationError:
-            sys.exit(1)    
+            sys.exit(1)
 
     def extract_features(self, raw_session: dict, prepared_session: dict):
         """
@@ -32,7 +32,7 @@ class FeaturesExtractor:
             self.extract_shoes_sensors_features(raw_session, self.configuration.features)
         self.prepare_session(raw_session, prepared_session, max_pressure, min_pressure, \
                         median_pressure, mean_absolute_deviation, env_and_scatter, act_and_scatter)
-        
+
     def extract_shoes_sensors_features(self, raw_session: list, features: dict):
         """
         Extracts the relevant features from the preussure time series data of the raw session data.
@@ -72,6 +72,7 @@ class FeaturesExtractor:
                 scattering_act
         return max_pressure, min_pressure, median_pressure, \
             mean_absolute_deviation, environment_and_small_scatter, activity_and_small_scatter
+    
     @staticmethod
     def prepare_session(raw_session: dict, prepared_session: dict, max_pressure: int,
                         min_pressure: int, median_pressure: int, mean_absolute_deviation: int,

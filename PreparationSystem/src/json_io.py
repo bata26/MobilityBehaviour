@@ -1,5 +1,6 @@
 import sys
 import queue
+from typing import Any
 from threading import Thread
 from flask import Flask, request
 from requests import post, exceptions
@@ -16,7 +17,7 @@ class JsonIO:
     """
     json_io_instance = None
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializes a new JsonIO instance and creates a Flask application and a queue for storing
         received JSON payloads.
@@ -27,9 +28,9 @@ class JsonIO:
             sys.exit(1)
         self.app = Flask(__name__)
         self.received_json_queue = queue.Queue()
-    
+
     @staticmethod
-    def get_instance():
+    def get_instance() -> Any:
         """
         :return: Instance of the JsonIO class
         """
@@ -37,13 +38,13 @@ class JsonIO:
             JsonIO.json_io_instance = JsonIO()
         return JsonIO.json_io_instance
 
-    def get_app(self):
+    def get_app(self) -> Any:
         """
         :return: instance of the app Flask
         """
         return self.app
 
-    def listener(self, ip, port):
+    def listener(self, ip, port) -> None:
         """
         Starts the listener on the specified IP and port.
         :param ip: IP address to listen on.
@@ -52,7 +53,7 @@ class JsonIO:
         """
         self.app.run(host=ip, port=port, debug=False)
 
-    def receive(self):
+    def receive(self) -> Any:
         """
         Retrieves a raw session or the start message 
         from the received JSON queue.
@@ -62,7 +63,7 @@ class JsonIO:
 
     # -------- SERVER HANDLER --------
 
-    def put_received_record(self, received_json):
+    def put_received_record(self, received_json) -> bool:
         """
         Adds the received JSON payload to _received_json_queue.
         :param received_json: JSON payload received by the server.
@@ -73,11 +74,14 @@ class JsonIO:
             self.received_json_queue.put(received_json, timeout=5)
         except queue.Full:
             print("Full queue exception")
+            return False
+        return True
 
     def send_to_main(self):
         self.received_json_queue.put(True, block=True)
+
     # -------- CLIENT REQUEST --------
-    def send(self, json_to_send: dict, dest_system: str):
+    def send(self, json_to_send: dict, dest_system: str) -> bool:
         """
         Sends a JSON payload to a specified endpoint.
         :param json_to_send: The JSON payload to send.
