@@ -7,7 +7,7 @@
     "preparation_system_ip": "10.8.0.2",
     "preparation_system_port": "6004",
     "db_name": "segregation.db",
-    "max_sessions": 10,
+    "max_sessions": 100,
     "train_set_size": 0.7,
     "validation_set_size": 0.2,
     "test_set_size": 0.1

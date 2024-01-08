@@ -78,11 +78,9 @@ class JsonIO:
         """
         try:
             if dest_system == "preparation":
-                connection_string = f'http://{self.configuration.preparation_system_ip}: \
-                    {self.configuration.preparation_system_port}/json'
+                connection_string = f'http://{self.configuration.preparation_system_ip}:{self.configuration.preparation_system_port}/json'
             elif dest_system == "evaluation":
-                connection_string = f'http://{self.configuration.evaluation_system_ip}: \
-                    {self.configuration.evaluation_system_port}/expertLabels'
+                connection_string = f'http://{self.configuration.evaluation_system_ip}:{self.configuration.evaluation_system_port}/expertLabels'
             response = post(url=connection_string, json=data, timeout=3)
         except exceptions.RequestException:
             logging.error('%s unreachable', connection_string)

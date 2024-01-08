@@ -91,12 +91,10 @@ class JsonIO:
         try:
             if dest_system == "production":
                 connection_string = \
-                    f'http://{self.configuration.production_system_ip}: \
-                        {self.configuration.production_system_port}/preparedsession'
+                    f'http://{self.configuration.production_system_ip}:{self.configuration.production_system_port}/preparedsession'
             elif dest_system == "segregation":
                 connection_string = \
-                    f'http://{self.configuration.segregation_system_ip}: \
-                        {self.configuration.segregation_system_port}/preparedsession'
+                    f'http://{self.configuration.segregation_system_ip}:{self.configuration.segregation_system_port}/preparedsession'
             response = post(connection_string, json=json_to_send, timeout=5)
             if response.status_code != 200:
                 error_message = response.json()['error']

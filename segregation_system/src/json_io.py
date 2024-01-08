@@ -2,8 +2,10 @@ import queue
 from threading import Thread
 from flask import Flask, request
 from requests import post, exceptions
+import logging
 
-
+log = logging.getLogger('werkzeug')
+log.disabled = True
 class JsonIO:
 
     _instance = None
