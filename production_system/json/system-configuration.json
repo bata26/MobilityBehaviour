@@ -1,4 +1,4 @@
 {
-    "evaluation-phase" : false,
+    "evaluation-phase" : true,
     "classifier-deployed": false
 }

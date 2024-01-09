@@ -8,7 +8,7 @@
         "port" : 6006
     },
     "client-system":{
-        "ip" : "10.8.0.6",
+        "ip" : "10.8.0.2",
         "port" : 6002
     },
     "messaging-system":{
