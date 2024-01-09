@@ -1,5 +1,6 @@
 import queue
 import logging
+import time
 import os
 from threading import Thread
 from dotenv import load_dotenv
@@ -75,7 +76,8 @@ class MessageManager:
             uri = "http://" + self._configuration.evaluation_system_ip + ":" + str(self._configuration.evaluation_system_port) + "/classifierLabels"
         elif dest == "CLIENT":
             uri = "http://" + self._configuration.client_system_ip + ":" + str(self._configuration.client_system_port) + "/"
-            print(f"[INFO] Send result to client at url : {uri}")
+            print(f"[INFO] {str(time.time())}Send result to client at url : {uri}")
+            return
         else:
             uri = "http://" + self._configuration.messaging_system_ip + ":" + str(self._configuration.messaging_system_port) + "/"
             print(f"[INFO] Send result to messaging at url : {uri}")
