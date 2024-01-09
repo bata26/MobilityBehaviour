@@ -1,8 +1,8 @@
 {
   "operative_mode" : "development",
-  "preparation_system_ip" : "10.8.0.3",
+  "preparation_system_ip" : "10.8.0.8",
   "preparation_system_port" : 6004,
-  "evaluation_system_ip": "10.8.0.7",
+  "evaluation_system_ip": "10.8.0.9",
   "evaluation_system_port": 6006,
   "production_window": 5,
   "evaluation_window": 5,

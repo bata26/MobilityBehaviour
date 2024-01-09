@@ -4,11 +4,11 @@
         "port" : 6000
     },
     "evaluation-system":{
-        "ip" : "10.8.0.7",
+        "ip" : "10.8.0.9",
         "port" : 6006
     },
     "client-system":{
-        "ip" : "10.8.0.2",
+        "ip" : "10.8.0.8",
         "port" : 6002
     },
     "messaging-system":{
