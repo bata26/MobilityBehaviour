@@ -1,5 +1,6 @@
 import sys
 import queue
+import logging
 from typing import Any
 from threading import Thread
 from flask import Flask, request
@@ -106,6 +107,8 @@ class JsonIO:
         return True
 
 app = JsonIO.get_instance().app
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 
 @app.post('/json')

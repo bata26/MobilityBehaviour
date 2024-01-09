@@ -106,6 +106,7 @@ class JsonIO:
 
 app = JsonIO.get_instance().get_app()
 log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 
 @app.post('/record')
