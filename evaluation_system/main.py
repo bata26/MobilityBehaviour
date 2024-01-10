@@ -1,5 +1,5 @@
 import sys
-from controller.evaluatation_system import EvaluationSystem
+from controller.evaluation_system import EvaluationSystem
 from dotenv import load_dotenv
 
 load_dotenv()
