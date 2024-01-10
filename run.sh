@@ -4,3 +4,4 @@ docker run -p 6003:4000 ingestion-sys:v1.0
 docker run -p 6004:5000 prep-sys:v1.0
 docker run -it -p 6005:6000 seg-sys:v1.0
 docker run -p 6001:6000 prod-sys:v1.0
+docker run -p 6006:6006 eval-sys:v1.0

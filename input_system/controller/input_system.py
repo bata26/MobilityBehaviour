@@ -29,8 +29,8 @@ class InputSystem:
         run_thread.setDaemon(True)
         run_thread.start()
 
-        while MessageManager.get_instance().get_queue().get(block=True) is False:
-            time.sleep(3)
+        #while MessageManager.get_instance().get_queue().get(block=True) is False:
+        #    time.sleep(3)
 
         while True:
             if self._configuration.situation == "ideal":

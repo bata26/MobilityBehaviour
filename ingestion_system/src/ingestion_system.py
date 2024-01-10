@@ -50,8 +50,8 @@ class IngestionSystem:
         # Run REST server
         listener = Thread(target=JsonIO.get_instance().listen, args=('0.0.0.0', 4000), daemon=True)
         listener.start()
-        #while JsonIO.get_instance().receive() is False:
-        #    time.sleep(3)
+        while JsonIO.get_instance().receive() is False:
+            time.sleep(3)
         while True:
             # Wait for a new record
             received_record = JsonIO.get_instance().receive()
